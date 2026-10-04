@@ -1,123 +1,162 @@
 (() => {
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const pad = (n) => String(n).padStart(2, "0");
+  document.documentElement.classList.add("js");
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const NS = "http://www.w3.org/2000/svg";
 
-  // Dial ticks
-  const ticks = document.getElementById("dial-ticks");
-  for (let i = 0; i < 60; i++) {
-    const major = i % 5 === 0;
-    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    line.setAttribute("x1", "200");
-    line.setAttribute("x2", "200");
-    line.setAttribute("y1", "6");
-    line.setAttribute("y2", major ? "28" : "16");
-    line.setAttribute("class", major ? "tick major" : "tick");
-    line.setAttribute("transform", `rotate(${i * 6} 200 200)`);
-    ticks.appendChild(line);
-  }
-
-  // Live Tokyo clock + dial hands
-  const clock = document.getElementById("clock");
-  const date = document.getElementById("date");
-  const hands = {
-    h: document.getElementById("hand-h"),
-    m: document.getElementById("hand-m"),
-    s: document.getElementById("hand-s"),
+  // Deterministic PRNG so drawings are identical on every load
+  const rng = (seed) => () => {
+    seed |= 0; seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
-  const tokyoParts = new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Asia/Tokyo",
-    year: "numeric", month: "2-digit", day: "2-digit",
-    hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false,
-  });
-
-  function tick() {
-    const now = new Date();
-    const p = Object.fromEntries(tokyoParts.formatToParts(now).map((x) => [x.type, x.value]));
-    const h = Number(p.hour) % 24, m = Number(p.minute), s = Number(p.second);
-    const ms = reduceMotion ? 0 : now.getMilliseconds();
-    clock.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
-    date.textContent = `${p.year}.${p.month}.${p.day}`;
-    const sec = s + ms / 1000;
-    hands.s.setAttribute("transform", `rotate(${sec * 6} 200 200)`);
-    hands.m.setAttribute("transform", `rotate(${(m + sec / 60) * 6} 200 200)`);
-    hands.h.setAttribute("transform", `rotate(${((h % 12) + m / 60) * 30} 200 200)`);
-  }
-  tick();
-  if (reduceMotion) setInterval(tick, 1000);
-  else (function loop() { tick(); requestAnimationFrame(loop); })();
-
-  // Split statement into characters for scroll-lit reading effect
-  const statement = document.querySelector("[data-words]");
-  const chars = [];
-  if (statement) {
-    const text = statement.textContent.trim();
-    statement.textContent = "";
-    for (const ch of text) {
-      const span = document.createElement("span");
-      span.className = "w";
-      span.textContent = ch;
-      statement.appendChild(span);
-      chars.push(span);
-    }
-  }
-
-  // Scroll-driven: progress bar, statement lighting
-  const bar = document.getElementById("progress-bar");
-  function onScroll() {
-    const max = document.documentElement.scrollHeight - innerHeight;
-    bar.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
-
-    if (statement) {
-      const r = statement.getBoundingClientRect();
-      const t = Math.min(1, Math.max(0, (innerHeight * 0.85 - r.top) / (r.height + innerHeight * 0.35)));
-      const lit = Math.round(t * chars.length);
-      chars.forEach((c, i) => c.classList.toggle("lit", i < lit));
-    }
-  }
-  addEventListener("scroll", onScroll, { passive: true });
-  addEventListener("resize", onScroll);
-  onScroll();
-
-  // Reveal on view + count-up numbers
-  const countUp = (el) => {
-    const target = Number(el.dataset.count);
-    if (reduceMotion) { el.textContent = target.toLocaleString("en-US"); return; }
-    const start = performance.now(), dur = 1800;
-    (function step(now) {
-      const t = Math.min(1, (now - start) / dur);
-      el.textContent = Math.round(target * (1 - Math.pow(1 - t, 4))).toLocaleString("en-US");
-      if (t < 1) requestAnimationFrame(step);
-    })(start);
+  const el = (tag, attrs, parent) => {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
   };
+
+  // Closed wobbly ring as a smooth path
+  function ring(cx, cy, r, wobble, phase, steps = 72) {
+    const pts = [];
+    for (let i = 0; i < steps; i++) {
+      const a = (i / steps) * Math.PI * 2;
+      const k = 1
+        + wobble[0] * Math.sin(2 * a + phase[0])
+        + wobble[1] * Math.sin(3 * a + phase[1])
+        + wobble[2] * Math.sin(5 * a + phase[2]);
+      pts.push([cx + Math.cos(a) * r * k, cy + Math.sin(a) * r * k * 0.78]);
+    }
+    let d = `M${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
+    for (let i = 0; i < steps; i++) {
+      const p0 = pts[(i - 1 + steps) % steps], p1 = pts[i], p2 = pts[(i + 1) % steps], p3 = pts[(i + 2) % steps];
+      const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+      const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+      d += `C${c1[0].toFixed(1)} ${c1[1].toFixed(1)} ${c2[0].toFixed(1)} ${c2[1].toFixed(1)} ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`;
+    }
+    return d + "Z";
+  }
+
+  // FIG. 001 — survey map
+  const map = document.getElementById("survey-map");
+  if (map) {
+    const r = rng(1959);
+    for (let x = 0; x <= 1000; x += 100) el("line", { x1: x, y1: 0, x2: x, y2: 760, class: "grid-line" }, map);
+    for (let y = 0; y <= 760; y += 100) el("line", { x1: 0, y1: y, x2: 1000, y2: y, class: "grid-line" }, map);
+
+    const hills = [[380, 400, 15, 32], [760, 240, 9, 30], [820, 620, 6, 26]];
+    hills.forEach(([cx, cy, n, step]) => {
+      const w = [r() * 0.12, r() * 0.08, r() * 0.04];
+      for (let i = n; i >= 1; i--) {
+        const ph = [r() * 0.5 + i * 0.07, r() * 0.5 + i * 0.11, r() * 6];
+        el("path", { d: ring(cx + i * 2.5, cy - i * 1.5, i * step, w, ph), class: i % 5 === 0 ? "contour index-line" : "contour" }, map);
+      }
+    });
+
+    // Road (dashed) and coastline-ish edge
+    el("path", { d: "M-10 690 C 180 640, 260 560, 520 590 S 900 520, 1010 470", class: "ink thin dash" }, map);
+
+    // Plotted points
+    const pts = [[352, 386], [412, 430], [300, 452], [640, 560], [742, 236], [212, 210], [560, 300]];
+    pts.forEach(([x, y], i) => {
+      el("circle", { cx: x, cy: y, r: i === 0 ? 7 : 4, class: "dot" }, map);
+      const t = el("text", { x: x + 10, y: y - 8 }, map);
+      t.textContent = i === 0 ? "P-001" : `P-0${String(i + 1).padStart(2, "0")}`;
+    });
+
+    // Crosshair on P-001
+    el("path", { d: "M352 330V362M352 410V442M296 386H328M376 386H408", class: "ink" }, map);
+    el("circle", { cx: 352, cy: 386, r: 30, class: "ink thin" }, map);
+
+    // North arrow + scale bar
+    el("path", { d: "M940 120 L952 80 L964 120 L952 110 Z", class: "ink" }, map);
+    const n = el("text", { x: 946, y: 70 }, map); n.textContent = "N";
+    el("path", { d: "M40 720H240M40 712v16M140 716v8M240 712v16", class: "ink" }, map);
+    const s = el("text", { x: 40, y: 704 }, map); s.textContent = "0          ███ m";
+  }
+
+  // FIG. 006 — field sketch: vegetation stipple, an empty clearing, a path in
+  const sketch = document.getElementById("field-sketch");
+  if (sketch) {
+    const r = rng(6);
+    const inClearing = (x, y) => ((x - 420) / 170) ** 2 + ((y - 470) / 150) ** 2 < 1;
+    const onPath = (x, y) => Math.abs(x - (120 + (y - 900) * -0.55 + Math.sin(y / 90) * 30)) < 26 && y > 560;
+    for (let i = 0; i < 1500; i++) {
+      const x = r() * 800, y = r() * 900;
+      if (inClearing(x, y) || onPath(x, y)) continue;
+      const k = r();
+      if (k > 0.55) {
+        // grass / shrub tick
+        const s = 3 + r() * 4;
+        el("path", { d: `M${(x - s).toFixed(1)} ${y.toFixed(1)}l${s.toFixed(1)} ${(-s * 1.4).toFixed(1)}l${s.toFixed(1)} ${(s * 1.4).toFixed(1)}`, class: "ink thin", opacity: 0.6 }, sketch);
+      } else {
+        el("circle", { cx: x.toFixed(1), cy: y.toFixed(1), r: k > 0.5 ? 2.6 : 1.1, fill: "#111110", opacity: 0.6 }, sketch);
+      }
+    }
+    el("path", { d: ring(420, 470, 175, [0.05, 0.04, 0.02], [0.4, 1.2, 2]), class: "ink thin dash" }, sketch);
+    el("path", { d: "M-20 900 C 80 800, 130 700, 280 590", class: "ink thin dash" }, sketch);
+    el("circle", { cx: 420, cy: 470, r: 5, class: "dot" }, sketch);
+    [["A", 110, 120], ["B", 650, 160], ["C", 690, 760]].forEach(([l, x, y]) => {
+      const t = el("text", { x, y }, sketch); t.textContent = l;
+    });
+    const c = el("text", { x: 434, y: 466 }, sketch); c.textContent = "?";
+  }
+
+  // FIG. 09.7 — survey points
+  const sp = document.getElementById("site-points");
+  if (sp) {
+    const r = rng(97);
+    for (let x = 0; x <= 800; x += 50) el("line", { x1: x, y1: 0, x2: x, y2: 300, class: "grid-line" }, sp);
+    for (let y = 0; y <= 300; y += 50) el("line", { x1: 0, y1: y, x2: 800, y2: y, class: "grid-line" }, sp);
+    const pts = [];
+    for (let i = 0; i < 26; i++) pts.push([40 + r() * 720, 30 + r() * 240]);
+    pts.sort((a, b) => a[0] - b[0]);
+    el("path", { d: "M" + pts.filter((_, i) => i % 3 === 0).map((p) => p.map((v) => v.toFixed(0)).join(" ")).join("L"), class: "ink thin dash" }, sp);
+    pts.forEach(([x, y], i) => {
+      el("path", { d: `M${x - 5} ${y}h10M${x} ${y - 5}v10`, class: "ink thin" }, sp);
+      if (i % 4 === 0) {
+        const t = el("text", { x: x + 8, y: y - 6 }, sp);
+        t.textContent = `+${(r() * 30 + 4).toFixed(2)}`;
+      }
+    });
+    el("rect", { x: 560, y: 90, width: 170, height: 120, class: "redact-box" }, sp);
+  }
+
+  // Reveal on view (quiet)
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
       if (!e.isIntersecting) return;
       e.target.classList.add("is-in");
-      e.target.querySelectorAll("[data-count]").forEach(countUp);
       io.unobserve(e.target);
     });
-  }, { threshold: 0.2 });
-  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+  }, { threshold: 0.15, rootMargin: "0px 0px -5% 0px" });
+  document.querySelectorAll(".reveal").forEach((n) => io.observe(n));
 
-  // Magnetic button
-  if (!reduceMotion && matchMedia("(hover: hover)").matches) {
-    document.querySelectorAll("[data-magnetic]").forEach((el) => {
-      el.addEventListener("mousemove", (e) => {
-        const r = el.getBoundingClientRect();
-        const x = e.clientX - r.left - r.width / 2;
-        const y = e.clientY - r.top - r.height / 2;
-        el.style.transform = `translate(${x * 0.25}px, ${y * 0.35}px)`;
-      });
-      el.addEventListener("mouseleave", () => { el.style.transform = ""; });
-    });
+  // 05 — "Remove them one by one."
+  const strike = document.querySelector("[data-strike]");
+  if (strike) {
+    const items = [...strike.children];
+    const so = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      items.forEach((li, i) => setTimeout(() => li.classList.add("gone"), reduceMotion ? 0 : 500 + i * 650));
+      so.disconnect();
+    }, { threshold: 0.6 });
+    so.observe(strike);
   }
 
-  // Footer
+  // Top bar inverts over dark sections
+  const bar = document.querySelector(".bar");
+  const darks = [...document.querySelectorAll(".sec-dark")];
+  const onScroll = () => {
+    const y = bar.offsetHeight / 2;
+    bar.classList.toggle("on-dark", darks.some((d) => {
+      const b = d.getBoundingClientRect();
+      return b.top <= y && b.bottom >= y;
+    }));
+  };
+  addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
   document.getElementById("year").textContent = new Date().getFullYear();
-  const elapsed = document.getElementById("footer-elapsed");
-  const t0 = Date.now();
-  setInterval(() => {
-    const s = Math.floor((Date.now() - t0) / 1000);
-    elapsed.textContent = `You’ve been here ${s >= 60 ? `${Math.floor(s / 60)}m ` : ""}${s % 60}s.`;
-  }, 1000);
 })();

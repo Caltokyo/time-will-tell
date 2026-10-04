@@ -1,27 +1,29 @@
 # TIME WILL TELL — Landing Page
 
-ビルド不要の静的LPです（HTML / CSS / JavaScript のみ）。
+Miyakojima, Okinawa. 001 / 100.
 
-## ローカルで見る
+Static site (HTML / CSS / JavaScript). No build step.
+
+## Run locally
 
 ```bash
-npx serve .
-# または
 python3 -m http.server 8000
+# or
+npx serve .
 ```
 
-## ファイル
+## Files
 
-- `index.html` — ページ構成とコピー
-- `styles.css` — デザイン（色・フォントは `:root` の変数で調整）
-- `main.js` — 東京時間のライブ時計、スクロール演出、カウントアップ
-- `assets/` — favicon など
+- `index.html` — all copy and section structure (12 sections, English primary / Japanese secondary)
+- `styles.css` — design tokens on `:root`; Japanese size ratio is `--ja` (body) and `--ja-head` (display headings)
+- `main.js` — generated survey drawings (FIG. 001, 006, 09.7), quiet reveal, section 05 strike-through
+- `assets/fonts/` — self-hosted Archivo (SIL Open Font License). Instrument Serif, JetBrains Mono and Noto Sans JP load from Google Fonts.
 
-## 差し替えが必要な箇所
+## To replace
 
-- `index.html` の Contact ボタンの `href="#"`（TODOコメントあり）を実際の問い合わせ先に変更してください。
-- コピーはコンセプト用の仮テキストです。事業内容に合わせて書き換えてください。
+- `index.html` → "FOLLOW THE PROJECT" link `href="#"` (marked with a TODO comment).
+- Section 09 fragments are drawn placeholders. Swap any `<svg>` inside a `.frag` for an `<img>` once real drawings / model / material / site photos are ready.
 
-## デプロイ
+## Deploy
 
-Vercel / Netlify / GitHub Pages などにそのまま置けます（ビルドコマンド不要、公開ディレクトリはリポジトリルート）。
+Vercel / Netlify / GitHub Pages: publish the repository root, no build command.

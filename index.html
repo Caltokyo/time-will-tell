@@ -1,158 +1,430 @@
 <!doctype html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TIME WILL TELL</title>
-  <meta name="description" content="TIME WILL TELL — 答えは、時間が教えてくれる。" />
-  <meta name="theme-color" content="#0b0b0a" />
-  <meta property="og:title" content="TIME WILL TELL" />
-  <meta property="og:description" content="答えは、時間が教えてくれる。" />
+  <title>TIME WILL TELL — Miyakojima, Okinawa</title>
+  <meta name="description" content="TIME WILL TELL. An undisclosed project. Miyakojima, Okinawa. 001 / 100." />
+  <meta name="theme-color" content="#f1eee6" />
+  <meta property="og:title" content="TIME WILL TELL." />
+  <meta property="og:description" content="An undisclosed project. Miyakojima, Okinawa. 001 / 100" />
   <meta property="og:type" content="website" />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&family=Noto+Serif+JP:wght@300;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="preload" href="assets/fonts/archivo-latin-var.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="grain" aria-hidden="true"></div>
-  <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+  <div class="paper" aria-hidden="true"></div>
 
-  <header class="nav">
-    <a href="#top" class="nav-mark">TWT</a>
-    <nav class="nav-links" aria-label="メイン">
-      <a href="#statement">Statement</a>
-      <a href="#chapters">Chapters</a>
-      <a href="#contact" class="nav-cta">Contact</a>
-    </nav>
+  <header class="bar">
+    <a href="#top" class="bar-mark">TWT</a>
+    <span class="bar-mid mono">MIYAKOJIMA, OKINAWA</span>
+    <a href="#follow" class="bar-link mono">001 / 100</a>
   </header>
 
   <main id="top">
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-dial" aria-hidden="true">
-        <svg viewBox="0 0 400 400">
-          <circle cx="200" cy="200" r="196" class="dial-ring" />
-          <g id="dial-ticks"></g>
-          <line id="hand-h" x1="200" y1="200" x2="200" y2="105" class="hand hand-h" />
-          <line id="hand-m" x1="200" y1="200" x2="200" y2="62" class="hand hand-m" />
-          <line id="hand-s" x1="200" y1="226" x2="200" y2="30" class="hand hand-s" />
-          <circle cx="200" cy="200" r="4" class="dial-pin" />
-        </svg>
+
+    <!-- 01 / HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-grid">
+        <h1 id="hero-title" class="hero-title">
+          <span>TIME</span>
+          <span>WILL</span>
+          <span>TELL.</span>
+        </h1>
+
+        <figure class="plate hero-plate">
+          <svg id="survey-map" viewBox="0 0 1000 760" role="img" aria-label="Survey map fragment, Miyakojima"></svg>
+          <figcaption class="mono">
+            <span>FIG. 001 — SITE SURVEY (FRAGMENT)</span>
+            <span>24°4<i class="redact">00</i>′<i class="redact">00</i>″N&ensp;125°<i class="redact">00</i>′<i class="redact">00</i>″E</span>
+          </figcaption>
+        </figure>
       </div>
 
-      <div class="hero-meta">
-        <span>Tokyo</span>
-        <span id="clock" class="mono">--:--:--</span>
-        <span id="date" class="mono">----.--.--</span>
+      <div class="hero-foot">
+        <div class="pair">
+          <p class="hero-line">AN UNDISCLOSED PROJECT</p>
+          <p class="ja">まだ明かされていないプロジェクト。</p>
+        </div>
+        <div class="pair">
+          <p class="hero-line">MIYAKOJIMA, OKINAWA</p>
+          <p class="ja">沖縄・宮古島。</p>
+        </div>
+        <p class="hero-line mono count">001 / 100</p>
       </div>
-
-      <h1 class="hero-title" aria-label="Time Will Tell">
-        <span class="line"><span class="word">Time</span></span>
-        <span class="line"><span class="word italic">will</span></span>
-        <span class="line"><span class="word">Tell.</span></span>
-      </h1>
-
-      <p class="hero-sub">答えは、時間が教えてくれる。</p>
-
-      <a href="#statement" class="scroll-cue" aria-label="下へスクロール">
-        <span>Scroll</span><i></i>
-      </a>
     </section>
 
-    <!-- MARQUEE -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee-track">
-        <span>TIME WILL TELL</span><b>✦</b><span>時間が教えてくれる</span><b>✦</b>
-        <span>TIME WILL TELL</span><b>✦</b><span>時間が教えてくれる</span><b>✦</b>
-        <span>TIME WILL TELL</span><b>✦</b><span>時間が教えてくれる</span><b>✦</b>
-        <span>TIME WILL TELL</span><b>✦</b><span>時間が教えてくれる</span><b>✦</b>
-      </div>
-    </div>
+    <!-- 02 / THE PROBLEM -->
+    <section class="sec" aria-labelledby="s02">
+      <div class="sec-label mono"><span>02</span><span>THE PROBLEM</span></div>
+      <div class="sec-body">
+        <div class="pair head xl reveal">
+          <h2 id="s02" class="h-xl">WHO EDITS<br />YOUR TIME?</h2>
+          <p class="ja">誰が、あなたの時間を編集している？</p>
+        </div>
 
-    <!-- STATEMENT -->
-    <section id="statement" class="statement">
-      <span class="eyebrow reveal">00 — Statement</span>
-      <p class="statement-text" data-words>
-        すぐに答えの出ないものほど、本当に価値がある。私たちは、急がない。積み重ね、待ち、確かめる。その先にしか見えない景色があることを知っているから。
-      </p>
-      <p class="statement-en reveal">Some answers can’t be rushed. We build, we wait, we look again — and let time do the telling.</p>
+        <ul class="feed mono reveal" aria-label="Notifications. Messages. Calendars. Algorithms.">
+          <li>Notifications.</li>
+          <li>Messages.</li>
+          <li>Calendars.</li>
+          <li>Algorithms.</li>
+        </ul>
+
+        <div class="pair prose reveal">
+          <p>Technology has made our lives easier.<br />But somewhere along the way,<br />we stopped being the only ones editing our own time.</p>
+          <p class="ja">テクノロジーは、生活を便利にした。<br />しかしいつからか、<br />自分の時間を編集するのは、自分だけではなくなった。</p>
+        </div>
+      </div>
     </section>
 
-    <!-- CHAPTERS -->
-    <section id="chapters" class="chapters">
-      <div class="chapters-head">
-        <span class="eyebrow reveal">01 — Chapters</span>
-        <h2 class="section-title reveal">三つの<em>時間</em>。</h2>
+    <!-- 03 / THE PARADOX -->
+    <section class="sec sec-dark" aria-labelledby="s03">
+      <div class="sec-label mono"><span>03</span><span>THE PARADOX</span></div>
+      <div class="sec-body">
+        <div class="pair head reveal">
+          <h2 id="s03" class="h-lg">EVERYTHING IS DESIGNED<br />TO CAPTURE YOUR ATTENTION.</h2>
+        </div>
+        <div class="pair head reveal">
+          <p class="h-lg muted-h">ALMOST NOTHING IS DESIGNED<br />TO GIVE IT BACK.</p>
+          <p class="ja">あらゆるものが、私たちの注意を奪うように設計されている。<br />それを返すために設計されたものは、ほとんどない。</p>
+        </div>
       </div>
+    </section>
 
-      <ol class="chapter-list">
-        <li class="chapter reveal">
-          <span class="chapter-no mono">I</span>
-          <div>
-            <h3>Accumulate <small>積み重ねる</small></h3>
-            <p>一日では変わらない。けれど、毎日なら変えられる。小さな手触りを、丁寧に重ねていく時間。</p>
+    <!-- 04 / PLACE -->
+    <section class="sec" aria-labelledby="s04">
+      <div class="sec-label mono"><span>04</span><span>PLACE</span></div>
+      <div class="sec-body">
+        <div class="pair prose-lg reveal">
+          <h2 id="s04" class="serif-lead">Humans have always used places<br />to change their state.</h2>
+          <p class="ja">人間は昔から、<br />「場所」を変えることで、自分の状態を変えてきた。</p>
+        </div>
+
+        <ol class="index mono reveal">
+          <li><span>A</span>Temples.</li>
+          <li><span>B</span>Churches.</li>
+          <li><span>C</span>Mosques.</li>
+          <li><span>D</span>Pilgrimage routes.</li>
+          <li><span>E</span>Caves.</li>
+          <li><span>F</span>Forests.</li>
+        </ol>
+
+        <div class="pair prose-lg reveal">
+          <p class="serif-lead">But what actually makes a place act on us?</p>
+          <p class="ja">では、場所の何が、人間に作用するのか。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 / QUESTION -->
+    <section class="sec" aria-labelledby="s05">
+      <div class="sec-label mono"><span>05</span><span>QUESTION</span></div>
+      <div class="sec-body">
+        <div class="pair head xl reveal">
+          <h2 id="s05" class="h-xl">WHAT MAKES<br />A PLACE<br />CHANGE US?</h2>
+          <p class="ja">何が、場所を人間に作用させるのか。</p>
+        </div>
+
+        <ul class="strike reveal" data-strike>
+          <li>Religion?</li>
+          <li>Ritual?</li>
+          <li>Architecture?</li>
+          <li>Nature?</li>
+        </ul>
+
+        <div class="pair prose-lg reveal">
+          <p class="serif-lead">Remove them one by one.<br />What remains?</p>
+          <p class="ja">一つずつ取り除いたとき、<br />最後に何が残るのか。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 / UTAKI -->
+    <section class="sec" aria-labelledby="s06">
+      <div class="sec-label mono"><span>06</span><span>UTAKI</span></div>
+      <div class="sec-body">
+        <h2 id="s06" class="h-giant reveal">UTAKI</h2>
+
+        <div class="split">
+          <div class="split-text">
+            <div class="pair prose reveal">
+              <p>In Okinawa, sacred places known as UTAKI<br />continue to exist as part of a living culture.</p>
+              <p class="ja">沖縄には「御嶽（UTAKI）」と呼ばれる場所が、<br />今も生きた文化として存在している。</p>
+            </div>
+            <div class="pair prose reveal">
+              <p>Some appear almost empty.<br />No monumental architecture.<br />Sometimes little to tell you that anything is there at all.<br />Yet people have continued to return.</p>
+              <p class="ja">ほとんど何もないように見える場所もある。<br />それでも、人はそこへ通い続けてきた。</p>
+            </div>
           </div>
-          <span class="chapter-time mono">00:00 — 08:00</span>
-        </li>
-        <li class="chapter reveal">
-          <span class="chapter-no mono">II</span>
-          <div>
-            <h3>Wait <small>待つ</small></h3>
-            <p>熟成には、手を離す勇気がいる。焦らず、見守り、ふさわしい瞬間を待つ時間。</p>
+
+          <figure class="plate reveal">
+            <svg id="field-sketch" viewBox="0 0 800 900" role="img" aria-label="Field sketch: vegetation, clearing and path"></svg>
+            <figcaption class="mono">
+              <span>FIG. 006 — FIELD SKETCH</span>
+              <span>DIAGRAMMATIC · NOT TO SCALE</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 / NOTHING -->
+    <section class="sec" aria-labelledby="s07">
+      <div class="sec-label mono"><span>07</span><span>NOTHING</span></div>
+      <div class="sec-body">
+        <div class="pair prose reveal">
+          <p>In 1959, artist Taro Okamoto travelled to Okinawa.<br />He encountered sacred places stripped of much of the apparatus normally associated with religion.</p>
+        </div>
+        <p class="prose reveal">He described the vertigo of:</p>
+
+        <figure class="blank reveal">
+          <span class="blank-ja">「何もないこと」</span>
+          <span class="blank-corner mono tl">PLATE 007</span>
+          <span class="blank-corner mono br">1959</span>
+        </figure>
+
+        <div class="pair head reveal">
+          <h2 id="s07" class="h-lg">THE VERTIGO OF “NOTHING.”</h2>
+        </div>
+
+        <div class="nothing-q reveal">
+          <p class="ja ja-lead">もし、「何もない」が<br />本当に何もないわけではないとしたら？</p>
+          <p class="h-lg">WHAT IF “NOTHING”<br />IS NOT NOTHING?</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 / HYPOTHESIS -->
+    <section class="sec sec-dark hypo" aria-labelledby="s08">
+      <div class="sec-label mono"><span>08</span><span>HYPOTHESIS</span></div>
+      <div class="sec-body">
+        <div class="pair reveal">
+          <h2 id="s08" class="h-hypo"><span>UTAKI</span><span>IS A</span><span>TECHNOLOGY.</span></h2>
+          <p class="ja ja-hypo">御嶽を、テクノロジーとして読む。</p>
+        </div>
+
+        <div class="hypo-cols">
+          <div class="pair prose-lg reveal">
+            <p class="serif-lead">Not technology made of machines.<br /><em>A technology of place.</em></p>
+            <p class="ja">場所と人間の関係をつくる技術。</p>
           </div>
-          <span class="chapter-time mono">08:00 — 16:00</span>
-        </li>
-        <li class="chapter reveal">
-          <span class="chapter-no mono">III</span>
-          <div>
-            <h3>Tell <small>確かめる</small></h3>
-            <p>重ねたものが、かたちになって語りはじめる。その声に耳を澄まし、次へ渡す時間。</p>
+
+          <div class="hypo-note reveal">
+            <p class="mono stamp">THIS IS A HYPOTHESIS, NOT A HISTORICAL CLAIM.</p>
+            <div class="pair prose">
+              <p>We are not trying to reproduce a traditional UTAKI.<br />We are asking whether something can be learned from the relationship between place, nature, people and time.</p>
+              <p class="ja">私たちは御嶽を再現しようとしているのではない。<br />場所、自然、人、時間の関係から、何を読み取れるのかを探っている。</p>
+            </div>
           </div>
-          <span class="chapter-time mono">16:00 — 24:00</span>
-        </li>
-      </ol>
-    </section>
-
-    <!-- NUMBERS -->
-    <section class="numbers">
-      <div class="number reveal">
-        <span class="number-value mono" data-count="86400">0</span>
-        <span class="number-label">seconds in a day<br />一日は、誰にでも等しく。</span>
-      </div>
-      <div class="number reveal">
-        <span class="number-value mono" data-count="365">0</span>
-        <span class="number-label">days to see a change<br />一年後に、違いがわかる。</span>
-      </div>
-      <div class="number reveal">
-        <span class="number-value mono">∞</span>
-        <span class="number-label">to tell the story<br />物語に、終わりはない。</span>
+        </div>
       </div>
     </section>
 
-    <!-- QUOTE -->
-    <section class="quote">
-      <p class="quote-text reveal">“The best things<br />take <em>time.</em>”</p>
+    <!-- 09 / THE PROJECT -->
+    <section class="sec" aria-labelledby="s09">
+      <div class="sec-label mono"><span>09</span><span>THE PROJECT</span></div>
+      <div class="sec-body">
+        <div class="pair head xl reveal">
+          <h2 id="s09" class="h-xl">SO WE DECIDED<br />TO FIND OUT.</h2>
+          <p class="ja">だから、実際につくって確かめることにした。</p>
+        </div>
+
+        <div class="pair prose reveal">
+          <p>Somewhere in Miyakojima,<br />an experiment is taking physical form.</p>
+          <p class="ja">宮古島のどこかで、<br />この仮説を建築として検証するプロジェクトが進んでいる。</p>
+        </div>
+
+        <!-- Fragments: replace any <svg> with <img> when real photos/scans are ready. -->
+        <div class="fragments">
+          <figure class="frag reveal">
+            <svg viewBox="0 0 400 300" aria-hidden="true">
+              <g class="ink">
+                <path d="M-10 60H250V210H140" />
+                <path d="M250 60V-10M140 210V320M250 210V320" />
+                <path d="M70 60V160H170" class="thin" />
+                <path d="M250 120h60M330 120h80" class="thick" />
+                <path d="M140 210q0-40 40-40" class="thin dash" />
+              </g>
+              <g class="dim">
+                <path d="M-10 36H250M250 30v12M-10 30v12" />
+                <text x="120" y="28">█ ███</text>
+                <path d="M276 60V210M270 60h12M270 210h12" />
+                <text x="284" y="140">3 600</text>
+              </g>
+              <rect x="300" y="210" width="120" height="100" class="crop" />
+            </svg>
+            <figcaption class="mono"><span>09.1</span>PLAN — FRAGMENT</figcaption>
+          </figure>
+
+          <figure class="frag reveal">
+            <svg viewBox="0 0 400 300" aria-hidden="true">
+              <defs>
+                <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V8" class="hatch-line" /></pattern>
+              </defs>
+              <rect x="-10" y="200" width="420" height="110" fill="url(#hatch)" />
+              <path d="M-10 200H410" class="ink thick" />
+              <rect x="120" y="70" width="22" height="160" class="ink fill-ink" />
+              <rect x="260" y="110" width="22" height="120" class="ink fill-ink" />
+              <path d="M142 70H260" class="ink" />
+              <path d="M30 40 L380 40" class="ink thin dash" />
+              <text x="30" y="32" class="dim-text">+ ███</text>
+              <text x="290" y="225" class="dim-text">GL ±0</text>
+            </svg>
+            <figcaption class="mono"><span>09.2</span>SECTION — STUDY</figcaption>
+          </figure>
+
+          <figure class="frag reveal">
+            <svg viewBox="0 0 400 300" aria-hidden="true">
+              <g class="ink">
+                <path d="M80 190 200 250 320 190 200 130Z" />
+                <path d="M80 190V150L200 90 320 150V190" />
+                <path d="M200 130V90" />
+                <path d="M140 160 200 190 260 160" class="thin" />
+                <path d="M200 190V250" class="thin" />
+                <path d="M150 120l50-25 50 25" class="thin dash" />
+              </g>
+              <text x="24" y="280" class="dim-text">MODEL 1:200 — v.0█</text>
+            </svg>
+            <figcaption class="mono"><span>09.3</span>MODEL</figcaption>
+          </figure>
+
+          <figure class="frag frag-tex reveal">
+            <svg viewBox="0 0 400 300" aria-hidden="true">
+              <defs>
+                <filter id="stone" x="0" y="0" width="100%" height="100%">
+                  <feTurbulence type="fractalNoise" baseFrequency="0.035 0.06" numOctaves="5" seed="7" />
+                  <feColorMatrix type="matrix" values="0 0 0 0 0.86  0 0 0 0 0.83  0 0 0 0 0.76  -1.4 0 0 0 1.05" />
+                </filter>
+                <filter id="pores"><feTurbulence type="turbulence" baseFrequency="0.6" numOctaves="2" seed="3" /><feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.28  0 0 0 0 0.24  0 0 0 -2.4 1.1" /></filter>
+              </defs>
+              <rect width="400" height="300" class="tex-base" />
+              <rect width="400" height="300" filter="url(#stone)" />
+              <rect width="400" height="300" filter="url(#pores)" opacity="0.5" />
+              <path d="M20 270h80M20 264v12M100 264v12" class="ink" />
+              <text x="20" y="258" class="dim-text">50 mm</text>
+            </svg>
+            <figcaption class="mono"><span>09.4</span>MATERIAL — LIMESTONE SAMPLE</figcaption>
+          </figure>
+
+          <figure class="frag reveal">
+            <svg viewBox="0 0 400 300" aria-hidden="true">
+              <g class="ink">
+                <g><ellipse cx="80" cy="90" rx="34" ry="10" /><path d="M46 90V220M114 90V220" /><path d="M46 220a34 10 0 0 0 68 0" /></g>
+                <g><ellipse cx="170" cy="90" rx="34" ry="10" /><path d="M136 90V220M204 90V220" /><path d="M136 220a34 10 0 0 0 68 0" /></g>
+                <g><ellipse cx="260" cy="90" rx="34" ry="10" /><path d="M226 90V220M294 90V220" /><path d="M226 220a34 10 0 0 0 68 0" /><path d="M240 120l14 30-8 24 18 40" class="thin" /></g>
+                <g class="faint"><ellipse cx="350" cy="90" rx="34" ry="10" /><path d="M316 90V220M384 90V220" /></g>
+              </g>
+              <g class="dim-text"><text x="64" y="256">C-01</text><text x="154" y="256">C-02</text><text x="244" y="256">C-03</text><text x="334" y="256">C-0█</text></g>
+            </svg>
+            <figcaption class="mono"><span>09.5</span>CONCRETE TESTS</figcaption>
+          </figure>
+
+          <figure class="frag reveal">
+            <svg viewBox="0 0 400 300" aria-hidden="true">
+              <path d="M20 150H380" class="ink thick" />
+              <g class="ink thin">
+                <path d="M20 150v-20M56 150v-10M92 150v-10M128 150v-10M164 150v-10M200 150v-20M236 150v-10M272 150v-10M308 150v-10M344 150v-10M380 150v-20" />
+              </g>
+              <g class="dim-text"><text x="14" y="120">0</text><text x="186" y="120">500</text><text x="362" y="120">1000</text></g>
+              <path d="M128 150c10 60 40 90 90 110" class="ink thin dash" />
+              <circle cx="128" cy="150" r="5" class="dot" />
+              <text x="226" y="268" class="dim-text">h = ███ mm</text>
+            </svg>
+            <figcaption class="mono"><span>09.6</span>MEASUREMENT — ON SITE</figcaption>
+          </figure>
+
+          <figure class="frag frag-wide reveal">
+            <svg id="site-points" viewBox="0 0 800 300" aria-hidden="true"></svg>
+            <figcaption class="mono"><span>09.7</span>SITE SURVEY — POINTS (PARTIAL)</figcaption>
+          </figure>
+
+          <figure class="frag reveal">
+            <svg viewBox="0 0 400 300" aria-hidden="true">
+              <g class="ink">
+                <path d="M40 240H360" class="thick" />
+                <path d="M70 240V120h70v120M200 240V80h40v160M290 240V150h50v90" />
+                <path d="M70 120 140 120 140 100 70 100Z" class="thin" />
+                <path d="M60 80l100 0M60 80v-20" class="thin dash" />
+              </g>
+              <rect x="180" y="40" width="200" height="38" class="redact-box" />
+              <text x="40" y="276" class="dim-text">CONSTRUCTION — ████</text>
+            </svg>
+            <figcaption class="mono"><span>09.8</span>CONSTRUCTION — FRAGMENT</figcaption>
+          </figure>
+        </div>
+      </div>
     </section>
 
-    <!-- CONTACT -->
-    <section id="contact" class="contact">
-      <span class="eyebrow reveal">02 — Contact</span>
-      <h2 class="contact-title reveal">Let time<br /><em>tell</em> yours.</h2>
-      <p class="contact-text reveal">ご相談・お問い合わせはこちらから。</p>
-      <!-- TODO: 実際の問い合わせ先（メール / フォーム / SNS）に差し替えてください -->
-      <a href="#" class="contact-button reveal" data-magnetic>
-        <span>Get in touch</span>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M9 5h10v10" /></svg>
-      </a>
+    <!-- 10 / TIME -->
+    <section class="sec" aria-labelledby="s10">
+      <div class="sec-label mono"><span>10</span><span>TIME</span></div>
+      <div class="sec-body">
+        <div class="pair prose-lg reveal">
+          <h2 id="s10" class="serif-lead">Perhaps the closest description<br />is something like a time machine.</h2>
+          <p class="ja">それは、タイムマシンに少し似ているのかもしれない。</p>
+        </div>
+
+        <div class="timeline reveal" aria-hidden="true">
+          <span class="mono">PAST</span><i></i><b></b><i></i><span class="mono">FUTURE</span>
+        </div>
+
+        <div class="pair prose-lg reveal">
+          <p class="serif-lead">Not to travel to the past.<br />Not to travel to the future.<br /><em>To change our relationship with time.</em></p>
+          <p class="ja">過去へ行くためでも、<br />未来へ行くためでもない。<br />自分と時間の関係を変えるために。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11 / SECRET -->
+    <section class="sec" aria-labelledby="s11">
+      <div class="sec-label mono"><span>11</span><span>SECRET</span></div>
+      <div class="sec-body">
+        <div class="pair head xl reveal">
+          <h2 id="s11" class="h-xl">THIS IS NOT<br />A HOTEL.</h2>
+          <p class="ja">これはホテルではない。</p>
+        </div>
+
+        <div class="pair prose reveal">
+          <p>What happens here<br />will remain a secret for now.</p>
+          <p class="ja">ここで何が起きるのかは、<br />まだ明かさない。</p>
+        </div>
+
+        <div class="redacted reveal" aria-hidden="true">
+          <span style="--w: 92%"></span>
+          <span style="--w: 64%"></span>
+          <span style="--w: 81%"></span>
+          <span style="--w: 38%"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12 / END -->
+    <section id="follow" class="end" aria-labelledby="s12">
+      <div class="sec-label mono"><span>12</span><span>END</span></div>
+      <h2 id="s12" class="end-title reveal">TIME WILL TELL.</h2>
+      <div class="end-foot reveal">
+        <p class="mono">MIYAKOJIMA, OKINAWA</p>
+        <p class="mono">001 / 100</p>
+        <!-- TODO: replace href with the real follow / contact destination -->
+        <a href="#" class="follow">
+          <span class="pair">
+            <span class="follow-en">FOLLOW THE PROJECT</span>
+            <span class="ja">プロジェクトを追う。</span>
+          </span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M9 5h10v10" /></svg>
+        </a>
+      </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <span>© <span id="year"></span> TIME WILL TELL</span>
-    <span class="mono" id="footer-elapsed">You’ve been here 0s.</span>
-    <a href="#top">Back to top ↑</a>
+  <footer class="foot mono">
+    <span>© <span id="year">2026</span> TIME WILL TELL</span>
+    <span>MIYAKOJIMA, OKINAWA</span>
+    <span>001 / 100</span>
   </footer>
 
   <script src="main.js" defer></script>
