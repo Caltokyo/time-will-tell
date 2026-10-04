@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TIME WILL TELL</title>
+  <meta name="description" content="TIME WILL TELL — 答えは、時間が教えてくれる。" />
+  <meta name="theme-color" content="#0b0b0a" />
+  <meta property="og:title" content="TIME WILL TELL" />
+  <meta property="og:description" content="答えは、時間が教えてくれる。" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&family=Noto+Serif+JP:wght@300;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+
+  <header class="nav">
+    <a href="#top" class="nav-mark">TWT</a>
+    <nav class="nav-links" aria-label="メイン">
+      <a href="#statement">Statement</a>
+      <a href="#chapters">Chapters</a>
+      <a href="#contact" class="nav-cta">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-dial" aria-hidden="true">
+        <svg viewBox="0 0 400 400">
+          <circle cx="200" cy="200" r="196" class="dial-ring" />
+          <g id="dial-ticks"></g>
+          <line id="hand-h" x1="200" y1="200" x2="200" y2="105" class="hand hand-h" />
+          <line id="hand-m" x1="200" y1="200" x2="200" y2="62" class="hand hand-m" />
+          <line id="hand-s" x1="200" y1="226" x2="200" y2="30" class="hand hand-s" />
+          <circle cx="200" cy="200" r="4" class="dial-pin" />
+        </svg>
+      </div>
+
+      <div class="hero-meta">
+        <span>Tokyo</span>
+        <span id="clock" class="mono">--:--:--</span>
+        <span id="date" class="mono">----.--.--</span>
+      </div>
+
+      <h1 class="hero-title" aria-label="Time Will Tell">
+        <span class="line"><span class="word">Time</span></span>
+        <span class="line"><span class="word italic">will</span></span>
+        <span class="line"><span class="word">Tell.</span></span>
+      </h1>
+
+      <p class="hero-sub">答えは、時間が教えてくれる。</p>
+
+      <a href="#statement" class="scroll-cue" aria-label="下へスクロール">
+        <span>Scroll</span><i></i>
+      </a>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>TIME WILL TELL</span><b>✦</b><span>時間が教えてくれる</span><b>✦</b>
+        <span>TIME WILL TELL</span><b>✦</b><span>時間が教えてくれる</span><b>✦</b>
+        <span>TIME WILL TELL</span><b>✦</b><span>時間が教えてくれる</span><b>✦</b>
+        <span>TIME WILL TELL</span><b>✦</b><span>時間が教えてくれる</span><b>✦</b>
+      </div>
+    </div>
+
+    <!-- STATEMENT -->
+    <section id="statement" class="statement">
+      <span class="eyebrow reveal">00 — Statement</span>
+      <p class="statement-text" data-words>
+        すぐに答えの出ないものほど、本当に価値がある。私たちは、急がない。積み重ね、待ち、確かめる。その先にしか見えない景色があることを知っているから。
+      </p>
+      <p class="statement-en reveal">Some answers can’t be rushed. We build, we wait, we look again — and let time do the telling.</p>
+    </section>
+
+    <!-- CHAPTERS -->
+    <section id="chapters" class="chapters">
+      <div class="chapters-head">
+        <span class="eyebrow reveal">01 — Chapters</span>
+        <h2 class="section-title reveal">三つの<em>時間</em>。</h2>
+      </div>
+
+      <ol class="chapter-list">
+        <li class="chapter reveal">
+          <span class="chapter-no mono">I</span>
+          <div>
+            <h3>Accumulate <small>積み重ねる</small></h3>
+            <p>一日では変わらない。けれど、毎日なら変えられる。小さな手触りを、丁寧に重ねていく時間。</p>
+          </div>
+          <span class="chapter-time mono">00:00 — 08:00</span>
+        </li>
+        <li class="chapter reveal">
+          <span class="chapter-no mono">II</span>
+          <div>
+            <h3>Wait <small>待つ</small></h3>
+            <p>熟成には、手を離す勇気がいる。焦らず、見守り、ふさわしい瞬間を待つ時間。</p>
+          </div>
+          <span class="chapter-time mono">08:00 — 16:00</span>
+        </li>
+        <li class="chapter reveal">
+          <span class="chapter-no mono">III</span>
+          <div>
+            <h3>Tell <small>確かめる</small></h3>
+            <p>重ねたものが、かたちになって語りはじめる。その声に耳を澄まし、次へ渡す時間。</p>
+          </div>
+          <span class="chapter-time mono">16:00 — 24:00</span>
+        </li>
+      </ol>
+    </section>
+
+    <!-- NUMBERS -->
+    <section class="numbers">
+      <div class="number reveal">
+        <span class="number-value mono" data-count="86400">0</span>
+        <span class="number-label">seconds in a day<br />一日は、誰にでも等しく。</span>
+      </div>
+      <div class="number reveal">
+        <span class="number-value mono" data-count="365">0</span>
+        <span class="number-label">days to see a change<br />一年後に、違いがわかる。</span>
+      </div>
+      <div class="number reveal">
+        <span class="number-value mono">∞</span>
+        <span class="number-label">to tell the story<br />物語に、終わりはない。</span>
+      </div>
+    </section>
+
+    <!-- QUOTE -->
+    <section class="quote">
+      <p class="quote-text reveal">“The best things<br />take <em>time.</em>”</p>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact">
+      <span class="eyebrow reveal">02 — Contact</span>
+      <h2 class="contact-title reveal">Let time<br /><em>tell</em> yours.</h2>
+      <p class="contact-text reveal">ご相談・お問い合わせはこちらから。</p>
+      <!-- TODO: 実際の問い合わせ先（メール / フォーム / SNS）に差し替えてください -->
+      <a href="#" class="contact-button reveal" data-magnetic>
+        <span>Get in touch</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M9 5h10v10" /></svg>
+      </a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© <span id="year"></span> TIME WILL TELL</span>
+    <span class="mono" id="footer-elapsed">You’ve been here 0s.</span>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+
+  <script src="main.js" defer></script>
+</body>
+</html>
