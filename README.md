@@ -30,13 +30,34 @@ Vercel / Netlify / GitHub Pages: publish the repository root, no build command.
 
 ## FOLLOW THE PROJECT (section 13)
 
-- `api/subscribe.js` — `POST /api/subscribe`. Validates the address, rate-limits per IP (hashed), stores it in Upstash Redis.
-  - Set `twt:field-notes:subscribers` holds every address; `twt:field-notes:subscriber:<email>` holds `subscribed_at` and `source`.
+- `api/subscribe.js` — `POST /api/subscribe`. Validates the address, rate-limits per IP (8/hour, IP stored only as a SHA-256 hash), stores it in Neon PostgreSQL.
   - Responses: `subscribed` (201), `duplicate` (200), `invalid_email` (400), `rate_limited` (429), `not_configured` (503), `storage_error` (502).
 - `api/config.js` — `GET /api/config` returns `{ subscribeEnabled, instagramUrl }` (no secrets).
-- When storage env vars are missing, the form is disabled and says registration is not open — it never shows a fake success.
-- When `INSTAGRAM_URL` is missing or not an `https://instagram.com/...` URL, the Instagram button stays disabled with no link.
+- Without `DATABASE_URL` the form is disabled and says registration is not open. If the database cannot be reached the visitor sees an error. Success is shown only after the row is written.
+- Without a valid `INSTAGRAM_URL` (`https://instagram.com/...`) the Instagram button stays disabled with no link.
 
-Environment variables: see `.env.example`. Subscriber data lives only in the Redis database, never in this repository.
+### Database
 
-Export subscribers (Upstash console → Data Browser, or CLI): `SMEMBERS twt:field-notes:subscribers`.
+`db/schema.sql` creates two tables (and nothing else):
+
+| table | purpose |
+| --- | --- |
+| `twt_subscribers` | `email` (unique, lowercase), `status` (`subscribed` / `unsubscribed`), `source`, `subscribed_at`, `updated_at` |
+| `twt_subscribe_attempts` | per-IP-hash attempt counter for rate limiting |
+
+The function runs this schema automatically (`CREATE TABLE IF NOT EXISTS`) on first use. You can also run it yourself in the Neon SQL Editor.
+
+List subscribers (Neon SQL Editor):
+
+```sql
+SELECT email, subscribed_at FROM twt_subscribers WHERE status = 'subscribed' ORDER BY subscribed_at;
+```
+
+Environment variables: see `.env.example`. Subscriber data lives only in the database, never in this repository.
+
+### Tests
+
+```bash
+npm install
+TEST_DATABASE_URL=postgres://user@localhost:5432/scratch_db npm test   # use a disposable database
+```

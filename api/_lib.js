@@ -2,28 +2,38 @@
 // Files starting with "_" are not exposed as endpoints.
 
 const crypto = require("crypto");
+const fs = require("fs");
+const path = require("path");
+const { Pool } = require("pg");
 
-// Upstash Redis (REST). Vercel's Upstash integration sets KV_REST_API_*;
-// a manually created Upstash database uses UPSTASH_REDIS_REST_*.
-function redisConfig() {
-  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (!url || !token) return null;
-  return { url: url.replace(/\/+$/, ""), token };
+// Neon PostgreSQL. Use the pooled connection string from the Neon console.
+function databaseUrl() {
+  const url = (process.env.DATABASE_URL || "").trim();
+  return /^postgres(ql)?:\/\//.test(url) ? url : null;
 }
 
-async function redis(commands) {
-  const cfg = redisConfig();
-  if (!cfg) throw new Error("storage_not_configured");
-  const res = await fetch(`${cfg.url}/pipeline`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${cfg.token}`, "Content-Type": "application/json" },
-    body: JSON.stringify(commands),
-  });
-  if (!res.ok) throw new Error(`storage_http_${res.status}`);
-  const out = await res.json();
-  for (const r of out) if (r && r.error) throw new Error("storage_command_failed");
-  return out.map((r) => r.result);
+let pool = null;
+let schemaReady = null;
+
+function db() {
+  const url = databaseUrl();
+  if (!url) throw new Error("storage_not_configured");
+  if (!pool) {
+    pool = new Pool({ connectionString: url, max: 1, idleTimeoutMillis: 10_000, connectionTimeoutMillis: 8_000 });
+    pool.on("error", () => { pool = null; schemaReady = null; });
+  }
+  return pool;
+}
+
+// Create the TWT tables once per function instance (IF NOT EXISTS — idempotent).
+async function query(text, params) {
+  const p = db();
+  if (!schemaReady) {
+    const sql = fs.readFileSync(path.join(__dirname, "..", "db", "schema.sql"), "utf8");
+    schemaReady = p.query(sql).catch((err) => { schemaReady = null; throw err; });
+  }
+  await schemaReady;
+  return p.query(text, params);
 }
 
 // Only a real https Instagram profile URL is ever published.
@@ -65,4 +75,4 @@ function clientIpHash(req) {
   return crypto.createHash("sha256").update(ip).digest("hex").slice(0, 32);
 }
 
-module.exports = { redisConfig, redis, instagramUrl, send, readJson, clientIpHash };
+module.exports = { databaseUrl, query, instagramUrl, send, readJson, clientIpHash };

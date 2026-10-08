@@ -1,0 +1,14 @@
+{
+  "name": "time-will-tell",
+  "private": true,
+  "description": "TIME WILL TELL landing page (static) with Vercel functions in api/",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "pg": "^8.23.1"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "functions": {
+    "api/subscribe.js": { "includeFiles": "db/schema.sql" }
+  }
+}
