@@ -164,11 +164,12 @@
   const form = document.getElementById("notes-form");
   const statusEl = document.getElementById("notes-status");
   const MESSAGES = {
-    subscribed: ["ok", "RECORDED. You will receive the next Field Notes.", "登録しました。次のField Notesをお送りします。"],
+    subscribed: ["ok", "RECORDED. A confirmation email is on its way.", "登録しました。確認メールをお送りしました。"],
     duplicate: ["warn", "ALREADY RECORDED. This address is already on the list.", "このメールアドレスは登録済みです。"],
     invalid_email: ["error", "Please enter a valid email address.", "正しいメールアドレスを入力してください。"],
     rate_limited: ["error", "Too many attempts. Please try again later.", "試行回数が多すぎます。時間をおいて再度お試しください。"],
     not_configured: ["warn", "Registration is not open yet.", "現在、登録は受け付けていません。"],
+    send_failed: ["error", "The confirmation email could not be sent. Please try again later.", "確認メールを送信できませんでした。時間をおいて再度お試しください。"],
     error: ["error", "Something went wrong. Please try again later.", "エラーが発生しました。時間をおいて再度お試しください。"],
   };
   const showStatus = (key) => {

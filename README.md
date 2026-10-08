@@ -30,10 +30,12 @@ Vercel / Netlify / GitHub Pages: publish the repository root, no build command.
 
 ## FOLLOW THE PROJECT (section 13)
 
-- `api/subscribe.js` — `POST /api/subscribe`. Validates the address, rate-limits per IP (8/hour, IP stored only as a SHA-256 hash), stores it in Neon PostgreSQL.
-  - Responses: `subscribed` (201), `duplicate` (200), `invalid_email` (400), `rate_limited` (429), `not_configured` (503), `storage_error` (502).
-- `api/config.js` — `GET /api/config` returns `{ subscribeEnabled, instagramUrl }` (no secrets).
-- Without `DATABASE_URL` the form is disabled and says registration is not open. If the database cannot be reached the visitor sees an error. Success is shown only after the row is written.
+- `api/subscribe.js` — `POST /api/subscribe`. Validates the address, rate-limits per IP (8/hour, IP stored only as a SHA-256 hash), stores it in Neon PostgreSQL and sends a confirmation email through Resend from `utaki.me`.
+  - The row is written inside a transaction that commits only after Resend accepts the email. If sending fails, nothing is stored and the visitor sees an error.
+  - Responses: `subscribed` (201), `duplicate` (200, no email re-sent), `invalid_email` (400, bad format or rejected by Resend), `rate_limited` (429), `send_failed` (502), `storage_error` (502), `not_configured` (503).
+- `api/unsubscribe.js` — link in every confirmation email (and `List-Unsubscribe` one-click header). `GET` shows a confirm button, `POST` sets `status = 'unsubscribed'`.
+- `api/config.js` — `GET /api/config` returns `{ subscribeEnabled, instagramUrl }` (no secrets). `subscribeEnabled` is true only when both `DATABASE_URL` and `RESEND_API_KEY` are set.
+- `api/_email.js` — the confirmation email (English first, Japanese second). `RESEND_API_KEY` is used only in the server-side Authorization header and never logged.
 - Without a valid `INSTAGRAM_URL` (`https://instagram.com/...`) the Instagram button stays disabled with no link.
 
 ### Database
@@ -42,7 +44,7 @@ Vercel / Netlify / GitHub Pages: publish the repository root, no build command.
 
 | table | purpose |
 | --- | --- |
-| `twt_subscribers` | `email` (unique, lowercase), `status` (`subscribed` / `unsubscribed`), `source`, `subscribed_at`, `updated_at` |
+| `twt_subscribers` | `email` (unique, lowercase), `status` (`subscribed` / `unsubscribed`), `source`, `subscribed_at`, `updated_at`, `confirmation_sent_at`, `unsubscribe_token` |
 | `twt_subscribe_attempts` | per-IP-hash attempt counter for rate limiting |
 
 The function runs this schema automatically (`CREATE TABLE IF NOT EXISTS`) on first use. You can also run it yourself in the Neon SQL Editor.

@@ -20,3 +20,8 @@ CREATE TABLE IF NOT EXISTS twt_subscribe_attempts (
   window_start TIMESTAMPTZ NOT NULL DEFAULT now(),
   attempts     INTEGER     NOT NULL DEFAULT 0
 );
+
+-- Confirmation email + unsubscribe link (added for Resend). Idempotent.
+ALTER TABLE twt_subscribers ADD COLUMN IF NOT EXISTS unsubscribe_token TEXT;
+ALTER TABLE twt_subscribers ADD COLUMN IF NOT EXISTS confirmation_sent_at TIMESTAMPTZ;
+CREATE UNIQUE INDEX IF NOT EXISTS twt_subscribers_unsubscribe_token_key ON twt_subscribers (unsubscribe_token);

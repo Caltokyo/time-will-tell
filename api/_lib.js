@@ -26,14 +26,46 @@ function db() {
 }
 
 // Create the TWT tables once per function instance (IF NOT EXISTS — idempotent).
-async function query(text, params) {
+async function ensureSchema() {
   const p = db();
   if (!schemaReady) {
     const sql = fs.readFileSync(path.join(__dirname, "..", "db", "schema.sql"), "utf8");
     schemaReady = p.query(sql).catch((err) => { schemaReady = null; throw err; });
   }
   await schemaReady;
+  return p;
+}
+
+async function query(text, params) {
+  const p = await ensureSchema();
   return p.query(text, params);
+}
+
+// Run fn(client) inside a transaction; rolls back if fn throws.
+async function transaction(fn) {
+  const p = await ensureSchema();
+  const client = await p.connect();
+  try {
+    await client.query("BEGIN");
+    const out = await fn(client);
+    await client.query("COMMIT");
+    return out;
+  } catch (err) {
+    await client.query("ROLLBACK").catch(() => {});
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+// Absolute site origin for links in emails. SITE_URL wins; otherwise the request host.
+function siteOrigin(req) {
+  const env = (process.env.SITE_URL || "").trim().replace(/\/+$/, "");
+  if (/^https:\/\/[^/]+$/.test(env)) return env;
+  const host = String(req.headers["x-forwarded-host"] || req.headers.host || "").split(",")[0].trim();
+  if (!/^[a-z0-9.-]+(:\d+)?$/i.test(host)) return null;
+  const local = /^(localhost|127\.0\.0\.1)(:\d+)?$/.test(host);
+  return `${local ? "http" : "https"}://${host}`;
 }
 
 // Only a real https Instagram profile URL is ever published.
@@ -75,4 +107,4 @@ function clientIpHash(req) {
   return crypto.createHash("sha256").update(ip).digest("hex").slice(0, 32);
 }
 
-module.exports = { databaseUrl, query, instagramUrl, send, readJson, clientIpHash };
+module.exports = { databaseUrl, query, transaction, siteOrigin, instagramUrl, send, readJson, clientIpHash };

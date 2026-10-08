@@ -1,5 +1,6 @@
 {
   "functions": {
-    "api/subscribe.js": { "includeFiles": "db/schema.sql" }
+    "api/subscribe.js": { "includeFiles": "db/schema.sql" },
+    "api/unsubscribe.js": { "includeFiles": "db/schema.sql" }
   }
 }

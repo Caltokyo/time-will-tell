@@ -1,6 +1,7 @@
 // GET /api/config — public, non-secret settings for the page.
 
 const { databaseUrl, instagramUrl, send } = require("./_lib");
+const { resendKey } = require("./_email");
 
 module.exports = function handler(req, res) {
   if (req.method !== "GET" && req.method !== "HEAD") {
@@ -10,7 +11,7 @@ module.exports = function handler(req, res) {
   return send(
     res,
     200,
-    { subscribeEnabled: Boolean(databaseUrl()), instagramUrl: instagramUrl() },
+    { subscribeEnabled: Boolean(databaseUrl() && resendKey()), instagramUrl: instagramUrl() },
     "public, max-age=0, s-maxage=300"
   );
 };

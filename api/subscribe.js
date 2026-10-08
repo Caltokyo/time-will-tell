@@ -1,8 +1,11 @@
 // POST /api/subscribe  { email, website? }
-// Stores Field Notes subscribers in Neon PostgreSQL (table twt_subscribers).
-// Never reports success unless the row was actually written.
+// Stores Field Notes subscribers in Neon PostgreSQL (table twt_subscribers) and sends
+// a confirmation email via Resend. The row is committed only if the email was accepted
+// by Resend, so success is never shown for an address that did not receive it.
 
-const { databaseUrl, query, send, readJson, clientIpHash } = require("./_lib");
+const crypto = require("crypto");
+const { databaseUrl, query, transaction, siteOrigin, send, readJson, clientIpHash } = require("./_lib");
+const { resendKey, sendConfirmation } = require("./_email");
 
 const RATE_LIMIT = 8; // attempts per IP per hour
 const EMAIL_RE = /^[^\s@<>()[\],;:"]+@[^\s@<>()[\],;:"]+\.[^\s@<>()[\],;:"]{2,}$/;
@@ -17,9 +20,10 @@ const RATE_SQL = `
 
 // New address → inserted. Previously unsubscribed → reactivated. Already subscribed → no row.
 const SUBSCRIBE_SQL = `
-  INSERT INTO twt_subscribers AS s (email, status, source)
-  VALUES ($1, 'subscribed', 'lp')
-  ON CONFLICT (email) DO UPDATE SET status = 'subscribed', updated_at = now()
+  INSERT INTO twt_subscribers AS s (email, status, source, unsubscribe_token)
+  VALUES ($1, 'subscribed', 'lp', $2)
+  ON CONFLICT (email) DO UPDATE
+    SET status = 'subscribed', updated_at = now(), unsubscribe_token = EXCLUDED.unsubscribe_token
     WHERE s.status <> 'subscribed'
   RETURNING id`;
 
@@ -28,7 +32,7 @@ module.exports = async function handler(req, res) {
     res.setHeader("Allow", "POST");
     return send(res, 405, { status: "error", code: "method_not_allowed" });
   }
-  if (!databaseUrl()) {
+  if (!databaseUrl() || !resendKey()) {
     return send(res, 503, { status: "error", code: "not_configured" });
   }
 
@@ -47,15 +51,36 @@ module.exports = async function handler(req, res) {
     return send(res, 400, { status: "error", code: "invalid_email" });
   }
 
+  const origin = siteOrigin(req);
+  if (!origin) return send(res, 400, { status: "error", code: "invalid_request" });
+
   try {
     const rate = await query(RATE_SQL, [clientIpHash(req)]);
     if (rate.rows[0].attempts > RATE_LIMIT) return send(res, 429, { status: "error", code: "rate_limited" });
 
-    const result = await query(SUBSCRIBE_SQL, [email]);
-    if (result.rowCount === 0) return send(res, 200, { status: "duplicate" });
+    const token = crypto.randomBytes(24).toString("hex");
+    const outcome = await transaction(async (client) => {
+      const r = await client.query(SUBSCRIBE_SQL, [email, token]);
+      if (r.rowCount === 0) return "duplicate";
+      // Throws on failure → transaction rolls back → nothing is stored.
+      await sendConfirmation({
+        email,
+        siteUrl: origin + "/",
+        unsubscribeUrl: `${origin}/api/unsubscribe?token=${token}`,
+      });
+      await client.query("UPDATE twt_subscribers SET confirmation_sent_at = now() WHERE id = $1", [r.rows[0].id]);
+      return "subscribed";
+    });
+
+    if (outcome === "duplicate") return send(res, 200, { status: "duplicate" });
     return send(res, 201, { status: "subscribed" });
   } catch (err) {
-    console.error("subscribe failed:", err.code || err.message);
+    if (err.code === "invalid_email") return send(res, 400, { status: "error", code: "invalid_email" });
+    if (err.code === "send_failed") {
+      console.error("subscribe: confirmation email failed, status", err.status);
+      return send(res, 502, { status: "error", code: "send_failed" });
+    }
+    console.error("subscribe: storage error", err.code || err.name);
     return send(res, 502, { status: "error", code: "storage_error" });
   }
 };
