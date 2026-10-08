@@ -485,14 +485,68 @@
       <div class="end-foot reveal">
         <p class="mono">JAPAN / OKINAWA / MIYAKOJIMA</p>
         <p class="mono">001 / 100</p>
-        <!-- TODO: replace href with the real follow / contact destination -->
-        <a href="#" class="follow">
+        <a href="#follow-the-project" class="follow">
           <span class="pair">
             <span class="follow-en">FOLLOW THE PROJECT</span>
             <span class="ja">プロジェクトを追う。</span>
           </span>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M9 5h10v10" /></svg>
         </a>
+      </div>
+    </section>
+
+    <!-- FOLLOW THE PROJECT -->
+    <section id="follow-the-project" class="sec follow-sec" aria-labelledby="s-follow">
+      <div class="sec-label mono"><span>13</span><span>FOLLOW</span></div>
+      <div class="sec-body">
+        <div class="pair head xl reveal">
+          <h2 id="s-follow" class="h-xl">FOLLOW<br />THE PROJECT</h2>
+          <p class="ja">プロジェクトを追う。</p>
+        </div>
+
+        <div class="follow-grid">
+          <!-- FIELD NOTES -->
+          <div class="channel reveal">
+            <p class="channel-no mono">A — FIELD NOTES</p>
+            <h3 class="channel-title">FIELD NOTES</h3>
+            <div class="pair channel-text">
+              <p>Notes from the project, sent by email.<br />Irregular. Only when there is something to record.</p>
+              <p class="ja">プロジェクトからの記録を、メールでお届けします。<br />配信は不定期。記録すべきことがあるときだけ送ります。</p>
+            </div>
+
+            <form class="notes-form" id="notes-form" novalidate>
+              <label class="field-label mono" for="notes-email">EMAIL <span class="ja-inline">メールアドレス</span></label>
+              <div class="field-row">
+                <input id="notes-email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="254" placeholder="you@example.com" />
+                <button type="submit" class="notes-submit">SUBSCRIBE</button>
+              </div>
+              <div class="hp" aria-hidden="true">
+                <label for="notes-website">Website</label>
+                <input id="notes-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+              </div>
+              <p class="notes-status" id="notes-status" role="status" aria-live="polite"></p>
+              <p class="notes-privacy">Your address is used only for Field Notes.<br /><span class="ja">メールアドレスはField Notesの配信にのみ使用します。</span></p>
+            </form>
+          </div>
+
+          <!-- FIELD RECORDS -->
+          <div class="channel reveal">
+            <p class="channel-no mono">B — FIELD RECORDS</p>
+            <h3 class="channel-title">FIELD RECORDS</h3>
+            <div class="pair channel-text">
+              <p>Images and fragments from the field, on Instagram.</p>
+              <p class="ja">現地からの写真と記録の断片を、Instagramで。</p>
+            </div>
+
+            <a class="ig-button is-disabled" id="ig-button" aria-disabled="true" role="link" target="_blank" rel="noopener noreferrer">
+              <span class="pair">
+                <span class="follow-en">FOLLOW ON INSTAGRAM</span>
+                <span class="ja" id="ig-sub">準備中 — Coming soon</span>
+              </span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M9 5h10v10" /></svg>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   </main>

@@ -420,6 +420,90 @@ svg text { font-family: var(--mono); font-size: 11px; fill: var(--ink-2); letter
   .follow { grid-column: 1 / -1; justify-self: stretch; justify-content: space-between; }
 }
 
+/* ---------- 13 FOLLOW THE PROJECT ---------- */
+.follow-sec { border-top: 1px solid var(--ink); }
+.follow-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--ink); }
+.channel { display: flex; flex-direction: column; gap: 22px; padding: 28px 0 8px; min-width: 0; }
+.channel + .channel { border-left: 1px solid var(--rule); padding-left: clamp(24px, 3.5vw, 56px); }
+.channel:first-child { padding-right: clamp(24px, 3.5vw, 56px); }
+.channel-no { font-size: 11px; color: var(--ink-2); }
+.channel-title { font-family: var(--grotesk); font-weight: 900; font-stretch: 72%; font-size: clamp(36px, 4.2vw, 64px); line-height: 0.9; }
+.channel-text { font-family: var(--serif); font-size: clamp(20px, 1.9vw, 26px); line-height: 1.35; }
+.channel-text .ja { line-height: 1.9; font-size: max(12px, calc(var(--ja) * 1em)); }
+@media (max-width: 860px) {
+  .follow-grid { grid-template-columns: 1fr; }
+  .channel:first-child { padding-right: 0; }
+  .channel + .channel { border-left: 0; border-top: 1px solid var(--rule); padding-left: 0; margin-top: 32px; padding-top: 32px; }
+}
+
+.notes-form { display: flex; flex-direction: column; gap: 10px; }
+.field-label { font-size: 11px; color: var(--ink-2); letter-spacing: 0.08em; }
+.ja-inline { font-family: var(--jp); letter-spacing: 0.04em; margin-left: 8px; }
+.field-row { display: flex; border: 1.5px solid var(--ink); background: #f6f4ee; }
+.field-row input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 16px 18px;
+  font-family: var(--mono);
+  font-size: 16px; /* ≥16px avoids iOS zoom on focus */
+  color: var(--ink);
+  border-radius: 0;
+}
+.field-row input::placeholder { color: var(--muted); }
+.field-row input:focus { outline: none; }
+.field-row:focus-within { outline: 2px solid var(--ink); outline-offset: 2px; }
+.notes-submit {
+  border: 0;
+  border-left: 1.5px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0 22px;
+  font-family: var(--grotesk);
+  font-weight: 800;
+  font-stretch: 80%;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  border-radius: 0;
+}
+.notes-submit:hover { background: #2a2a28; }
+.notes-submit:focus-visible { outline: 2px solid var(--mark); outline-offset: -4px; }
+.notes-form[data-state="sending"] .notes-submit { opacity: 0.6; cursor: wait; }
+.notes-form[data-state="closed"] .field-row { opacity: 0.45; }
+.notes-form[data-state="closed"] .notes-submit { cursor: not-allowed; }
+.notes-status { min-height: 1.6em; font-family: var(--mono); font-size: 12px; line-height: 1.6; color: var(--ink-2); }
+.notes-status:empty { min-height: 0; }
+.notes-status .ja { margin-top: 2px; font-size: 12px; line-height: 1.6; }
+.notes-status[data-tone="ok"] { color: var(--ink); }
+.notes-status[data-tone="ok"]::before { content: "● "; color: var(--mark); }
+.notes-status[data-tone="warn"]::before { content: "▲ "; }
+.notes-status[data-tone="error"] { color: var(--mark); }
+.notes-privacy { font-size: 11px; line-height: 1.6; color: var(--muted); font-family: var(--mono); }
+.notes-privacy .ja { display: inline; margin: 0; font-size: 11px; color: var(--muted); }
+.hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+@media (max-width: 420px) {
+  .field-row { flex-direction: column; }
+  .notes-submit { border-left: 0; border-top: 1.5px solid var(--ink); padding: 16px; }
+}
+
+.ig-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 22px;
+  border: 1.5px solid var(--ink);
+  font-size: clamp(16px, 1.6vw, 22px);
+  transition: background 0.3s, color 0.3s;
+}
+.ig-button .pair { display: flex; flex-direction: column; }
+.ig-button .ja { margin-top: 4px; color: inherit; line-height: 1.4; font-size: max(11px, calc(var(--ja) * 1em)); }
+.ig-button svg { width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.ig-button:not(.is-disabled):hover { background: var(--ink); color: var(--paper); }
+.ig-button.is-disabled { border-style: dashed; color: var(--muted); cursor: default; }
+
 .foot {
   display: flex;
   flex-wrap: wrap;

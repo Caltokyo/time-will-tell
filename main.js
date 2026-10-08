@@ -159,4 +159,74 @@
   onScroll();
 
   document.getElementById("year").textContent = new Date().getFullYear();
+
+  // FOLLOW THE PROJECT — Field Notes form + Instagram link
+  const form = document.getElementById("notes-form");
+  const statusEl = document.getElementById("notes-status");
+  const MESSAGES = {
+    subscribed: ["ok", "RECORDED. You will receive the next Field Notes.", "登録しました。次のField Notesをお送りします。"],
+    duplicate: ["warn", "ALREADY RECORDED. This address is already on the list.", "このメールアドレスは登録済みです。"],
+    invalid_email: ["error", "Please enter a valid email address.", "正しいメールアドレスを入力してください。"],
+    rate_limited: ["error", "Too many attempts. Please try again later.", "試行回数が多すぎます。時間をおいて再度お試しください。"],
+    not_configured: ["warn", "Registration is not open yet.", "現在、登録は受け付けていません。"],
+    error: ["error", "Something went wrong. Please try again later.", "エラーが発生しました。時間をおいて再度お試しください。"],
+  };
+  const showStatus = (key) => {
+    const [tone, en, ja] = MESSAGES[key] || MESSAGES.error;
+    statusEl.dataset.tone = tone;
+    statusEl.textContent = en;
+    const j = document.createElement("span");
+    j.className = "ja";
+    j.lang = "ja";
+    j.textContent = ja;
+    statusEl.appendChild(j);
+  };
+  const closeForm = () => {
+    form.dataset.state = "closed";
+    form.querySelectorAll("input, button").forEach((n) => (n.disabled = true));
+    showStatus("not_configured");
+  };
+
+  const ig = document.getElementById("ig-button");
+  fetch("/api/config", { headers: { Accept: "application/json" } })
+    .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+    .then((cfg) => {
+      if (cfg.subscribeEnabled === false) closeForm();
+      if (typeof cfg.instagramUrl === "string" && /^https:\/\/(www\.)?instagram\.com\/./.test(cfg.instagramUrl)) {
+        ig.href = cfg.instagramUrl;
+        ig.classList.remove("is-disabled");
+        ig.removeAttribute("aria-disabled");
+        ig.removeAttribute("role");
+        document.getElementById("ig-sub").textContent = "Instagram でフォロー";
+      }
+    })
+    .catch(() => { /* config unavailable: keep Instagram disabled; the form reports errors on submit */ });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (form.dataset.state === "sending" || form.dataset.state === "closed") return;
+    const email = form.email.value.trim();
+    if (!email || !form.email.checkValidity()) { showStatus("invalid_email"); form.email.focus(); return; }
+    form.dataset.state = "sending";
+    try {
+      const r = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ email, website: form.website.value }),
+      });
+      const data = await r.json().catch(() => ({}));
+      if (data.status === "subscribed" || data.status === "duplicate") {
+        showStatus(data.status);
+        if (data.status === "subscribed") form.email.value = "";
+      } else if (data.code === "not_configured") {
+        closeForm();
+        return;
+      } else {
+        showStatus(MESSAGES[data.code] ? data.code : "error");
+      }
+    } catch {
+      showStatus("error");
+    }
+    form.dataset.state = "";
+  });
 })();
