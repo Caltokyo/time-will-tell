@@ -1,6 +1,6 @@
 # TIME WILL TELL — Landing Page
 
-Miyakojima, Okinawa. 001 / 100.
+Japan / Okinawa / Miyakojima. 001 / 100.
 
 Static site (HTML / CSS / JavaScript). No build step.
 
