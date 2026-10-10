@@ -1,0 +1,8 @@
+[
+  { "no": "01", "title": "2026 人類は、自分になるための時間を節約し始めた。", "lang": "ja", "from": ["02 / THE PROBLEM", "03 / THE PARADOX"], "anchor": "s03" },
+  { "no": "02", "title": "八百万の神がいる国が、キャラクターを量産している。", "lang": "ja", "from": ["04 / PLACE"], "anchor": "s04" },
+  { "no": "03", "title": "TARO OKAMOTO", "lang": "en", "from": ["07 / NOTHING"], "anchor": "s07" },
+  { "no": "04", "title": "宗教は、古いテクノロジーなのかもしれない。", "lang": "ja", "from": ["08 / HYPOTHESIS"], "anchor": "s08" },
+  { "no": "05", "title": "神聖なものを、つくってもいいのだろうか。", "lang": "ja", "from": ["09 / THE PROJECT"], "anchor": "s09" },
+  { "no": "06", "title": "新たな聖地を生み出すという実験", "lang": "ja", "from": ["11 / SECRET"], "anchor": "s11", "mustEndWith": "TIME WILL TELL." }
+]

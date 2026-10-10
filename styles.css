@@ -420,6 +420,26 @@ svg text { font-family: var(--mono); font-size: 11px; fill: var(--ink-2); letter
   .follow { grid-column: 1 / -1; justify-self: stretch; justify-content: space-between; }
 }
 
+/* ---------- READ THE ESSAY (quiet link into the second layer) ---------- */
+.essay-link {
+  display: flex;
+  gap: 18px;
+  align-items: baseline;
+  max-width: 560px;
+  padding-top: 14px;
+  border-top: 1px solid currentColor;
+  color: inherit;
+  opacity: 0.72;
+  transition: opacity 0.3s;
+}
+.essay-link:hover, .essay-link:focus-visible { opacity: 1; }
+.essay-link-no { flex: none; font-size: 10.5px; letter-spacing: 0.1em; }
+.essay-link-body { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.essay-link-en { font-size: 11px; letter-spacing: 0.12em; }
+.essay-link-title { font-family: var(--grotesk); font-weight: 700; font-size: 14px; line-height: 1.5; }
+.essay-link-title:lang(ja) { font-family: var(--jp); font-weight: 500; font-size: 13px; letter-spacing: 0.04em; }
+.essay-link:hover .essay-link-title { text-decoration: underline; text-underline-offset: 3px; }
+
 /* ---------- 13 FOLLOW THE PROJECT ---------- */
 .follow-sec { border-top: 1px solid var(--ink); }
 .follow-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--ink); }
@@ -524,3 +544,6 @@ svg text { font-family: var(--mono); font-size: 11px; fill: var(--ink-2); letter
   .js .reveal { opacity: 1; transform: none; transition: none; }
   .strike li, .strike li::after { transition: none; }
 }
+
+/* Anchored returns from essay pages land below the fixed bar */
+main h2[id] { scroll-margin-top: 96px; }

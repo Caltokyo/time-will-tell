@@ -1,0 +1,132 @@
+/* Essay pages — long-form reading inside the LP's dossier language. */
+
+.essay {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: clamp(110px, 12vw, 180px) var(--gutter) clamp(64px, 8vw, 120px);
+}
+
+.essay-head { display: grid; gap: clamp(24px, 3vw, 40px); margin-bottom: clamp(56px, 8vw, 120px); }
+.essay-kicker {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--ink);
+  font-size: 11px;
+  color: var(--ink-2);
+}
+.essay-kicker span:first-child { color: var(--ink); }
+.essay-title {
+  max-width: 16em;
+  font-family: var(--grotesk);
+  font-weight: 900;
+  font-stretch: 72%;
+  font-size: clamp(48px, 7.6vw, 128px);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+}
+.essay-title:lang(ja) {
+  font-family: var(--jp);
+  font-weight: 700;
+  font-stretch: normal;
+  font-size: clamp(28px, 4.6vw, 72px);
+  line-height: 1.32;
+  letter-spacing: 0.02em;
+  max-width: 14em;
+}
+.essay-rule { height: 1px; background: var(--rule); position: relative; }
+.essay-rule span { position: absolute; left: 0; top: -4px; width: 9px; height: 9px; border-radius: 50%; background: var(--mark); }
+
+/* Reading column: offset like the LP's label/body grid */
+.essay-body { display: grid; grid-template-columns: minmax(140px, 1fr) minmax(0, 4fr); gap: clamp(24px, 4vw, 64px); }
+.essay-text, .essay-pending { grid-column: 2; max-width: 38em; }
+.essay-text { font-family: var(--serif); font-size: clamp(19px, 1.6vw, 22px); line-height: 1.7; }
+.essay-text:lang(ja), .essay-body:lang(ja) .essay-text {
+  font-family: "Noto Serif JP", var(--jp), serif;
+  font-size: clamp(16px, 1.2vw, 18px);
+  line-height: 2.05;
+  letter-spacing: 0.04em;
+  font-feature-settings: "palt" 0;
+  max-width: 36em;
+}
+.essay-text p { margin: 0 0 1.6em; }
+.essay-text h2 {
+  margin: 3em 0 1.2em;
+  padding-top: 14px;
+  border-top: 1px solid var(--ink);
+  font-family: var(--grotesk);
+  font-weight: 800;
+  font-stretch: 80%;
+  font-size: 1.05em;
+  letter-spacing: 0.06em;
+}
+.essay-body:lang(ja) .essay-text h2 { font-family: var(--jp); font-weight: 700; letter-spacing: 0.08em; }
+.essay-text blockquote {
+  margin: 2em 0;
+  padding-left: 1.2em;
+  border-left: 2px solid var(--ink);
+  color: var(--ink-2);
+}
+.essay-text p:last-child { margin-bottom: 0; }
+
+.essay-pending {
+  border: 1px dashed var(--ink);
+  padding: clamp(40px, 6vw, 80px) clamp(20px, 3vw, 40px);
+  text-align: center;
+  color: var(--ink-2);
+}
+.essay-pending p { margin: 0; }
+.essay-pending .mono { font-size: 13px; letter-spacing: 0.16em; color: var(--ink); }
+.essay-pending [lang="ja"] { margin-top: 8px; font-family: var(--jp); font-size: 12px; }
+
+@media (max-width: 760px) {
+  .essay-body { grid-template-columns: 1fr; }
+  .essay-text, .essay-pending { grid-column: 1; }
+}
+
+/* Prev / next / back */
+.essay-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: clamp(80px, 10vw, 140px);
+  border-top: 1px solid var(--ink);
+}
+.essay-nav-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 22px 0 26px;
+  min-width: 0;
+  transition: background 0.3s, color 0.3s;
+}
+.essay-nav-item.next { text-align: right; padding-left: 16px; border-left: 1px solid var(--rule); }
+.essay-nav-item.prev { padding-right: 16px; }
+.essay-nav-item .mono { font-size: 11px; color: var(--ink-2); }
+.essay-nav-title { font-family: var(--grotesk); font-weight: 800; font-stretch: 80%; font-size: clamp(16px, 1.6vw, 22px); line-height: 1.3; }
+.essay-nav-title:lang(ja) { font-family: var(--jp); font-weight: 700; font-stretch: normal; font-size: clamp(14px, 1.3vw, 18px); line-height: 1.6; }
+a.essay-nav-item:hover .essay-nav-title { text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 560px) {
+  .essay-nav { grid-template-columns: 1fr; }
+  .essay-nav-item.next { text-align: left; padding-left: 0; border-left: 0; border-top: 1px solid var(--rule); }
+  .essay-nav-item.is-empty { display: none; }
+}
+
+.essay-back {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 0;
+  padding: 18px 22px;
+  border: 1.5px solid var(--ink);
+  font-size: clamp(16px, 1.6vw, 22px);
+  transition: background 0.3s, color 0.3s;
+}
+.essay-back .pair { display: flex; flex-direction: column; }
+.essay-back .ja { margin-top: 4px; color: inherit; line-height: 1.4; font-size: max(11px, calc(var(--ja) * 1em)); }
+.essay-back svg { width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.essay-back:hover { background: var(--ink); color: var(--paper); }
+
+/* LP: READ THE ESSAY link (used in index.html) lives in styles.css */
