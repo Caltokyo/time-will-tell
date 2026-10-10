@@ -439,6 +439,9 @@ svg text { font-family: var(--mono); font-size: 11px; fill: var(--ink-2); letter
 .essay-link-title { font-family: var(--grotesk); font-weight: 700; font-size: 14px; line-height: 1.5; }
 .essay-link-title:lang(ja) { font-family: var(--jp); font-weight: 500; font-size: 13px; letter-spacing: 0.04em; }
 .essay-link:hover .essay-link-title { text-decoration: underline; text-underline-offset: 3px; }
+/* PLACE: reads as the next row of the places index (A–F), then hands off to the question */
+.essay-link--index { max-width: 960px; margin-top: calc(-1 * clamp(48px, 6vw, 88px) + 1px); padding: 16px 0; border-top: 0; border-bottom: 1px solid var(--rule); opacity: 0.8; }
+.essay-link--index .essay-link-no { color: var(--muted); }
 
 /* ---------- 13 FOLLOW THE PROJECT ---------- */
 .follow-sec { border-top: 1px solid var(--ink); }

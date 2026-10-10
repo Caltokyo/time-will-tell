@@ -36,6 +36,7 @@
   letter-spacing: 0.02em;
   max-width: 14em;
 }
+.essay-en-note { font-size: 10.5px; letter-spacing: 0.08em; color: var(--muted); margin-top: -12px; }
 .essay-rule { height: 1px; background: var(--rule); position: relative; }
 .essay-rule span { position: absolute; left: 0; top: -4px; width: 9px; height: 9px; border-radius: 50%; background: var(--mark); }
 

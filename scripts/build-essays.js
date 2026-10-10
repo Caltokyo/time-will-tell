@@ -63,6 +63,7 @@ function page(e, i, body) {
     <header class="essay-head">
       <p class="essay-kicker mono"><span>ESSAY ${e.no}</span><span>${e.from.map(esc).join(" · ")}</span></p>
       <h1 class="essay-title"${titleLang}>${esc(e.title)}</h1>
+      <p class="essay-en-note mono">ENGLISH TRANSLATION — PENDING EDITORIAL REVIEW</p>
       <div class="essay-rule" aria-hidden="true"><span></span></div>
     </header>
 
