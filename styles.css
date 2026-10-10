@@ -590,3 +590,126 @@ svg text { font-family: var(--mono); font-size: 11px; fill: var(--ink-2); letter
 
 /* Anchored returns from essay pages land below the fixed bar */
 main h2[id] { scroll-margin-top: 96px; }
+
+/* =====================================================================
+   TWO-PART LP
+   Part one (hero → NOTHING): unnumbered, poetic.
+   Interlude: THE SIX ESSAYS.
+   Part two: FIELD LOG — numbered, documentary, assembled from content/log/.
+   ===================================================================== */
+
+/* Part one: section names only, no numbers */
+.sec-label--plain span { font-size: 11px; color: var(--ink-2); letter-spacing: 0.08em; }
+.sec-label--plain span::after { content: none !important; }
+.sec-dark .sec-label--plain span { color: #a9a49a; }
+
+/* ---------- Field log: shared surface ---------- */
+.log {
+  --log-grid: rgba(17, 17, 16, 0.055);
+  --log-grid-major: rgba(17, 17, 16, 0.1);
+  background-color: #f4f3ee;
+  background-image:
+    linear-gradient(var(--log-grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--log-grid-major) 1px, transparent 1px),
+    linear-gradient(var(--log-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--log-grid) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+  background-position: -1px -1px;
+  border-top: 2px solid var(--ink);
+}
+.log.sec-dark {
+  --log-grid: rgba(238, 234, 225, 0.05);
+  --log-grid-major: rgba(238, 234, 225, 0.1);
+  background-color: var(--night);
+  border-top-color: var(--night-fg);
+}
+
+/* Log margin: entry number, name, real update date */
+.log-margin {
+  position: sticky;
+  top: 72px;
+  align-self: start;
+  display: grid;
+  gap: 6px;
+  padding: 12px 0 18px 14px;
+  border-left: 2px solid currentColor;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  background:
+    repeating-linear-gradient(currentColor 0 1px, transparent 1px 12px) left top / 6px 100% no-repeat;
+}
+.log-tag { color: var(--ink-2); }
+.log-no { font-size: clamp(44px, 5vw, 72px); font-weight: 500; line-height: 0.95; letter-spacing: -0.03em; font-feature-settings: "tnum"; }
+.log-no small { font-size: 12px; letter-spacing: 0.06em; color: var(--ink-2); vertical-align: top; margin-left: 4px; }
+.log-name { font-weight: 500; }
+.log-updated { display: grid; gap: 2px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed currentColor; color: var(--ink-2); }
+.log.sec-dark .log-tag, .log.sec-dark .log-no small, .log.sec-dark .log-updated { color: #a9a49a; }
+
+/* Documentary accents inside entries */
+.log .reveal { transition-duration: 0.6s; }
+.log .prose .ja, .log .prose-lg .ja { border-left: 1px solid var(--rule); padding-left: 0.8em; }
+.log.sec-dark .prose .ja, .log.sec-dark .prose-lg .ja { border-left-color: rgba(238, 234, 225, 0.25); }
+.log .prose, .log .prose-lg { position: relative; }
+
+@media (max-width: 760px) {
+  .log-margin {
+    position: static;
+    grid-template-columns: auto auto 1fr;
+    align-items: baseline;
+    gap: 4px 12px;
+    padding: 10px 0 12px 12px;
+  }
+  .log-tag { grid-column: 1; }
+  .log-no { grid-column: 2; font-size: 40px; }
+  .log-name { grid-column: 3; justify-self: end; }
+  .log-updated { grid-column: 1 / -1; grid-template-columns: auto auto; justify-content: start; gap: 10px; margin-top: 2px; }
+}
+
+/* END keeps its own stacked layout; the margin becomes a header row */
+.log-end .log-margin {
+  position: static;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: baseline;
+  gap: 4px 14px;
+  margin-bottom: 40px;
+}
+.log-end .log-no { font-size: clamp(32px, 3vw, 44px); }
+.log-end .log-updated { margin: 0; padding: 0; border: 0; grid-template-columns: auto auto; gap: 8px; }
+
+/* ---------- Field log intro: the switch from part one ---------- */
+.log-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.4fr) auto;
+  gap: 24px 48px;
+  align-items: end;
+  padding: clamp(56px, 7vw, 96px) var(--gutter) clamp(32px, 4vw, 48px);
+  background-color: #f4f3ee;
+  background-image:
+    linear-gradient(rgba(17, 17, 16, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 17, 16, 0.1) 1px, transparent 1px),
+    linear-gradient(rgba(17, 17, 16, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 17, 16, 0.055) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+  background-position: -1px -1px;
+  border-top: 2px solid var(--ink);
+}
+.log-intro p { margin: 0; }
+.log-intro-title { font-size: clamp(44px, 7vw, 112px); font-weight: 500; line-height: 0.9; letter-spacing: -0.04em; }
+.log-intro-ja { margin-top: 10px !important; font-family: var(--jp); font-size: 13px; letter-spacing: 0.3em; color: var(--ink-2); }
+.log-intro-index ol { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+.log-intro-index li a {
+  display: grid;
+  grid-template-columns: 3em 1fr;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  transition: padding-left 0.3s var(--ease);
+}
+.log-intro-index li a span { color: var(--ink-2); }
+.log-intro-index li a:hover { padding-left: 6px; }
+.log-intro-meta { font-size: 10.5px; line-height: 1.7; color: var(--ink-2); text-align: right; letter-spacing: 0.06em; }
+@media (max-width: 860px) {
+  .log-intro { grid-template-columns: 1fr; align-items: start; }
+  .log-intro-meta { text-align: left; }
+}
