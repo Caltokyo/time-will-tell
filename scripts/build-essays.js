@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Generates the essay layer:
 //   essays/index.html          — THE SIX ESSAYS (ordered reading index)
-//   essays/01/index.html … 06  — one page per essay, from content/essays/NN.md
+//   essays/01/index.html … 06  — one page per essay, from content/essays/NN.md (Japanese, approved)
+//                                 and content/essays/en/NN.md (English draft, optional)
 // Manuscripts are reproduced verbatim: only paragraphs, line breaks, "## " headings and
 // "> " quotes are interpreted. A missing manuscript yields a "manuscript pending" page.
 
@@ -17,6 +18,7 @@ const essays = JSON.parse(fs.readFileSync(path.join(SRC, "essays.json"), "utf8")
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const langAttr = (x) => (x.lang === "ja" ? ' lang="ja"' : "");
 const labelHtml = (x, cls) => (x.label ? `<span class="${cls}">${esc(x.label)}</span>` : "");
+const lpTitleJa = (x) => x.lpTitleJa || x.title;
 
 function blocksOf(md) {
   return md.replace(/\r\n?/g, "\n").trim().split(/\n{2,}/);
@@ -33,7 +35,7 @@ function render(blocks, coda) {
   }).join("\n        ");
 }
 
-function shell({ lang, title, description, noindex, barMid, body }) {
+function shell({ lang, title, description, noindex, barMid, body, script = "" }) {
   return `<!doctype html>
 <html lang="${lang}">
 <head>
@@ -67,7 +69,7 @@ ${body}
     <span>JAPAN / OKINAWA / MIYAKOJIMA</span>
     <span>001 / 100</span>
   </footer>
-</body>
+${script}</body>
 </html>
 `;
 }
@@ -80,39 +82,84 @@ const backToLp = `    <a class="essay-back" href="${LP_ANCHOR}">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 5 5 19M15 19H5V9" /></svg>
     </a>`;
 
-function essayPage(e, i, body) {
+// Language switch: English draft shown first; choice kept per visitor; ?lang=ja opens Japanese.
+const LANG_SCRIPT = `  <script>
+  (function () {
+    var root = document.documentElement;
+    var panes = document.querySelectorAll("[data-lang-pane]");
+    var buttons = document.querySelectorAll("[data-lang-btn]");
+    if (!panes.length) return;
+    root.classList.add("js-lang");
+    function set(lang, remember) {
+      panes.forEach(function (p) { p.classList.toggle("is-active", p.getAttribute("data-lang-pane") === lang); });
+      buttons.forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-lang-btn") === lang)); });
+      root.lang = lang;
+      if (remember) { try { localStorage.setItem("twt-essay-lang", lang); } catch (e) {} }
+    }
+    var q = new URLSearchParams(location.search).get("lang");
+    var saved = null;
+    try { saved = localStorage.getItem("twt-essay-lang"); } catch (e) {}
+    set(q === "ja" || q === "en" ? q : saved === "ja" ? "ja" : "en", false);
+    buttons.forEach(function (b) { b.addEventListener("click", function () { set(b.getAttribute("data-lang-btn"), true); }); });
+  })();
+  </script>
+`;
+
+function pane(lang, active, h1, note, bodyHtml, labelLang) {
+  return `    <div class="lang-pane${active ? " is-active" : ""}" data-lang-pane="${lang}" lang="${lang}">
+      <h1 class="essay-title"${lang === "ja" ? ' lang="ja"' : ""}>${esc(h1)}</h1>
+      <p class="essay-en-note mono">${note}</p>
+      <div class="essay-rule" aria-hidden="true"><span></span></div>
+      <article class="essay-body" lang="${lang}">
+        <div class="essay-text">
+        ${bodyHtml}
+        </div>
+      </article>
+    </div>`;
+}
+
+function essayPage(e, i, body, bodyEn) {
   const prev = essays[i - 1];
   const next = essays[i + 1];
   const pending = body === null;
   const navItem = (x, dir) => x
-    ? `<a class="essay-nav-item ${dir}" href="/essays/${x.no}/"><span class="mono">${dir === "prev" ? `← PREVIOUS — ${x.no}` : `NEXT — ${x.no} →`}</span><span class="essay-nav-title"${langAttr(x)}>${labelHtml(x, "nav-label")}${esc(x.title)}</span></a>`
+    ? `<a class="essay-nav-item ${dir}" href="/essays/${x.no}/"><span class="mono">${dir === "prev" ? `← PREVIOUS — ${x.no}` : `NEXT — ${x.no} →`}</span><span class="essay-nav-title">${labelHtml(x, "nav-label")}${esc(x.titleEn || x.title)}</span>${x.titleEn ? `<span class="essay-nav-ja" lang="ja">${esc(x.title)}</span>` : ""}</a>`
     : `<a class="essay-nav-item ${dir} is-index" href="/essays/"><span class="mono">${dir === "prev" ? "← THE SIX ESSAYS" : "THE SIX ESSAYS →"}</span><span class="essay-nav-title" lang="ja">六つのエッセイ</span></a>`;
 
+  let content;
+  if (pending) {
+    content = `    <div class="essay-rule" aria-hidden="true"><span></span></div>
+    <article class="essay-body">
+      <div class="essay-pending">
+        <p class="mono">MANUSCRIPT PENDING</p>
+        <p lang="ja">原稿未配置</p>
+      </div>
+    </article>`;
+  } else if (bodyEn) {
+    content = `    <div class="lang-switch mono" role="group" aria-label="Language / 言語">
+      <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang-btn="ja" aria-pressed="false" lang="ja">日本語</button>
+    </div>
+${pane("en", true, e.titleEn, "ENGLISH — DRAFT TRANSLATION, PENDING EDITORIAL REVIEW", bodyEn)}
+${pane("ja", false, e.title, "JAPANESE — APPROVED TEXT · 日本語（確定稿）", body)}`;
+  } else {
+    content = pane("ja", true, e.title, "ENGLISH TRANSLATION — PENDING EDITORIAL REVIEW", body);
+  }
+
   return shell({
-    lang: e.lang === "ja" ? "ja" : "en",
-    title: `ESSAY ${e.no} — ${esc(e.title)} | TIME WILL TELL`,
-    description: `TIME WILL TELL — ESSAY ${e.no}. ${esc(e.title)}`,
+    lang: bodyEn ? "en" : e.lang === "ja" ? "ja" : "en",
+    title: `ESSAY ${e.no} — ${esc(e.titleEn || e.title)} | TIME WILL TELL`,
+    description: `TIME WILL TELL — ESSAY ${e.no}. ${esc(e.titleEn ? `${e.titleEn} / ${e.title}` : e.title)}`,
     noindex: pending,
     barMid: `<a href="/essays/">THE SIX ESSAYS</a> — ${e.no} / 06`,
+    script: bodyEn ? LANG_SCRIPT : "",
     body: `  <main class="essay">
     <header class="essay-head">
       <p class="essay-kicker mono"><span>ESSAY ${e.no}</span><a href="/essays/">THE SIX ESSAYS — ${e.no} / 06</a></p>
       ${e.label ? `<p class="essay-label">${esc(e.label)}</p>` : ""}
-      <h1 class="essay-title"${langAttr(e)}>${esc(e.title)}</h1>
-      <p class="essay-en-note mono">ENGLISH TRANSLATION — PENDING EDITORIAL REVIEW</p>
-      <div class="essay-rule" aria-hidden="true"><span></span></div>
     </header>
 
-    <article class="essay-body"${langAttr(e)}>
-      ${pending
-        ? `<div class="essay-pending">
-        <p class="mono">MANUSCRIPT PENDING</p>
-        <p lang="ja">原稿未配置</p>
-      </div>`
-        : `<div class="essay-text">
-        ${body}
-      </div>`}
-    </article>
+${content}
 
     <nav class="essay-nav" aria-label="Essays">
       ${navItem(prev, "prev")}
@@ -181,7 +228,10 @@ function lpBlock() {
   const rows = essays.map((e) => `          <li>
             <a class="essay-row reveal" href="/essays/${e.no}/">
               <span class="essay-row-meta mono"><span class="essay-row-no">${e.no}</span><span class="essay-row-cat"${/[^\x00-\x7F]/.test(e.category || "") ? ' lang="ja"' : ""}>${esc(e.category || "")}</span></span>
-              <span class="essay-row-title"${langAttr(e)}>${esc(e.title)}</span>
+              <span class="essay-row-titles">
+                <span class="essay-row-title" lang="en">${esc(e.titleEn || e.title)}</span>
+                ${e.titleEn ? `<span class="essay-row-title-ja" lang="ja">${esc(lpTitleJa(e))}</span>` : ""}
+              </span>
               <svg class="essay-row-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M9 5h10v10" /></svg>
             </a>
           </li>`).join("\n");
@@ -203,7 +253,7 @@ ${rows}
 // Noto Serif JP subset containing only the glyphs of the six LP titles (Google Fonts `text=`),
 // so the titles render in one face immediately instead of loading many CJK subsets.
 function titleFontLink() {
-  const chars = [...new Set(essays.map((e) => e.title).join(""))].sort().join("");
+  const chars = [...new Set(essays.map(lpTitleJa).join(""))].sort().join("");
   const href = `https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@600&display=swap&text=${encodeURIComponent(chars)}`;
   return `<link id="essay-title-font" rel="stylesheet" href="${href.replace(/&/g, "&amp;")}" />`;
 }
@@ -224,6 +274,7 @@ const report = [];
 const status = essays.map((e, i) => {
   const file = path.join(SRC, `${e.no}.md`);
   let body = null;
+  let bodyEn = null;
   if (fs.existsSync(file)) {
     const md = fs.readFileSync(file, "utf8");
     if (e.mustEndWith && md.trim().split("\n").pop().trim() !== e.mustEndWith) {
@@ -236,10 +287,20 @@ const status = essays.map((e, i) => {
       process.exit(1);
     }
     body = render(rest, e.mustEndWith);
+
+    const enFile = path.join(SRC, "en", `${e.no}.md`);
+    if (fs.existsSync(enFile)) {
+      const [enHead, ...enRest] = blocksOf(fs.readFileSync(enFile, "utf8"));
+      const fail = (msg) => { console.error(`ESSAY ${e.no} (EN): ${msg}`); process.exit(1); };
+      if (enHead.trim() !== e.titleEn) fail(`first line ("${enHead}") must match titleEn in essays.json`);
+      if (enRest.length !== rest.length) fail(`${enRest.length} paragraphs, Japanese has ${rest.length} — keep them aligned`);
+      if (e.mustEndWith && enRest[enRest.length - 1].trim() !== e.mustEndWith) fail(`must end with "${e.mustEndWith}"`);
+      bodyEn = render(enRest, e.mustEndWith);
+    }
   }
   fs.mkdirSync(path.join(OUT, e.no), { recursive: true });
-  fs.writeFileSync(path.join(OUT, e.no, "index.html"), essayPage(e, i, body));
-  report.push(`ESSAY ${e.no}: ${body === null ? "MANUSCRIPT PENDING" : "ok"}`);
+  fs.writeFileSync(path.join(OUT, e.no, "index.html"), essayPage(e, i, body, bodyEn));
+  report.push(`ESSAY ${e.no}: ${body === null ? "MANUSCRIPT PENDING" : "ok"}${bodyEn ? " + EN draft" : ""}`);
   return body;
 });
 fs.writeFileSync(path.join(OUT, "index.html"), indexPage(status));

@@ -1,8 +1,8 @@
 [
-  {"no": "01", "label": "2026", "category": "2026", "title": "人類は、自分になるための時間を節約し始めた。", "lang": "ja"},
-  {"no": "02", "category": "八百万", "title": "八百万の神がいる国が、キャラクターを量産している。", "lang": "ja"},
-  {"no": "03", "label": "TARO OKAMOTO", "category": "TARO OKAMOTO", "title": "何もない場所に、何があるのか。", "lang": "ja"},
-  {"no": "04", "category": "RELIGION", "title": "宗教は、古いテクノロジーなのかもしれない。", "lang": "ja"},
-  {"no": "05", "category": "HIROSHI SUGIMOTO", "title": "神聖なものを、つくってもいいのだろうか。", "lang": "ja"},
-  {"no": "06", "category": "THE EXPERIMENT", "title": "新たな聖地を生み出すという実験", "lang": "ja", "mustEndWith": "TIME WILL TELL."}
+  {"no": "01", "label": "2026", "category": "2026", "title": "人類は、自分になるための時間を節約し始めた。", "titleEn": "Humanity Has Started Saving Time on Becoming Itself.", "lang": "ja"},
+  {"no": "02", "category": "八百万", "title": "八百万の神がいる国が、キャラクターを量産している。", "titleEn": "The Land of Eight Million Gods Is Mass-Producing Characters.", "lang": "ja"},
+  {"no": "03", "label": "TARO OKAMOTO", "category": "TARO OKAMOTO", "title": "何もない場所に、何があるのか。", "titleEn": "The Vertigo of Nothing.", "lpTitleJa": "何もないことへの目眩。", "lang": "ja"},
+  {"no": "04", "category": "RELIGION", "title": "宗教は、古いテクノロジーなのかもしれない。", "titleEn": "Perhaps Religion Is an Old Technology.", "lang": "ja"},
+  {"no": "05", "category": "HIROSHI SUGIMOTO", "title": "神聖なものを、つくってもいいのだろうか。", "titleEn": "May We Make the Sacred?", "lang": "ja"},
+  {"no": "06", "category": "THE EXPERIMENT", "title": "新たな聖地を生み出すという実験", "titleEn": "An Experiment in Creating New Sacred Ground", "lang": "ja", "mustEndWith": "TIME WILL TELL."}
 ]

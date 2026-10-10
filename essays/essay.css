@@ -245,3 +245,31 @@ a.essay-nav-item:hover .essay-nav-title { text-decoration: underline; text-under
 .essay-toc-link .ja { margin: 0; font-size: 12px; color: var(--ink); }
 .essay-toc-link span:last-child { margin-left: auto; color: var(--ink-2); }
 .essay-toc-link:hover .mono:first-child { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- Language switch (English draft first, Japanese approved text) ---------- */
+.lang-switch { display: inline-flex; margin: 0 0 clamp(24px, 3vw, 40px); border: 1px solid var(--ink); }
+.lang-switch button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  padding: 10px 16px;
+  min-width: 64px;
+  font: inherit;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+}
+.lang-switch button[lang="ja"] { font-family: var(--jp); letter-spacing: 0.08em; }
+.lang-switch button + button { border-left: 1px solid var(--ink); }
+.lang-switch button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.lang-switch button:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
+html:not(.js-lang) .lang-switch { display: none; }
+.js-lang .lang-pane:not(.is-active) { display: none; }
+.lang-pane { display: grid; gap: clamp(24px, 3vw, 40px); }
+html:not(.js-lang) .lang-pane + .lang-pane { margin-top: clamp(80px, 10vw, 140px); padding-top: 40px; border-top: 2px solid var(--ink); }
+.lang-pane .essay-rule { margin-bottom: clamp(32px, 5vw, 80px); }
+.lang-pane .essay-en-note { margin-top: -12px; }
+.lang-pane[lang="en"] .essay-title { max-width: 18em; }
+.essay-nav-ja { font-family: var(--jp); font-size: 12px; line-height: 1.6; color: var(--ink-2); }
+.essay-head { margin-bottom: clamp(16px, 2vw, 24px); }
