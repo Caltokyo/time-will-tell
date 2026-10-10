@@ -1,7 +1,7 @@
 [
-  {"no": "01", "title": "2026 人類は、自分になるための時間を節約し始めた。", "lang": "ja"},
+  {"no": "01", "label": "2026", "title": "人類は、自分になるための時間を節約し始めた。", "lang": "ja"},
   {"no": "02", "title": "八百万の神がいる国が、キャラクターを量産している。", "lang": "ja"},
-  {"no": "03", "title": "TARO OKAMOTO", "lang": "en"},
+  {"no": "03", "label": "TARO OKAMOTO", "title": "何もない場所に、何があるのか。", "lang": "ja"},
   {"no": "04", "title": "宗教は、古いテクノロジーなのかもしれない。", "lang": "ja"},
   {"no": "05", "title": "神聖なものを、つくってもいいのだろうか。", "lang": "ja"},
   {"no": "06", "title": "新たな聖地を生み出すという実験", "lang": "ja", "mustEndWith": "TIME WILL TELL."}

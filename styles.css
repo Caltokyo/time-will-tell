@@ -454,6 +454,7 @@ svg text { font-family: var(--mono); font-size: 11px; fill: var(--ink-2); letter
 .essays-toc-no { font-size: 11px; color: #a9a49a; }
 .essays-toc-title { font-family: var(--grotesk); font-weight: 700; font-size: clamp(14px, 1.2vw, 17px); line-height: 1.5; }
 .essays-toc-title:lang(ja) { font-family: var(--jp); font-weight: 500; letter-spacing: 0.03em; }
+.essays-toc-label { display: block; margin-bottom: 2px; font-family: var(--grotesk); font-weight: 800; font-stretch: 80%; font-size: 11px; letter-spacing: 0.12em; color: #a9a49a; }
 .essays-cta {
   grid-area: cta;
   align-self: end;

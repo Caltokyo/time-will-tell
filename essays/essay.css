@@ -182,3 +182,51 @@ a.essay-nav-item:hover .essay-nav-title { text-decoration: underline; text-under
 .essay-begin .ja { margin-top: 4px; color: inherit; line-height: 1.4; font-size: max(11px, calc(var(--ja) * 1em)); }
 .essay-begin svg { width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; }
 .essay-begin:hover { background: transparent; color: var(--ink); }
+
+/* ---------- Manuscript typesetting (Japanese long-form) ---------- */
+.essay-label {
+  margin: 0 0 -8px;
+  font-family: var(--grotesk);
+  font-weight: 900;
+  font-stretch: 72%;
+  font-size: clamp(22px, 2.6vw, 40px);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.nav-label, .toc-label {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--grotesk);
+  font-weight: 800;
+  font-stretch: 80%;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ink-2);
+}
+.essay-body:lang(ja) .essay-text {
+  text-align: justify;
+  text-justify: inter-character;
+  line-break: strict;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  hanging-punctuation: allow-end;
+  font-kerning: none;
+}
+.essay-body:lang(ja) .essay-text p { margin-bottom: 1.25em; }
+
+/* 06: the manuscript's closing line, set in the LP's display face */
+.essay-text .essay-coda {
+  margin: 2.6em 0 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--ink);
+  font-family: var(--grotesk);
+  font-weight: 900;
+  font-stretch: 72%;
+  font-size: clamp(44px, 7vw, 96px);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  text-align: left;
+}
+@media (max-width: 560px) {
+  .essay-body:lang(ja) .essay-text { font-size: 16px; line-height: 2; letter-spacing: 0.03em; }
+}

@@ -16,10 +16,15 @@ const essays = JSON.parse(fs.readFileSync(path.join(SRC, "essays.json"), "utf8")
 
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const langAttr = (x) => (x.lang === "ja" ? ' lang="ja"' : "");
+const labelHtml = (x, cls) => (x.label ? `<span class="${cls}">${esc(x.label)}</span>` : "");
 
-function render(md) {
-  const blocks = md.replace(/\r\n?/g, "\n").trim().split(/\n{2,}/);
-  return blocks.map((b) => {
+function blocksOf(md) {
+  return md.replace(/\r\n?/g, "\n").trim().split(/\n{2,}/);
+}
+
+function render(blocks, coda) {
+  return blocks.map((b, i) => {
+    if (coda && i === blocks.length - 1 && b.trim() === coda) return `<p class="essay-coda" lang="en">${esc(b)}</p>`;
     if (/^## /.test(b)) return `<h2>${esc(b.replace(/^## /, ""))}</h2>`;
     if (b.split("\n").every((l) => /^> ?/.test(l))) {
       return `<blockquote>${b.split("\n").map((l) => esc(l.replace(/^> ?/, ""))).join("<br />")}</blockquote>`;
@@ -80,7 +85,7 @@ function essayPage(e, i, body) {
   const next = essays[i + 1];
   const pending = body === null;
   const navItem = (x, dir) => x
-    ? `<a class="essay-nav-item ${dir}" href="/essays/${x.no}/"><span class="mono">${dir === "prev" ? `← PREVIOUS — ${x.no}` : `NEXT — ${x.no} →`}</span><span class="essay-nav-title"${langAttr(x)}>${esc(x.title)}</span></a>`
+    ? `<a class="essay-nav-item ${dir}" href="/essays/${x.no}/"><span class="mono">${dir === "prev" ? `← PREVIOUS — ${x.no}` : `NEXT — ${x.no} →`}</span><span class="essay-nav-title"${langAttr(x)}>${labelHtml(x, "nav-label")}${esc(x.title)}</span></a>`
     : `<a class="essay-nav-item ${dir} is-index" href="/essays/"><span class="mono">${dir === "prev" ? "← THE SIX ESSAYS" : "THE SIX ESSAYS →"}</span><span class="essay-nav-title" lang="ja">六つのエッセイ</span></a>`;
 
   return shell({
@@ -92,6 +97,7 @@ function essayPage(e, i, body) {
     body: `  <main class="essay">
     <header class="essay-head">
       <p class="essay-kicker mono"><span>ESSAY ${e.no}</span><a href="/essays/">THE SIX ESSAYS — ${e.no} / 06</a></p>
+      ${e.label ? `<p class="essay-label">${esc(e.label)}</p>` : ""}
       <h1 class="essay-title"${langAttr(e)}>${esc(e.title)}</h1>
       <p class="essay-en-note mono">ENGLISH TRANSLATION — PENDING EDITORIAL REVIEW</p>
       <div class="essay-rule" aria-hidden="true"><span></span></div>
@@ -123,7 +129,7 @@ function indexPage(status) {
   const rows = essays.map((e, i) => `        <li>
           <a class="toc-row" href="/essays/${e.no}/">
             <span class="toc-no mono">${e.no}</span>
-            <span class="toc-title"${langAttr(e)}>${esc(e.title)}</span>
+            <span class="toc-title"${langAttr(e)}>${labelHtml(e, "toc-label")}${esc(e.title)}</span>
             <span class="toc-state mono">${status[i] === null ? "MANUSCRIPT PENDING" : "READ →"}</span>
           </a>
         </li>`).join("\n");
@@ -142,7 +148,7 @@ function indexPage(status) {
         <p>To be read in order.</p>
         <p class="ja">六つのエッセイ。01から06へ、順に。</p>
       </div>
-      <p class="essay-en-note mono">JAPANESE MANUSCRIPTS PENDING · ENGLISH TRANSLATION PENDING EDITORIAL REVIEW</p>
+      <p class="essay-en-note mono">${allPending ? "JAPANESE MANUSCRIPTS PENDING" : "JAPANESE TEXT"} · ENGLISH TRANSLATION PENDING EDITORIAL REVIEW</p>
       <div class="essay-rule" aria-hidden="true"><span></span></div>
     </header>
 
@@ -175,7 +181,12 @@ const status = essays.map((e, i) => {
       console.error(`ESSAY ${e.no}: manuscript must end with "${e.mustEndWith}"`);
       process.exit(1);
     }
-    body = render(md);
+    const [headline, ...rest] = blocksOf(md);
+    if (headline.trim() !== e.title) {
+      console.error(`ESSAY ${e.no}: first line of the manuscript ("${headline}") must match the title in essays.json`);
+      process.exit(1);
+    }
+    body = render(rest, e.mustEndWith);
   }
   fs.mkdirSync(path.join(OUT, e.no), { recursive: true });
   fs.writeFileSync(path.join(OUT, e.no, "index.html"), essayPage(e, i, body));
