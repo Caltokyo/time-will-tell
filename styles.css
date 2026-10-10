@@ -420,68 +420,75 @@ svg text { font-family: var(--mono); font-size: 11px; fill: var(--ink-2); letter
   .follow { grid-column: 1 / -1; justify-self: stretch; justify-content: space-between; }
 }
 
-/* ---------- THE SIX ESSAYS — single entry between 11 SECRET and 12 END ---------- */
-.essays-entry { padding-block: clamp(80px, 10vw, 140px); }
-.essays-card {
+/* ---------- ESSAYS — six questions, each a direct link (generated block) ---------- */
+.essays-entry { padding-block: clamp(96px, 12vw, 180px) clamp(72px, 9vw, 140px); }
+.essays-label { gap: 6px; }
+.essays-label-ja { font-family: var(--jp); font-size: 11px; letter-spacing: 0.2em; color: #a9a49a; }
+
+.essay-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(238, 234, 225, 0.55); }
+.essay-list li { border-bottom: 1px solid rgba(238, 234, 225, 0.16); }
+.essay-row {
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-  grid-template-areas: "head toc" "cta toc";
-  gap: clamp(28px, 4vw, 64px) clamp(32px, 5vw, 80px);
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "meta arrow" "title arrow";
+  gap: 14px 32px;
+  align-items: end;
+  padding: clamp(28px, 3.6vw, 52px) 0 clamp(30px, 3.8vw, 56px);
   color: inherit;
+  transition: padding-left 0.6s var(--ease), opacity 0.9s var(--ease), transform 0.9s var(--ease);
 }
-.essays-head { grid-area: head; display: flex; flex-direction: column; gap: 22px; }
-.essays-title {
-  display: block;
-  font-family: var(--grotesk);
-  font-weight: 900;
-  font-stretch: 72%;
-  font-size: clamp(44px, 6vw, 96px);
-  line-height: 0.9;
-  letter-spacing: -0.01em;
+.essay-row-meta { grid-area: meta; display: flex; gap: 18px; align-items: baseline; font-size: 11px; letter-spacing: 0.14em; color: #a9a49a; }
+.essay-row-no { color: var(--night-fg); }
+.essay-row-cat:lang(ja) { font-family: var(--jp); letter-spacing: 0.24em; }
+.essay-row-title {
+  grid-area: title;
+  font-family: "Noto Serif JP", var(--jp), serif;
+  font-weight: 600;
+  font-size: clamp(24px, 3.1vw, 46px);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  line-break: strict;
+  word-break: auto-phrase; /* break Japanese at phrase boundaries where supported */
 }
-.essays-lead { display: flex; flex-direction: column; font-family: var(--serif); font-size: clamp(20px, 2vw, 28px); line-height: 1.3; }
-.essays-lead .ja { margin-top: 0.5em; }
-.essays-toc { grid-area: toc; border-top: 1px solid rgba(238, 234, 225, 0.5); counter-reset: none; }
-.essays-toc li {
-  display: grid;
-  grid-template-columns: 3.2em 1fr;
-  align-items: baseline;
-  padding: 14px 0;
-  border-bottom: 1px solid rgba(238, 234, 225, 0.16);
-  transition: padding-left 0.5s var(--ease), color 0.4s;
+.essay-row-arrow {
+  grid-area: arrow;
+  width: clamp(22px, 2.2vw, 30px);
+  height: clamp(22px, 2.2vw, 30px);
+  margin-bottom: 0.5em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  opacity: 0.35;
+  transition: opacity 0.4s, transform 0.5s var(--ease);
 }
-.essays-toc-no { font-size: 11px; color: #a9a49a; }
-.essays-toc-title { font-family: var(--grotesk); font-weight: 700; font-size: clamp(14px, 1.2vw, 17px); line-height: 1.5; }
-.essays-toc-title:lang(ja) { font-family: var(--jp); font-weight: 500; letter-spacing: 0.03em; }
-.essays-toc-label { display: block; margin-bottom: 2px; font-family: var(--grotesk); font-weight: 800; font-stretch: 80%; font-size: 11px; letter-spacing: 0.12em; color: #a9a49a; }
-.essays-cta {
-  grid-area: cta;
-  align-self: end;
+.essay-row:hover, .essay-row:focus-visible { padding-left: clamp(8px, 1.2vw, 18px); }
+.essay-row:hover .essay-row-arrow, .essay-row:focus-visible .essay-row-arrow { opacity: 1; transform: translate(3px, -3px); }
+.essay-row:hover .essay-row-title { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
+.essay-row:focus-visible { outline: 2px solid var(--night-fg); outline-offset: 4px; }
+.essays-all {
+  align-self: flex-start;
   display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  width: fit-content;
-  padding: 14px 18px;
-  border: 1px solid currentColor;
-  transition: background 0.3s, color 0.3s;
+  gap: 10px;
+  margin-top: 28px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: #a9a49a;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 3px;
 }
-.essays-cta .mono { font-size: 12px; letter-spacing: 0.14em; }
-.essays-cta .ja { margin: 0; font-size: 11px; color: inherit; line-height: 1.4; }
-.essays-cta svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; transition: transform 0.4s var(--ease); }
-.essays-card:hover .essays-cta, .essays-card:focus-visible .essays-cta { background: var(--night-fg); color: var(--night); }
-.essays-card:hover .essays-cta svg { transform: translate(2px, -2px); }
-.essays-card:hover .essays-toc li { padding-left: 6px; }
-.essays-card:hover .essays-toc li:nth-child(2) { transition-delay: 0.03s; }
-.essays-card:hover .essays-toc li:nth-child(3) { transition-delay: 0.06s; }
-.essays-card:hover .essays-toc li:nth-child(4) { transition-delay: 0.09s; }
-.essays-card:hover .essays-toc li:nth-child(5) { transition-delay: 0.12s; }
-.essays-card:hover .essays-toc li:nth-child(6) { transition-delay: 0.15s; }
-.essays-card:focus-visible { outline: 2px solid var(--night-fg); outline-offset: 8px; }
-@media (max-width: 860px) {
-  .essays-card { grid-template-columns: 1fr; grid-template-areas: "head" "toc" "cta"; }
-  .essays-cta { width: 100%; justify-content: space-between; }
+.essays-all span { font-family: var(--jp); letter-spacing: 0.1em; }
+.essays-all:hover { color: var(--night-fg); }
+@media (max-width: 760px) {
+  .essay-row { gap: 10px 16px; padding: 24px 0 26px; }
+  .essay-row-title { font-size: clamp(21px, 6vw, 28px); line-height: 1.45; }
+  .essay-row-arrow { opacity: 0.6; width: 20px; height: 20px; margin-bottom: 0.4em; }
+  .essay-row:hover, .essay-row:focus-visible { padding-left: 0; }
 }
+
+/* NOTHING ends on the photograph; let it breathe, then hand over to the essays */
+.nothing { padding-bottom: clamp(56px, 7vw, 104px); }
+.nothing .nothing-plate { margin-bottom: 0; }
 
 /* ---------- 13 FOLLOW THE PROJECT ---------- */
 .follow-sec { border-top: 1px solid var(--ink); }
@@ -694,6 +701,7 @@ main h2[id] { scroll-margin-top: 96px; }
   border-top: 2px solid var(--ink);
 }
 .log-intro p { margin: 0; }
+.log-intro-part { font-size: 11px; letter-spacing: 0.16em; color: var(--ink-2); margin-bottom: 10px !important; }
 .log-intro-title { font-size: clamp(44px, 7vw, 112px); font-weight: 500; line-height: 0.9; letter-spacing: -0.04em; }
 .log-intro-ja { margin-top: 10px !important; font-family: var(--jp); font-size: 13px; letter-spacing: 0.3em; color: var(--ink-2); }
 .log-intro-index ol { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
@@ -713,3 +721,4 @@ main h2[id] { scroll-margin-top: 96px; }
   .log-intro { grid-template-columns: 1fr; align-items: start; }
   .log-intro-meta { text-align: left; }
 }
+.js .essay-row.reveal { transition: padding-left 0.6s var(--ease), opacity 0.9s var(--ease), transform 0.9s var(--ease); }

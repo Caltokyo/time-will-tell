@@ -230,3 +230,18 @@ a.essay-nav-item:hover .essay-nav-title { text-decoration: underline; text-under
 @media (max-width: 560px) {
   .essay-body:lang(ja) .essay-text { font-size: 16px; line-height: 2; letter-spacing: 0.03em; }
 }
+
+/* Link to the index (目次), between prev/next and the return to the LP */
+.essay-toc-link {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 16px 0;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+.essay-toc-link .ja { margin: 0; font-size: 12px; color: var(--ink); }
+.essay-toc-link span:last-child { margin-left: auto; color: var(--ink-2); }
+.essay-toc-link:hover .mono:first-child { text-decoration: underline; text-underline-offset: 3px; }

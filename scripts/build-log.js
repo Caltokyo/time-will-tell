@@ -20,7 +20,6 @@ const entries = JSON.parse(fs.readFileSync(path.join(DIR, "log.json"), "utf8"));
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const pad = (n) => String(n).padStart(2, "0");
 const indent = (html, n) => html.trimEnd().split("\n").map((l) => (l ? " ".repeat(n) + l : l)).join("\n");
-const total = pad(entries.length);
 
 function updatedOf(e) {
   if (!e.updated) return "";
@@ -32,7 +31,7 @@ function margin(e, no) {
   const updated = updatedOf(e);
   return `      <header class="log-margin mono">
         <span class="log-tag">LOG</span>
-        <span class="log-no">${no}<small> / ${total}</small></span>
+        <span class="log-no">${no}</span>
         <span class="log-name">${esc(e.title)}</span>
         ${updated ? `<span class="log-updated"><span>UPDATED</span><time datetime="${e.updated}">${updated}</time></span>` : ""}
       </header>`;
@@ -57,6 +56,7 @@ function intro() {
   const items = entries.map((e, i) => `          <li><a href="#${e.id || `log-${e.key}`}"><span>${pad(i + 1)}</span>${esc(e.title)}</a></li>`).join("\n");
   return `    <section class="log-intro" aria-label="Field log">
       <div class="log-intro-head">
+        <p class="log-intro-part mono">PART II</p>
         <p class="log-intro-title mono">FIELD LOG</p>
         <p class="log-intro-ja" lang="ja">観察記録</p>
       </div>
