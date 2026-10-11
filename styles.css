@@ -782,3 +782,20 @@ main h2[id] { scroll-margin-top: 96px; }
   .log-intro-meta { text-align: left; }
 }
 .js .essay-row.reveal { transition: padding-left 0.6s var(--ease), opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+
+/* FIG. 006 — geography ends at TWT; UTAKI is a separate conceptual clue */
+.locator--hypothesis .loc-steps { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.locator--hypothesis .loc-twt-text { font-size: 11px; letter-spacing: .08em; }
+.loc-clue { display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; align-items: center; gap: 18px; margin-top: clamp(28px,4vw,52px); padding: 20px 0; border-top: 1px dashed var(--rule); border-bottom: 1px solid var(--rule); }
+.loc-clue-mark svg { width: 72px; height: 72px; display: block; }
+.loc-clue-copy { display: flex; flex-direction: column; gap: 5px; }
+.loc-clue-eyebrow { font-size: 10px; letter-spacing: .12em; color: var(--ink-2); }
+.loc-clue-copy strong { font-family: var(--grotesk); font-size: clamp(17px,2vw,27px); letter-spacing: .02em; }
+.loc-clue-copy .ja { font-size: clamp(11px,1.2vw,14px); }
+.loc-clue-note { font-size: 10px; letter-spacing: .08em; color: var(--ink-2); }
+@media (max-width:760px) {
+  .locator--hypothesis .loc-steps { grid-template-columns: 1fr; }
+  .loc-clue { grid-template-columns: 56px minmax(0,1fr); gap: 12px; }
+  .loc-clue-mark svg { width: 52px; height: 52px; }
+  .loc-clue-note { grid-column: 2; }
+}
