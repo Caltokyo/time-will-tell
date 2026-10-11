@@ -273,6 +273,11 @@ svg text { font-family: var(--mono); font-size: 11px; fill: var(--ink-2); letter
 .strike li.gone .strike-en::after { transform: scaleX(1); }
 .strike li.gone .ja { color: var(--muted); }
 
+.strike li.strike-remaining.gone { color: var(--ink); }
+.strike li.strike-remaining.gone .ja { color: var(--ink); }
+.strike li.strike-remaining .strike-en::after,
+.strike li.strike-remaining.gone .strike-en::after { content: none; }
+
 /* ---------- 06 UTAKI ---------- */
 /* Location sequence: JAPAN → OKINAWA → MIYAKOJIMA → UTAKI → TWT */
 .loc-steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 24px); }
