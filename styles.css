@@ -442,6 +442,7 @@ svg text { font-family: var(--mono); font-size: 11px; fill: var(--ink-2); letter
 }
 
 /* ---------- ESSAYS — six questions, each a direct link (generated block) ---------- */
+.essays-entry > .sec-body { grid-column: 1 / -1; width: 100%; }
 .essays-declaration { grid-column: 1 / -1; padding-bottom: clamp(60px, 8vw, 116px); }
 .essays-declaration-kicker { margin: 0 0 clamp(32px, 5vw, 72px); font-size: 11px; letter-spacing: .18em; color: #aaa49b; }
 .essays-declaration-title { max-width: 1250px; margin: 0; font-family: "Instrument Serif", Georgia, serif; font-weight: 400; font-size: clamp(58px, 9.5vw, 166px); line-height: .91; letter-spacing: -.045em; }
