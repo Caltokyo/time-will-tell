@@ -442,6 +442,12 @@ svg text { font-family: var(--mono); font-size: 11px; fill: var(--ink-2); letter
 }
 
 /* ---------- ESSAYS — six questions, each a direct link (generated block) ---------- */
+.essays-declaration { grid-column: 1 / -1; padding-bottom: clamp(60px, 8vw, 116px); }
+.essays-declaration-kicker { margin: 0 0 clamp(32px, 5vw, 72px); font-size: 11px; letter-spacing: .18em; color: #aaa49b; }
+.essays-declaration-title { max-width: 1250px; margin: 0; font-family: "Instrument Serif", Georgia, serif; font-weight: 400; font-size: clamp(58px, 9.5vw, 166px); line-height: .91; letter-spacing: -.045em; }
+.essays-declaration-ja { margin: clamp(26px, 3.8vw, 56px) 0 0; font-family: var(--jp); font-size: clamp(18px, 2.1vw, 30px); line-height: 1.6; letter-spacing: .035em; }
+.essays-declaration-description { margin: clamp(38px, 5vw, 76px) 0 0; padding-top: 18px; border-top: 1px solid rgba(238,234,225,.32); font-family: var(--jp); font-size: clamp(12px, 1.15vw, 15px); line-height: 1.9; color: #bdb7ad; }
+@media (max-width: 600px) { .essays-declaration-title { font-size: clamp(52px, 13vw, 82px); overflow-wrap: normal; } }
 .essays-entry { padding-block: clamp(96px, 12vw, 180px) clamp(72px, 9vw, 140px); }
 .essays-label { gap: 6px; }
 .essays-label-ja { font-family: var(--jp); font-size: 11px; letter-spacing: 0.2em; color: #a9a49a; }
