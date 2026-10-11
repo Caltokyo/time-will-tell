@@ -731,6 +731,9 @@ main h2[id] { scroll-margin-top: 96px; }
   background-position: -1px -1px;
   border-top: 2px solid var(--ink);
 }
+.log-intro-transition { grid-column: 1 / -1; padding: 0 0 clamp(40px, 6vw, 88px); }
+.log-intro-transition-en { font-family: Georgia, serif; font-size: clamp(25px, 3.8vw, 52px); line-height: 1.18; letter-spacing: -0.025em; }
+.log-intro-transition-ja { margin-top: 16px !important; font-family: var(--jp); font-size: clamp(13px, 1.25vw, 17px); letter-spacing: 0.08em; }
 .log-intro p { margin: 0; }
 .log-intro-part { font-size: 11px; letter-spacing: 0.16em; color: var(--ink-2); margin-bottom: 10px !important; }
 .log-intro-title { font-size: clamp(44px, 7vw, 112px); font-weight: 500; line-height: 0.9; letter-spacing: -0.04em; }
