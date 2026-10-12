@@ -7,9 +7,8 @@
   const KEY = "twt-follow-popup";
   const SNOOZE_DAYS = 30;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)");
-  const trigger = document.querySelector(".log-intro");
   const follow = document.getElementById("follow-the-project");
-  if (!trigger || !("IntersectionObserver" in window)) return;
+  if (!("IntersectionObserver" in window)) return;
 
   const store = {
     get() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } },
@@ -123,7 +122,7 @@
     if (reduce.matches) done(); else setTimeout(done, 400);
     if (byReader) {
       store.set({ closedAt: Date.now() });
-      io.disconnect();
+      stopTriggers();
     }
   }
 
@@ -131,20 +130,39 @@
   let allowed = true;
   fetch("/api/config", { headers: { Accept: "application/json" } })
     .then((r) => (r.ok ? r.json() : null))
-    .then((cfg) => { if (cfg && cfg.subscribeEnabled === false) { allowed = false; close(false); io.disconnect(); } })
+    .then((cfg) => { if (cfg && cfg.subscribeEnabled === false) { allowed = false; close(false); stopTriggers(); } })
     .catch(() => {});
 
-  // Appear when PART II begins; step aside while the page's own FOLLOW THE PROJECT is on screen.
-  const io = new IntersectionObserver((entries) => {
-    for (const e of entries) {
-      if (e.target === follow) {
-        followInView = e.isIntersecting;
-        if (followInView) close(false);
-      } else if (e.isIntersecting && allowed && !store.get().closedAt) {
-        openPopup();
-      }
+  // First eligible trigger: 45 seconds on page OR 70% reading progress.
+  // Suppress while the inline signup is visible, and never reopen after dismissal.
+  let eligible = false;
+  let timer;
+  function stopTriggers() {
+    clearTimeout(timer);
+    window.removeEventListener("scroll", checkProgress);
+    window.removeEventListener("resize", checkProgress);
+    observer.disconnect();
+  }
+  function requestPopup() {
+    if (!allowed || store.get().subscribed || store.get().closedAt) return;
+    eligible = true;
+    if (!followInView) openPopup();
+  }
+  function checkProgress() {
+    const doc = document.documentElement;
+    const maxScroll = Math.max(0, doc.scrollHeight - window.innerHeight);
+    if (maxScroll > 0 && window.scrollY / maxScroll >= 0.7) requestPopup();
+  }
+  const observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      followInView = entry.isIntersecting;
+      if (followInView) close(false);
+      else if (eligible) requestPopup();
     }
-  }, { threshold: 0, rootMargin: "0px 0px -40% 0px" });
-  io.observe(trigger);
-  if (follow) io.observe(follow);
+  });
+  if (follow) observer.observe(follow);
+  timer = setTimeout(requestPopup, 45000);
+  window.addEventListener("scroll", checkProgress, { passive: true });
+  window.addEventListener("resize", checkProgress);
+  checkProgress();
 })();
