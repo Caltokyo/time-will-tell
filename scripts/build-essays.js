@@ -232,7 +232,8 @@ function introBlock() {
   const lines = (a) => a.map(esc).join("<br />");
   // "boldLines": indexes of English lines set in bold (e.g. [0] for the first sentence).
   const bold = new Set(intro.boldLines || []);
-  const en = intro.en.map((l, i) => (bold.has(i) ? `<strong class="essays-intro-strong">${esc(l)}</strong>` : esc(l))).join("<br />");
+  // A bold line is its own block (it starts a new line by itself), so no <br /> follows it.
+  const en = intro.en.map((l, i) => (bold.has(i) ? `<strong class="essays-intro-strong">${esc(l)}</strong>` : esc(l) + (i < intro.en.length - 1 ? "<br />" : ""))).join("");
   return `        <div class="essays-intro reveal">
           <p class="essays-intro-en" lang="en">${en}</p>
           <p class="essays-intro-ja" lang="ja">${lines(intro.ja)}</p>
