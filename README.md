@@ -94,3 +94,13 @@ The field log has four categories — `LOG 01 HYPOTHESIS`, `02 LAND`, `03 ARCHIT
 - Every published article gets its own page at `/log/<category>/<slug>/` (the LP opened at that article, with its own title, canonical URL and OG tags). Moving between articles updates the URL and browser history, so Back/Forward and shared links work.
 - The build rewrites the block between `<!-- LOG:START -->` and `<!-- LOG:END -->` and regenerates `log/`. Never edit either by hand. After any other edit to `index.html`, run `npm run build:all` (essays + log) so the article pages pick it up; `npm test` fails while they are stale.
 - Test entries (optional, never on production): a `content/log/_test/test.json` listing placeholder articles builds them into `/log/_test/` only (noindex, redirected to `/` on utaki.me). It was used on the preview branch and is not in `main`; if you add it again, delete it and rebuild before merging.
+
+## Instagram index — `/instagram/`
+
+The page linked from the @twt_project profile. Each post opens the matching place on the LP (never just the top).
+
+- `content/instagram/posts.json` — one entry per post, in profile-grid order: `id`, `order`, `title` (the text on the post), `status` (`published` | `review`), `image` + `alt`, `instagramUrl` (the post's own URL), `target` (`href`, `section`, `label`), optional `related` (an essay or story that discusses the same point).
+- `assets/instagram/` — the post images, kept in the repository. Use the original post images only; a post without one shows its text on a tile marked IMAGE PENDING.
+- Add a post: put its image in `assets/instagram/`, add an entry, run `npm run build:instagram`. The build fails if a target anchor or page does not exist. Use `"status": "review"` while the matching place is unclear.
+- LP anchors used: `#s02` THE PROBLEM, `#s03` THE PARADOX, `#s04` PLACE, `#s05` QUESTION, `#question-list`, `#question-remains`, `#follow` (LOG 05 END). Keep these ids stable.
+- No Instagram API is used.

@@ -1,0 +1,165 @@
+{
+  "profile": "https://www.instagram.com/twt_project/",
+  "note": "One entry per Instagram post, in the order shown on the profile grid (newest first). image: the original post file in assets/instagram/, unedited, with its pixel width/height, null until the real post image is added. instagramUrl: the post's own URL (https://www.instagram.com/p/…/), null until known. target: the place on the LP that matches the post; checked by `npm run build:instagram`. status: \"published\" shows the post; \"review\" keeps it off the page.",
+  "posts": [
+    {
+      "id": "who-edits-your-time",
+      "order": 1,
+      "title": "WHO EDITS YOUR TIME?",
+      "status": "published",
+      "image": "who-edits-your-time.jpg",
+      "alt": "WHO EDITS YOUR TIME? 誰が、あなたの時間を編集している？ Notifications. Messages. Calendars. Algorithms. Technology has made our lives easier. But somewhere along the way, our time began to be edited without our choosing.",
+      "instagramUrl": null,
+      "target": {
+        "href": "/#s02",
+        "section": "THE PROBLEM",
+        "label": "WHO EDITS YOUR TIME?"
+      },
+      "related": {
+        "href": "/essays/01/",
+        "label": "ESSAY 01 — Humanity Has Started Saving Time on Becoming Itself."
+      },
+      "width": 1108,
+      "height": 1477
+    },
+    {
+      "id": "everything-is-designed",
+      "order": 2,
+      "title": "EVERYTHING IS DESIGNED TO CAPTURE YOUR ATTENTION.",
+      "status": "published",
+      "image": "everything-is-designed.jpg",
+      "alt": "EVERYTHING IS DESIGNED TO CAPTURE YOUR ATTENTION. あらゆるものが、あなたの注意を引こうとしている。 Every screen, every message, every little notification asks for your attention. But what gives that time back to you?",
+      "instagramUrl": null,
+      "target": {
+        "href": "/#s03",
+        "section": "THE PARADOX",
+        "label": "EVERYTHING IS DESIGNED TO CAPTURE YOUR ATTENTION."
+      },
+      "related": {
+        "href": "/essays/04/",
+        "label": "ESSAY 04 — Perhaps Religion Is an Old Technology."
+      },
+      "width": 1108,
+      "height": 1477
+    },
+    {
+      "id": "places-where-time-resets",
+      "order": 3,
+      "title": "Throughout history, people have sought places where time resets.",
+      "status": "published",
+      "image": "places-where-time-resets.jpg",
+      "alt": "Throughout history, people have sought places where time resets. 人は昔から、時間がリセットされる場所を求めてきた。 Temples. Churches. Mosques. Pilgrimage routes. Caves. Forests. Throughout history, people have sought places to step away from everyday life. Places where time feels different, and we can reconnect with ourselves.",
+      "instagramUrl": null,
+      "target": {
+        "href": "/#s04",
+        "section": "PLACE",
+        "label": "Throughout history, people have sought places where time seems to reset."
+      },
+      "related": null,
+      "width": 1108,
+      "height": 1477
+    },
+    {
+      "id": "tell",
+      "order": 4,
+      "title": "TELL.",
+      "status": "published",
+      "image": "tell.jpg",
+      "alt": "TELL. — set over a photograph of a green forest with a stone stairway.",
+      "instagramUrl": null,
+      "target": {
+        "href": "/#follow",
+        "section": "FIELD LOG 05 — END",
+        "label": "TIME WILL TELL."
+      },
+      "related": null,
+      "width": 1108,
+      "height": 1477
+    },
+    {
+      "id": "will",
+      "order": 5,
+      "title": "WILL",
+      "status": "published",
+      "image": "will.jpg",
+      "alt": "AN UNDISCLOSED PROJECT. WILL. JAPAN / OKINAWA / MIYAKOJIMA — set over a photograph of a sunlit forest with coral stones.",
+      "instagramUrl": null,
+      "target": {
+        "href": "/#follow",
+        "section": "FIELD LOG 05 — END",
+        "label": "TIME WILL TELL."
+      },
+      "related": null,
+      "width": 1108,
+      "height": 1477
+    },
+    {
+      "id": "time",
+      "order": 6,
+      "title": "TIME",
+      "status": "published",
+      "image": "time.jpg",
+      "alt": "TIME — set over a photograph of a sunlit forest with cycads and a leaning tree.",
+      "instagramUrl": null,
+      "target": {
+        "href": "/#follow",
+        "section": "FIELD LOG 05 — END",
+        "label": "TIME WILL TELL."
+      },
+      "related": null,
+      "width": 1108,
+      "height": 1477
+    },
+    {
+      "id": "what-kind-of-place",
+      "order": 7,
+      "title": "WHAT KIND OF PLACE HAS THE POWER TO RESET TIME?",
+      "status": "published",
+      "image": "what-kind-of-place.jpg",
+      "alt": "WHAT KIND OF PLACE HAS THE POWER TO RESET TIME? どんな場所に、時間をリセットする力があるのだろう？ What makes a place feel different? Is it the silence, the surroundings, or simply being away from everything? What helps us feel like ourselves again?",
+      "instagramUrl": null,
+      "target": {
+        "href": "/#s05",
+        "section": "QUESTION",
+        "label": "WHAT KIND OF PLACE HAS THE POWER TO RESET TIME?"
+      },
+      "related": null,
+      "width": 1108,
+      "height": 1477
+    },
+    {
+      "id": "religion-ritual-architecture-nature",
+      "order": 8,
+      "title": "Religion? Ritual? Architecture? Nature alone?",
+      "status": "published",
+      "image": "religion-ritual-architecture-nature.jpg",
+      "alt": "Religion? 宗教？ Ritual? 儀式？ Architecture? 建築、空間？ — each struck through. Nature alone? 自然だけなのか？ Is it a sacred place? A special ritual? Beautiful architecture? Or is nature itself enough to change the way we experience time?",
+      "instagramUrl": null,
+      "target": {
+        "href": "/#question-list",
+        "section": "QUESTION",
+        "label": "Religion? Ritual? Architecture? Nature alone?"
+      },
+      "related": null,
+      "width": 1108,
+      "height": 1477
+    },
+    {
+      "id": "remove-them-one-by-one",
+      "order": 9,
+      "title": "REMOVE THEM ONE BY ONE. WHAT REMAINS?",
+      "status": "published",
+      "image": "remove-them-one-by-one.jpg",
+      "alt": "REMOVE THEM ONE BY ONE. WHAT REMAINS? 必要だと思っていたものを取り除いたとき、最後に何が残るのか。 Is it a sacred place? A special ritual? Beautiful architecture? Or is nature itself enough to change the way we experience time?",
+      "instagramUrl": null,
+      "target": {
+        "href": "/#question-remains",
+        "section": "QUESTION",
+        "label": "Remove them one by one. What remains?"
+      },
+      "related": null,
+      "width": 1108,
+      "height": 1477
+    }
+  ]
+}

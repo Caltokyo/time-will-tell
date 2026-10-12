@@ -7,10 +7,11 @@
   },
   "scripts": {
     "test": "node --test test/*.test.js",
-    "build:all": "node scripts/build-essays.js && node scripts/build-log.js",
+    "build:all": "node scripts/build-essays.js && node scripts/build-log.js && node scripts/build-instagram.js",
     "build:essays": "node scripts/build-essays.js",
     "build:log": "node scripts/build-log.js",
-    "check:log": "node scripts/build-log.js --check"
+    "check:log": "node scripts/build-log.js --check",
+    "build:instagram": "node scripts/build-instagram.js"
   },
   "dependencies": {
     "pg": "^8.23.1"
