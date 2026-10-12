@@ -98,60 +98,68 @@
       "order": 6,
       "title": "TIME",
       "status": "published",
-      "image": null,
-      "alt": "",
+      "image": "time.jpg",
+      "alt": "TIME — set over a photograph of a sunlit forest with cycads and a leaning tree.",
       "instagramUrl": null,
       "target": {
         "href": "/#follow",
         "section": "FIELD LOG 05 — END",
         "label": "TIME WILL TELL."
       },
-      "related": null
+      "related": null,
+      "width": 1108,
+      "height": 1477
     },
     {
       "id": "what-kind-of-place",
       "order": 7,
       "title": "WHAT KIND OF PLACE HAS THE POWER TO RESET TIME?",
       "status": "published",
-      "image": null,
-      "alt": "",
+      "image": "what-kind-of-place.jpg",
+      "alt": "WHAT KIND OF PLACE HAS THE POWER TO RESET TIME? どんな場所に、時間をリセットする力があるのだろう？ What makes a place feel different? Is it the silence, the surroundings, or simply being away from everything? What helps us feel like ourselves again?",
       "instagramUrl": null,
       "target": {
         "href": "/#s05",
         "section": "QUESTION",
         "label": "WHAT KIND OF PLACE HAS THE POWER TO RESET TIME?"
       },
-      "related": null
+      "related": null,
+      "width": 1108,
+      "height": 1477
     },
     {
       "id": "religion-ritual-architecture-nature",
       "order": 8,
       "title": "Religion? Ritual? Architecture? Nature alone?",
       "status": "published",
-      "image": null,
-      "alt": "",
+      "image": "religion-ritual-architecture-nature.jpg",
+      "alt": "Religion? 宗教？ Ritual? 儀式？ Architecture? 建築、空間？ — each struck through. Nature alone? 自然だけなのか？ Is it a sacred place? A special ritual? Beautiful architecture? Or is nature itself enough to change the way we experience time?",
       "instagramUrl": null,
       "target": {
         "href": "/#question-list",
         "section": "QUESTION",
         "label": "Religion? Ritual? Architecture? Nature alone?"
       },
-      "related": null
+      "related": null,
+      "width": 1108,
+      "height": 1477
     },
     {
       "id": "remove-them-one-by-one",
       "order": 9,
       "title": "REMOVE THEM ONE BY ONE. WHAT REMAINS?",
       "status": "published",
-      "image": null,
-      "alt": "",
+      "image": "remove-them-one-by-one.jpg",
+      "alt": "REMOVE THEM ONE BY ONE. WHAT REMAINS? 必要だと思っていたものを取り除いたとき、最後に何が残るのか。 Is it a sacred place? A special ritual? Beautiful architecture? Or is nature itself enough to change the way we experience time?",
       "instagramUrl": null,
       "target": {
         "href": "/#question-remains",
         "section": "QUESTION",
         "label": "Remove them one by one. What remains?"
       },
-      "related": null
+      "related": null,
+      "width": 1108,
+      "height": 1477
     }
   ]
 }
