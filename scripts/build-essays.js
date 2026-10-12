@@ -224,6 +224,18 @@ ${backToLp}
   });
 }
 
+// Introduction above the six titles (content/essays/lp-intro.json: one string per line).
+function introBlock() {
+  const file = path.join(ROOT, "content", "essays", "lp-intro.json");
+  if (!fs.existsSync(file)) return "";
+  const intro = JSON.parse(fs.readFileSync(file, "utf8"));
+  const lines = (a) => a.map(esc).join("<br />");
+  return `        <div class="essays-intro reveal">
+          <p class="essays-intro-en" lang="en">${lines(intro.en)}</p>
+          <p class="essays-intro-ja" lang="ja">${lines(intro.ja)}</p>
+        </div>`;
+}
+
 function lpBlock() {
   const rows = essays.map((e) => `          <li>
             <a class="essay-row reveal" href="/essays/${e.no}/">
@@ -242,6 +254,7 @@ function lpBlock() {
         <span class="essays-label-ja" lang="ja">思考の記録</span>
       </div>
       <div class="sec-body">
+${introBlock()}
         <ol class="essay-list">
 ${rows}
         </ol>
