@@ -144,7 +144,9 @@
     observer.disconnect();
   }
   function requestPopup() {
-    if (!allowed || store.get().subscribed || store.get().closedAt) return;
+    if (!allowed || store.get().subscribed) return;
+    const closedAt = store.get().closedAt;
+    if (closedAt && Date.now() - closedAt < SNOOZE_DAYS * 864e5) return;
     eligible = true;
     if (!followInView) openPopup();
   }
