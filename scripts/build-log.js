@@ -134,8 +134,9 @@ ${indent(read(e.file), 6)}
     </section>`;
 }
 
+// The index lists the four categories only; LOG END closes the log without an entry (f5ac953).
 function intro(cats) {
-  const rows = [...cats, cfg.end].map((c, i) => `          <li><a href="#${c.id}"><span>${pad(i + 1)}</span>${esc(c.title)}</a></li>`).join("\n");
+  const rows = cats.map((c, i) => `          <li><a href="#${c.id}"><span>${pad(i + 1)}</span>${esc(c.title)}</a></li>`).join("\n");
   return `    <noscript><style>.log-article { display: flex !important; } .log-article + .log-article { margin-top: clamp(64px, 8vw, 120px); }</style></noscript>
     <section class="log-intro" aria-label="Field log">
 ${indent(read(cfg.intro.transition), 6)}
