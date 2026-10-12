@@ -89,5 +89,5 @@ The field log has four categories — `LOG 01 HYPOTHESIS`, `02 LAND`, `03 ARCHIT
   - `end`: LOG END (`content/log/end.html`), never swipeable.
 - Add an article: create `content/log/<category>/<slug>.html`, add it to that category's `articles`, run `npm run build:log`. No component code needs copying.
 - Every published article gets its own page at `/log/<category>/<slug>/` (the LP opened at that article, with its own title, canonical URL and OG tags). Moving between articles updates the URL and browser history, so Back/Forward and shared links work.
-- The build rewrites the block between `<!-- LOG:START -->` and `<!-- LOG:END -->` and regenerates `log/`. Never edit either by hand. After any other edit to `index.html`, run `npm run build` (essays + log) so the article pages pick it up; `npm test` fails while they are stale.
+- The build rewrites the block between `<!-- LOG:START -->` and `<!-- LOG:END -->` and regenerates `log/`. Never edit either by hand. After any other edit to `index.html`, run `npm run build:all` (essays + log) so the article pages pick it up; `npm test` fails while they are stale.
 - Test entries: `content/log/_test/test.json` adds placeholder articles, built only into `/log/_test/` (noindex, and redirected to `/` on utaki.me). Delete `content/log/_test/` and rebuild before merging to production.
