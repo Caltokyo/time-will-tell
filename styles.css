@@ -460,11 +460,11 @@ svg text { font-family: var(--mono); font-size: 11px; fill: var(--ink-2); letter
 
 /* Introduction: between the section label and the six titles — smaller than a title, larger than body text */
 .essays-intro { margin: 0 0 clamp(64px, 9vw, 140px); padding-top: clamp(8px, 2vw, 32px); }
-.essays-intro-en { font-family: var(--serif); font-weight: 400; font-size: clamp(24px, 2.7vw, 42px); line-height: 1.22; letter-spacing: -0.005em; color: var(--night-fg); max-width: 31em; text-wrap: pretty; }
-/* Bold lead line in Archivo: one line on desktop, evenly balanced lines on narrow screens */
-.essays-intro-strong { display: block; font-family: var(--grotesk); font-weight: 700; text-wrap: balance; }
+.essays-intro-en { font-family: var(--serif); font-weight: 400; font-size: clamp(24px, 2.7vw, 42px); line-height: 1.22; letter-spacing: -0.005em; color: var(--night-fg); text-wrap: pretty; }
+/* Bold lead line in Archivo: up to 42px, scaled with the viewport so it stays on one line on desktop; balanced lines on tablets, natural wrapping on phones */
+.essays-intro-strong { display: block; max-width: 31em; font-family: var(--grotesk); font-weight: 700; font-size: clamp(24px, calc((100vw - 120px) / 30.5), 42px); text-wrap: balance; }
 @media (max-width: 560px) { .essays-intro-strong { text-wrap: pretty; } }
-.essays-intro-ja { margin-top: clamp(20px, 2.4vw, 36px) !important; font-family: var(--jp); font-weight: 500; font-size: clamp(13px, 1.15vw, 16px); line-height: 2; letter-spacing: 0.06em; color: #c9c4b9; line-break: strict; max-width: 50em; word-break: auto-phrase; }
+.essays-intro-ja { margin-top: clamp(20px, 2.4vw, 36px) !important; font-family: var(--jp); font-weight: 500; font-size: clamp(14px, 1.25vw, 16px); line-height: 2; letter-spacing: 0.06em; color: #c9c4b9; line-break: strict; max-width: 50em; word-break: auto-phrase; }
 
 .essay-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(238, 234, 225, 0.55); }
 .essay-list li { border-bottom: 1px solid rgba(238, 234, 225, 0.16); }
