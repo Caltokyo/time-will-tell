@@ -1,11 +1,11 @@
 // FOLLOW THE PROJECT — a quiet invitation to FIELD NOTES (email).
 // Not a modal: a small card that appears once the reader has reached PART II (the field log),
-// never over the FOLLOW THE PROJECT section itself, and not again for 30 days once closed.
+// never over the FOLLOW THE PROJECT section itself, and not again for 7 days once closed.
 // It posts to the same /api/subscribe as the form on the page and only reports what the
 // server answers — never a success it did not receive.
 (() => {
   const KEY = "twt-follow-popup";
-  const SNOOZE_DAYS = 30;
+  const SNOOZE_DAYS = 7;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)");
   const follow = document.getElementById("follow-the-project");
   if (!("IntersectionObserver" in window)) return;
