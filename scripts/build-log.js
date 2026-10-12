@@ -79,23 +79,11 @@ function categories(includeTest) {
 
 // ---------- markup ----------
 
-const ARROW_L = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7" /></svg>';
-const ARROW_R = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>';
-
 function dates(a, active) {
   const p = dateOf(a.slug, a.published);
   const u = dateOf(a.slug, a.updated);
   const span = (label, d) => `<span class="log-updated" data-log-for="${a.slug}"${active ? "" : " hidden"}><span>${label}</span><time datetime="${d.iso}">${d.text}</time></span>`;
   return [p && span("PUBLISHED", p), u && span("UPDATED", u)].filter(Boolean);
-}
-
-function pager(c, i) {
-  const n = c.articles.length;
-  return `        <div class="log-pager" role="group" aria-label="${esc(c.title)} — entries" data-log-pager>
-          <button type="button" class="log-pager-btn" data-log-step="-1" aria-label="Previous entry"${i === 0 ? " disabled" : ""}>${ARROW_L}</button>
-          <span class="log-pager-count"><span data-log-current>${pad(i + 1)}</span> / ${pad(n)}</span>
-          <button type="button" class="log-pager-btn" data-log-step="1" aria-label="Next entry"${i === n - 1 ? " disabled" : ""}>${ARROW_R}</button>
-        </div>`;
 }
 
 function category(c, no, active, base) {
@@ -125,7 +113,7 @@ ${indent(read(a.file), 8)}
         <span class="log-tag">LOG</span>
         <span class="log-no">${no}</span>
         <span class="log-name">${esc(c.title)}</span>
-${[...meta, ...(multi ? [pager(c, ai)] : [])].join("\n")}
+${meta.join("\n")}
       </header>
 ${articles.join("\n\n")}
     </section>`;
