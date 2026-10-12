@@ -810,3 +810,46 @@ main h2[id] { scroll-margin-top: 96px; }
   .log-intro-transition-en { overflow-wrap:anywhere; }
   .loc-steps .fig006-window { touch-action:pan-y; }
 }
+
+/* ---------- Field log: several entries per category, one shown at a time ---------- */
+.log-article:not(.is-active) { display: none; }
+.sec > .log-article { grid-column: -2; }
+.log[data-log-count] > .log-article { touch-action: pan-y pinch-zoom; }
+.log-article.is-dragging { transition: none; }
+.log-article:not(.is-dragging) { transition: transform 0.35s var(--ease); }
+.log-article.is-enter-next { animation: log-enter-next 0.6s var(--ease) both; }
+.log-article.is-enter-prev { animation: log-enter-prev 0.6s var(--ease) both; }
+@keyframes log-enter-next { from { opacity: 0; transform: translateX(40px); } }
+@keyframes log-enter-prev { from { opacity: 0; transform: translateX(-40px); } }
+
+.log-pager { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed currentColor; }
+html:not(.js) .log-pager { display: none; }
+.log-pager-count { min-width: 5.5em; text-align: center; font-feature-settings: "tnum"; letter-spacing: 0.08em; }
+.log-pager-count span { color: inherit; }
+.log-pager-btn {
+  appearance: none;
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, opacity 0.3s;
+}
+.log-pager-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.log-pager-btn:not(:disabled):hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.log.sec-dark .log-pager-btn:not(:disabled):hover { background: var(--night-fg); border-color: var(--night-fg); color: var(--night); }
+.log-pager-btn:disabled { opacity: 0.25; cursor: default; }
+.log-pager-btn:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
+.log-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 760px) {
+  .log-pager { grid-column: 1 / -1; margin-top: 4px; padding-top: 8px; }
+  .log-pager-btn { width: 40px; height: 40px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .log-article.is-enter-next, .log-article.is-enter-prev { animation: none; }
+  .log-article { transition: none !important; }
+}

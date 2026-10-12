@@ -1,51 +1,97 @@
-[
-  {
-    "key": "hypothesis",
-    "file": "01-hypothesis.html",
-    "title": "HYPOTHESIS",
-    "layout": "sec",
-    "labelledby": "s08",
-    "classes": [
-      "sec-dark",
-      "hypo"
-    ],
-    "updated": null
+{
+  "site": "https://utaki.me",
+  "intro": {
+    "transition": "_intro-transition.html",
+    "ja": "制作過程"
   },
-  {
-    "key": "the-project",
-    "file": "02-the-project.html",
-    "title": "THE PROJECT",
-    "layout": "sec",
-    "labelledby": "s09",
-    "classes": [],
-    "updated": null
-  },
-  {
-    "key": "time",
-    "file": "03-time.html",
-    "title": "TIME",
-    "layout": "sec",
-    "labelledby": "s10",
-    "classes": [],
-    "updated": null
-  },
-  {
-    "key": "secret",
-    "file": "04-secret.html",
-    "title": "SECRET",
-    "layout": "sec",
-    "labelledby": "s11",
-    "classes": [],
-    "updated": null
-  },
-  {
+  "categories": [
+    {
+      "key": "hypothesis",
+      "title": "HYPOTHESIS",
+      "id": "log-hypothesis",
+      "classes": ["sec-dark", "hypo"],
+      "articles": [
+        {
+          "slug": "utaki-is-a-technology",
+          "title": "UTAKI IS A TECHNOLOGY.",
+          "description": "御嶽を、テクノロジーとして読む。",
+          "file": "hypothesis/utaki-is-a-technology.html",
+          "heading": "s08",
+          "order": 1,
+          "status": "published",
+          "published": null,
+          "updated": null,
+          "image": null
+        }
+      ]
+    },
+    {
+      "key": "land",
+      "title": "LAND",
+      "id": "log-the-project",
+      "classes": [],
+      "articles": [
+        {
+          "slug": "so-we-decided-to-find-out",
+          "title": "SO WE DECIDED TO FIND OUT.",
+          "description": "だから、実際につくって確かめることにした。",
+          "file": "land/so-we-decided-to-find-out.html",
+          "heading": "s09",
+          "order": 1,
+          "status": "published",
+          "published": null,
+          "updated": null,
+          "image": null
+        }
+      ]
+    },
+    {
+      "key": "architecture",
+      "title": "ARCHITECTURE",
+      "id": "log-time",
+      "classes": [],
+      "articles": [
+        {
+          "slug": "a-device-for-adjusting-time",
+          "title": "Perhaps it is less a building than a device for adjusting time.",
+          "description": "それは建築というよりも、時間を調整する装置なのかもしれない。",
+          "file": "architecture/a-device-for-adjusting-time.html",
+          "heading": "s10",
+          "order": 1,
+          "status": "published",
+          "published": null,
+          "updated": null,
+          "image": null
+        }
+      ]
+    },
+    {
+      "key": "experience",
+      "title": "EXPERIENCE",
+      "id": "log-secret",
+      "classes": [],
+      "articles": [
+        {
+          "slug": "this-is-not-a-hotel",
+          "title": "THIS IS NOT A HOTEL.",
+          "description": "これはホテルではない。",
+          "file": "experience/this-is-not-a-hotel.html",
+          "heading": "s11",
+          "order": 1,
+          "status": "published",
+          "published": null,
+          "updated": null,
+          "image": null
+        }
+      ]
+    }
+  ],
+  "end": {
     "key": "end",
-    "file": "05-end.html",
     "title": "END",
-    "layout": "end",
-    "labelledby": "s12",
-    "classes": [],
-    "updated": null,
-    "id": "follow"
+    "id": "follow",
+    "file": "end.html",
+    "heading": "s12",
+    "updated": null
   }
-]
+}

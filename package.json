@@ -7,8 +7,10 @@
   },
   "scripts": {
     "test": "node --test test/*.test.js",
+    "build": "node scripts/build-essays.js && node scripts/build-log.js",
     "build:essays": "node scripts/build-essays.js",
-    "build:log": "node scripts/build-log.js"
+    "build:log": "node scripts/build-log.js",
+    "check:log": "node scripts/build-log.js --check"
   },
   "dependencies": {
     "pg": "^8.23.1"

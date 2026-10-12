@@ -80,9 +80,14 @@ TEST_DATABASE_URL=postgres://user@localhost:5432/scratch_db npm test   # use a d
 
 ### Updating the field log
 
-- `content/log/log.json` — ordered entries. Numbering (`LOG 01`, `LOG 02` … no fixed total) and the FIELD LOG index follow this order automatically.
-  - `file`: the entry's markup in `content/log/` (inner content only — the wrapper, number and margin are generated).
-  - `title`, `labelledby` (id of the entry's heading), `classes` (e.g. `sec-dark`), `layout` (`sec` or `end`), optional `id`.
-  - `updated`: `"YYYY-MM-DD"` or `null`. It is shown as `UPDATED …` only when set. Set it to the real date the entry's content changed — never a placeholder.
-- Add an entry: create `content/log/NN-name.html`, add it to `log.json`, run `npm run build:log`.
-- The build only rewrites the block between `<!-- LOG:START -->` and `<!-- LOG:END -->`.
+The field log has four categories — `LOG 01 HYPOTHESIS`, `02 LAND`, `03 ARCHITECTURE`, `04 EXPERIENCE` — and the fixed `LOG 05 END`. Each category can collect any number of articles. Readers scroll vertically between categories and move horizontally between a category's articles: swipe on touch screens, the ← → buttons in the log margin, or the arrow keys while focus is inside the category. The controls and the `01 / 03` count appear only when a category has more than one article.
+
+- `content/log/log.json`
+  - `categories[]`: `key` (URL segment), `title`, `id` (section anchor — kept stable), `classes` (e.g. `sec-dark`), `articles[]`.
+  - each article: `slug`, `title`, `description` (share text), `file` (`content/log/<category>/<slug>.html`, inner markup only), `heading` (id of the article's heading), `order`, `status` (`published` | `draft`), `published` / `updated` (`"YYYY-MM-DD"` or `null` — real dates only, shown only when set), `image` (optional share image path).
+  - `intro`: the "So we decided to build one." block (`content/log/_intro-transition.html`) and the Japanese subtitle.
+  - `end`: LOG END (`content/log/end.html`), never swipeable.
+- Add an article: create `content/log/<category>/<slug>.html`, add it to that category's `articles`, run `npm run build:log`. No component code needs copying.
+- Every published article gets its own page at `/log/<category>/<slug>/` (the LP opened at that article, with its own title, canonical URL and OG tags). Moving between articles updates the URL and browser history, so Back/Forward and shared links work.
+- The build rewrites the block between `<!-- LOG:START -->` and `<!-- LOG:END -->` and regenerates `log/`. Never edit either by hand. After any other edit to `index.html`, run `npm run build` (essays + log) so the article pages pick it up; `npm test` fails while they are stale.
+- Test entries: `content/log/_test/test.json` adds placeholder articles, built only into `/log/_test/` (noindex, and redirected to `/` on utaki.me). Delete `content/log/_test/` and rebuild before merging to production.
