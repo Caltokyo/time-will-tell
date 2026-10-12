@@ -1,0 +1,105 @@
+{
+  "profile": "https://www.instagram.com/twt_project/",
+  "note": "One entry per Instagram post, in the order shown on the profile grid (newest first). image: file in assets/instagram/ (square JPG/WebP), null until the real post image is added. instagramUrl: the post's own URL (https://www.instagram.com/p/…/), null until known. target: the place on the LP that matches the post; checked by `npm run build:instagram`. status: \"published\" shows the post; \"review\" keeps it off the page.",
+  "posts": [
+    {
+      "id": "who-edits-your-time",
+      "order": 1,
+      "title": "WHO EDITS YOUR TIME?",
+      "status": "published",
+      "image": null,
+      "alt": "",
+      "instagramUrl": null,
+      "target": { "href": "/#s02", "section": "THE PROBLEM", "label": "WHO EDITS YOUR TIME?" },
+      "related": { "href": "/essays/01/", "label": "ESSAY 01 — Humanity Has Started Saving Time on Becoming Itself." }
+    },
+    {
+      "id": "everything-is-designed",
+      "order": 2,
+      "title": "EVERYTHING IS DESIGNED TO CAPTURE YOUR ATTENTION.",
+      "status": "published",
+      "image": null,
+      "alt": "",
+      "instagramUrl": null,
+      "target": { "href": "/#s03", "section": "THE PARADOX", "label": "EVERYTHING IS DESIGNED TO CAPTURE YOUR ATTENTION." },
+      "related": { "href": "/essays/04/", "label": "ESSAY 04 — Perhaps Religion Is an Old Technology." }
+    },
+    {
+      "id": "places-where-time-resets",
+      "order": 3,
+      "title": "Throughout history, people have sought places where time resets.",
+      "status": "published",
+      "image": null,
+      "alt": "",
+      "instagramUrl": null,
+      "target": { "href": "/#s04", "section": "PLACE", "label": "Throughout history, people have sought places where time seems to reset." },
+      "related": null
+    },
+    {
+      "id": "tell",
+      "order": 4,
+      "title": "TELL.",
+      "status": "published",
+      "image": null,
+      "alt": "",
+      "instagramUrl": null,
+      "target": { "href": "/#follow", "section": "FIELD LOG 05 — END", "label": "TIME WILL TELL." },
+      "related": null
+    },
+    {
+      "id": "time",
+      "order": 5,
+      "title": "TIME",
+      "status": "published",
+      "image": null,
+      "alt": "",
+      "instagramUrl": null,
+      "target": { "href": "/#follow", "section": "FIELD LOG 05 — END", "label": "TIME WILL TELL." },
+      "related": null
+    },
+    {
+      "id": "will",
+      "order": 6,
+      "title": "WILL",
+      "status": "published",
+      "image": null,
+      "alt": "",
+      "instagramUrl": null,
+      "target": { "href": "/#follow", "section": "FIELD LOG 05 — END", "label": "TIME WILL TELL." },
+      "related": null
+    },
+    {
+      "id": "what-kind-of-place",
+      "order": 7,
+      "title": "WHAT KIND OF PLACE HAS THE POWER TO RESET TIME?",
+      "status": "published",
+      "image": null,
+      "alt": "",
+      "instagramUrl": null,
+      "target": { "href": "/#s05", "section": "QUESTION", "label": "WHAT KIND OF PLACE HAS THE POWER TO RESET TIME?" },
+      "related": null
+    },
+    {
+      "id": "religion-ritual-architecture-nature",
+      "order": 8,
+      "title": "Religion? Ritual? Architecture? Nature alone?",
+      "status": "published",
+      "image": null,
+      "alt": "",
+      "instagramUrl": null,
+      "target": { "href": "/#question-list", "section": "QUESTION", "label": "Religion? Ritual? Architecture? Nature alone?" },
+      "related": null
+    },
+    {
+      "id": "remove-them-one-by-one",
+      "order": 9,
+      "title": "REMOVE THEM ONE BY ONE. WHAT REMAINS?",
+      "status": "published",
+      "image": null,
+      "alt": "",
+      "instagramUrl": null,
+      "target": { "href": "/#question-remains", "section": "QUESTION", "label": "Remove them one by one. What remains?" },
+      "related": null
+    }
+  ]
+}

@@ -645,6 +645,8 @@ svg text { font-family: var(--mono); font-size: 11px; fill: var(--ink-2); letter
 
 /* Anchored returns from essay pages land below the fixed bar */
 main h2[id] { scroll-margin-top: 96px; }
+/* Stable anchors linked from /instagram/ */
+#question-list, #question-remains { scroll-margin-top: 120px; }
 
 /* =====================================================================
    TWO-PART LP
