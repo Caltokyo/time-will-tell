@@ -51,6 +51,7 @@ for (const p of posts) {
   if (p.related) checkHref(`${where} related`, p.related.href);
   if (p.image && !fs.existsSync(path.join(ROOT, "assets", "instagram", p.image))) throw new Error(`${where}: assets/instagram/${p.image} not found`);
   if (p.image && !p.alt) throw new Error(`${where}: an image needs "alt" text`);
+  if (p.image && !(p.width > 0 && p.height > 0)) throw new Error(`${where}: an image needs its pixel "width" and "height"`);
   if (p.instagramUrl && !/^https:\/\/www\.instagram\.com\/(p|reel)\/[\w-]+\/$/.test(p.instagramUrl)) throw new Error(`${where}: instagramUrl must be https://www.instagram.com/p/…/`);
 }
 
@@ -59,7 +60,7 @@ const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M9
 function tile(p, i) {
   const no = `IG ${pad(i + 1)}`;
   const plate = p.image
-    ? `<img src="/assets/instagram/${esc(p.image)}" alt="${esc(p.alt)}" width="1080" height="1080" loading="${i < 6 ? "eager" : "lazy"}" decoding="async" />`
+    ? `<img src="/assets/instagram/${esc(p.image)}" alt="${esc(p.alt)}" width="${p.width}" height="${p.height}" loading="${i < 6 ? "eager" : "lazy"}" decoding="async" />`
     : `<span class="ig-pending" aria-hidden="true"><span class="ig-pending-title">${esc(p.title)}</span><span class="ig-pending-mark mono">IMAGE PENDING</span></span>`;
   const extra = [
     p.related ? `<a class="ig-sub" href="${esc(p.related.href)}">${esc(p.related.label)}</a>` : "",
@@ -67,7 +68,7 @@ function tile(p, i) {
   ].filter(Boolean);
   return `      <li class="ig-item" id="ig-${esc(p.id)}">
         <a class="ig-link" href="${esc(p.target.href)}" aria-label="${esc(`${no}: ${p.title} — open ${p.target.section}: ${p.target.label}`)}">
-          <span class="ig-plate">${plate}</span>
+          <span class="ig-plate${p.image ? " ig-plate--img" : ""}">${plate}</span>
           <span class="ig-meta mono"><span class="ig-no">${no}</span><span class="ig-to">→ ${esc(p.target.section)}</span></span>
           <span class="ig-target">${esc(p.target.label)}</span>
         </a>${extra.length ? `\n        <span class="ig-extra">${extra.join("")}</span>` : ""}

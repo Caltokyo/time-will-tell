@@ -1,71 +1,111 @@
 {
   "profile": "https://www.instagram.com/twt_project/",
-  "note": "One entry per Instagram post, in the order shown on the profile grid (newest first). image: file in assets/instagram/ (square JPG/WebP), null until the real post image is added. instagramUrl: the post's own URL (https://www.instagram.com/p/…/), null until known. target: the place on the LP that matches the post; checked by `npm run build:instagram`. status: \"published\" shows the post; \"review\" keeps it off the page.",
+  "note": "One entry per Instagram post, in the order shown on the profile grid (newest first). image: the original post file in assets/instagram/, unedited, with its pixel width/height, null until the real post image is added. instagramUrl: the post's own URL (https://www.instagram.com/p/…/), null until known. target: the place on the LP that matches the post; checked by `npm run build:instagram`. status: \"published\" shows the post; \"review\" keeps it off the page.",
   "posts": [
     {
       "id": "who-edits-your-time",
       "order": 1,
       "title": "WHO EDITS YOUR TIME?",
       "status": "published",
-      "image": null,
-      "alt": "",
+      "image": "who-edits-your-time.jpg",
+      "alt": "WHO EDITS YOUR TIME? 誰が、あなたの時間を編集している？ Notifications. Messages. Calendars. Algorithms. Technology has made our lives easier. But somewhere along the way, our time began to be edited without our choosing.",
       "instagramUrl": null,
-      "target": { "href": "/#s02", "section": "THE PROBLEM", "label": "WHO EDITS YOUR TIME?" },
-      "related": { "href": "/essays/01/", "label": "ESSAY 01 — Humanity Has Started Saving Time on Becoming Itself." }
+      "target": {
+        "href": "/#s02",
+        "section": "THE PROBLEM",
+        "label": "WHO EDITS YOUR TIME?"
+      },
+      "related": {
+        "href": "/essays/01/",
+        "label": "ESSAY 01 — Humanity Has Started Saving Time on Becoming Itself."
+      },
+      "width": 1108,
+      "height": 1477
     },
     {
       "id": "everything-is-designed",
       "order": 2,
       "title": "EVERYTHING IS DESIGNED TO CAPTURE YOUR ATTENTION.",
       "status": "published",
-      "image": null,
-      "alt": "",
+      "image": "everything-is-designed.jpg",
+      "alt": "EVERYTHING IS DESIGNED TO CAPTURE YOUR ATTENTION. あらゆるものが、あなたの注意を引こうとしている。 Every screen, every message, every little notification asks for your attention. But what gives that time back to you?",
       "instagramUrl": null,
-      "target": { "href": "/#s03", "section": "THE PARADOX", "label": "EVERYTHING IS DESIGNED TO CAPTURE YOUR ATTENTION." },
-      "related": { "href": "/essays/04/", "label": "ESSAY 04 — Perhaps Religion Is an Old Technology." }
+      "target": {
+        "href": "/#s03",
+        "section": "THE PARADOX",
+        "label": "EVERYTHING IS DESIGNED TO CAPTURE YOUR ATTENTION."
+      },
+      "related": {
+        "href": "/essays/04/",
+        "label": "ESSAY 04 — Perhaps Religion Is an Old Technology."
+      },
+      "width": 1108,
+      "height": 1477
     },
     {
       "id": "places-where-time-resets",
       "order": 3,
       "title": "Throughout history, people have sought places where time resets.",
       "status": "published",
-      "image": null,
-      "alt": "",
+      "image": "places-where-time-resets.jpg",
+      "alt": "Throughout history, people have sought places where time resets. 人は昔から、時間がリセットされる場所を求めてきた。 Temples. Churches. Mosques. Pilgrimage routes. Caves. Forests. Throughout history, people have sought places to step away from everyday life. Places where time feels different, and we can reconnect with ourselves.",
       "instagramUrl": null,
-      "target": { "href": "/#s04", "section": "PLACE", "label": "Throughout history, people have sought places where time seems to reset." },
-      "related": null
+      "target": {
+        "href": "/#s04",
+        "section": "PLACE",
+        "label": "Throughout history, people have sought places where time seems to reset."
+      },
+      "related": null,
+      "width": 1108,
+      "height": 1477
     },
     {
       "id": "tell",
       "order": 4,
       "title": "TELL.",
       "status": "published",
-      "image": null,
-      "alt": "",
+      "image": "tell.jpg",
+      "alt": "TELL. — set over a photograph of a green forest with a stone stairway.",
       "instagramUrl": null,
-      "target": { "href": "/#follow", "section": "FIELD LOG 05 — END", "label": "TIME WILL TELL." },
-      "related": null
+      "target": {
+        "href": "/#follow",
+        "section": "FIELD LOG 05 — END",
+        "label": "TIME WILL TELL."
+      },
+      "related": null,
+      "width": 1108,
+      "height": 1477
+    },
+    {
+      "id": "will",
+      "order": 5,
+      "title": "WILL",
+      "status": "published",
+      "image": "will.jpg",
+      "alt": "AN UNDISCLOSED PROJECT. WILL. JAPAN / OKINAWA / MIYAKOJIMA — set over a photograph of a sunlit forest with coral stones.",
+      "instagramUrl": null,
+      "target": {
+        "href": "/#follow",
+        "section": "FIELD LOG 05 — END",
+        "label": "TIME WILL TELL."
+      },
+      "related": null,
+      "width": 1108,
+      "height": 1477
     },
     {
       "id": "time",
-      "order": 5,
+      "order": 6,
       "title": "TIME",
       "status": "published",
       "image": null,
       "alt": "",
       "instagramUrl": null,
-      "target": { "href": "/#follow", "section": "FIELD LOG 05 — END", "label": "TIME WILL TELL." },
-      "related": null
-    },
-    {
-      "id": "will",
-      "order": 6,
-      "title": "WILL",
-      "status": "published",
-      "image": null,
-      "alt": "",
-      "instagramUrl": null,
-      "target": { "href": "/#follow", "section": "FIELD LOG 05 — END", "label": "TIME WILL TELL." },
+      "target": {
+        "href": "/#follow",
+        "section": "FIELD LOG 05 — END",
+        "label": "TIME WILL TELL."
+      },
       "related": null
     },
     {
@@ -76,7 +116,11 @@
       "image": null,
       "alt": "",
       "instagramUrl": null,
-      "target": { "href": "/#s05", "section": "QUESTION", "label": "WHAT KIND OF PLACE HAS THE POWER TO RESET TIME?" },
+      "target": {
+        "href": "/#s05",
+        "section": "QUESTION",
+        "label": "WHAT KIND OF PLACE HAS THE POWER TO RESET TIME?"
+      },
       "related": null
     },
     {
@@ -87,7 +131,11 @@
       "image": null,
       "alt": "",
       "instagramUrl": null,
-      "target": { "href": "/#question-list", "section": "QUESTION", "label": "Religion? Ritual? Architecture? Nature alone?" },
+      "target": {
+        "href": "/#question-list",
+        "section": "QUESTION",
+        "label": "Religion? Ritual? Architecture? Nature alone?"
+      },
       "related": null
     },
     {
@@ -98,7 +146,11 @@
       "image": null,
       "alt": "",
       "instagramUrl": null,
-      "target": { "href": "/#question-remains", "section": "QUESTION", "label": "Remove them one by one. What remains?" },
+      "target": {
+        "href": "/#question-remains",
+        "section": "QUESTION",
+        "label": "Remove them one by one. What remains?"
+      },
       "related": null
     }
   ]
