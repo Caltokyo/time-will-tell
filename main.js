@@ -188,20 +188,13 @@
     showStatus("not_configured");
   };
 
-  const ig = document.getElementById("ig-button");
+  // The Instagram link (@twt_project) is fixed in index.html.
   fetch("/api/config", { headers: { Accept: "application/json" } })
     .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
     .then((cfg) => {
       if (cfg.subscribeEnabled === false) closeForm();
-      if (typeof cfg.instagramUrl === "string" && /^https:\/\/(www\.)?instagram\.com\/./.test(cfg.instagramUrl)) {
-        ig.href = cfg.instagramUrl;
-        ig.classList.remove("is-disabled");
-        ig.removeAttribute("aria-disabled");
-        ig.removeAttribute("role");
-        document.getElementById("ig-sub").textContent = "Instagram でフォロー";
-      }
     })
-    .catch(() => { /* config unavailable: keep Instagram disabled; the form reports errors on submit */ });
+    .catch(() => { /* config unavailable: the form reports errors on submit */ });
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();

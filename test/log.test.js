@@ -20,7 +20,9 @@ test("test entries stay out of published pages", () => {
     else if (e.isFile()) files.push(p);
   });
   walk(path.join(ROOT, "log"));
-  const test = JSON.parse(fs.readFileSync(path.join(ROOT, "content", "log", "_test", "test.json"), "utf8")).articles;
+  const TEST_JSON = path.join(ROOT, "content", "log", "_test", "test.json");
+  const test = fs.existsSync(TEST_JSON) ? JSON.parse(fs.readFileSync(TEST_JSON, "utf8")).articles : [];
+  for (const f of files) assert.ok(!/TEST ENTRY|placeholder entry/.test(fs.readFileSync(f, "utf8")), `${path.relative(ROOT, f)} contains test content`);
   for (const f of files) {
     const html = fs.readFileSync(f, "utf8");
     for (const a of test) assert.ok(!html.includes(`id="${a.heading}"`), `${path.relative(ROOT, f)} contains test entry ${a.heading}`);

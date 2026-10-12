@@ -6,16 +6,5 @@
     "api/unsubscribe.js": {
       "includeFiles": "db/schema.sql"
     }
-  },
-  "headers": [
-    {
-      "source": "/log/_test/(.*)",
-      "headers": [
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow"
-        }
-      ]
-    }
-  ]
+  }
 }
