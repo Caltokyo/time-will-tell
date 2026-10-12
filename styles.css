@@ -880,6 +880,10 @@ html:not(.js) .log-nav, html:not(.js) .log-edge, html:not(.js) .log-foot { displ
   text-underline-offset: 4px;
 }
 .log-pager-btn:focus-visible, .log-foot-item:focus-visible, .log-hint:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
+/* One story so far: count and bar, no controls */
+.log-nav--single .log-pager-count { min-width: 0; text-align: left; }
+.log-continues { margin: 0; font-size: 10px; letter-spacing: 0.14em; line-height: 1.6; opacity: 0.6; }
+.log-continues [lang="ja"] { font-family: var(--jp); letter-spacing: 0.08em; }
 
 /* Page edges: stories to come stack at the right edge, read ones at the left */
 .log-edge { position: absolute; top: 0; bottom: 0; width: var(--gutter); display: flex; justify-content: center; pointer-events: none; }
@@ -956,6 +960,7 @@ html:not(.js) .log-nav, html:not(.js) .log-edge, html:not(.js) .log-foot { displ
   .log-nav { grid-column: 1 / -1; grid-template-columns: auto 1fr; align-items: center; column-gap: 16px; margin-top: 4px; padding-top: 10px; }
   .log-steps { grid-column: 1 / -1; grid-row: 2; max-width: none; }
   .log-hint { justify-self: end; white-space: nowrap; font-size: 10px; letter-spacing: 0.1em; }
+  .log-continues { justify-self: end; text-align: right; }
   .log-pager-btn { width: 44px; height: 44px; }
   .log-edge-tab { display: none; }
   .log-edge-pages { opacity: 0.4; }

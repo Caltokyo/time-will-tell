@@ -2,7 +2,8 @@
 // Vertical scrolling moves between categories; horizontal movement swaps the whole story:
 // swipe (touch), the ← → controls, or the arrow keys while focus is inside the category.
 // Every story has its own URL (/log/<category>/<slug>/), kept in history.
-// Controls exist only where a category holds more than one story.
+// A category with one story shows its count (01 / 01), a full step bar and a quiet note that the
+// record continues; arrows, page edges, swipe and keys switch on once it holds two or more.
 (() => {
   const sections = [...document.querySelectorAll("section[data-log-cat]")];
   if (!sections.length) return;
@@ -21,7 +22,7 @@
     const i = Math.max(0, arts.findIndex((a) => a.classList.contains("is-active")));
     const c = { key: sec.dataset.logCat, sec, arts, i, name: sec.querySelector(".log-name").textContent.trim() };
     cats.set(c.key, c);
-    if (arts.length < 2) return;
+    if (arts.length < 2) { single(c); return; }
     build(c);
     render(c);
 
@@ -42,6 +43,16 @@
   });
 
   // ---------- controls ----------
+
+  // One story: count and bar only — nothing to step to, so no buttons and no swipe.
+  function single(c) {
+    c.sec.querySelector(".log-margin").appendChild(frag(`
+      <div class="log-nav log-nav--single" role="group" aria-label="${esc(c.name)} — stories">
+        <div class="log-pager"><span class="log-pager-count"><span data-log-current>01</span> / 01</span></div>
+        <span class="log-steps" aria-hidden="true"><i class="is-on"></i></span>
+        <p class="log-continues">THE RECORD CONTINUES <span lang="ja">— 記録は続く。</span></p>
+      </div>`));
+  }
 
   function build(c) {
     const n = c.arts.length;
