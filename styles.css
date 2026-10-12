@@ -799,3 +799,14 @@ main h2[id] { scroll-margin-top: 96px; }
   .loc-clue-mark svg { width: 52px; height: 52px; }
   .loc-clue-note { grid-column: 2; }
 }
+
+/* Mobile LP polish: protect long bilingual headings and documentary plates. */
+.plate > img { display:block; width:100%; height:auto; border:1px solid var(--ink); }
+@media (max-width: 760px) {
+  .sec-body, .split, .split-text, .pair, .log-intro, .log-margin, .essay-row { min-width:0; }
+  .prose, .prose-lg, .pair p, .loc-clue-copy { overflow-wrap:break-word; }
+  .plate { max-width:100%; }
+  .plate > img { max-width:100%; }
+  .log-intro-transition-en { overflow-wrap:anywhere; }
+  .loc-steps .fig006-window { touch-action:pan-y; }
+}
