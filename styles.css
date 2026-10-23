@@ -810,3 +810,26 @@ main h2[id] { scroll-margin-top: 96px; }
   .log-intro-transition-en { overflow-wrap:anywhere; }
   .loc-steps .fig006-window { touch-action:pan-y; }
 }
+
+/* Reflective questions: hover to reveal on desktop, tap to expand on touch. */
+.feed-interactive { max-width: 100%; }
+.feed-interactive li { display:block; padding:0; }
+.feed-detail { position:relative; }
+.feed-detail summary { display:flex; align-items:center; justify-content:space-between; gap:18px; cursor:pointer; list-style:none; padding:15px 0; }
+.feed-detail summary::-webkit-details-marker { display:none; }
+.feed-label { display:flex; flex-direction:column; gap:4px; }
+.feed-indicator { font-size:22px; font-weight:300; color:var(--ink-2); transition:transform .3s ease; }
+.feed-detail[open] .feed-indicator { transform:rotate(45deg); }
+.feed-question { max-width:690px; padding:0 30px 22px 0; animation:feed-appear .45s ease both; }
+.feed-question p { margin:0; font-family:var(--serif); font-size:clamp(17px,2vw,27px); line-height:1.35; }
+.feed-question p.ja { margin-top:10px; font-family:var(--jp); font-size:clamp(12px,1.1vw,16px); line-height:1.8; }
+@keyframes feed-appear { from { opacity:0; transform:translateX(-12px); } to { opacity:1; transform:translateX(0); } }
+@media (hover:hover) and (pointer:fine) and (min-width:861px) {
+  .feed-detail { display:grid; grid-template-columns:minmax(200px, 300px) minmax(0, 1fr); align-items:start; }
+  .feed-detail summary { grid-column:1; }
+  .feed-question { grid-column:2; grid-row:1; padding:16px 20px 16px 0; }
+  .feed-detail:not([open]) .feed-question { display:block; opacity:0; transform:translateX(-12px); pointer-events:none; animation:none; transition:opacity .4s ease,transform .4s ease; }
+  .feed-detail:not([open]):hover .feed-question, .feed-detail:not([open]):focus-within .feed-question { opacity:1; transform:translateX(0); }
+  .feed-detail .feed-indicator { opacity:0; }
+}
+@media (prefers-reduced-motion:reduce) { .feed-question, .feed-detail .feed-indicator { animation:none!important; transition:none!important; } }
