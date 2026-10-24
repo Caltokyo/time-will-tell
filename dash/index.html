@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DASH | TIME WILL TELL</title>
+  <meta name="description" content="TIME WILL TELL — site visits, from Vercel Web Analytics." />
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#f1eee6" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <!-- No Web Analytics tag here: looking at the numbers is not counted as a visit. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="preload" href="/assets/fonts/archivo-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .dash { padding: 112px var(--gutter) 80px; max-width: 1240px; }
+    .dash-kicker { display: flex; justify-content: space-between; gap: 16px; font-size: 11px; color: var(--ink-2); border-top: 1px solid var(--ink); padding-top: 12px; }
+    .dash-title { font-family: var(--grotesk); font-weight: 800; font-stretch: 75%; font-size: clamp(64px, 12vw, 168px); line-height: 0.86; letter-spacing: -0.01em; margin: 28px 0 0; }
+    .dash-lead { margin: 18px 0 0; font-family: var(--serif); font-size: clamp(18px, 2vw, 26px); line-height: 1.3; }
+    .dash-lead .ja { display: block; margin-top: 8px; font-size: max(12px, calc(var(--ja) * 1.6em)); line-height: 1.7; }
+
+    .dash-sec { margin-top: clamp(56px, 7vw, 96px); }
+    .dash-h { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; border-bottom: 1px solid var(--ink); padding-bottom: 10px; margin: 0; font-size: 11px; font-weight: 400; }
+    .dash-h .ja { margin: 0; font-size: 11px; }
+
+    .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .kpi { padding: 20px 20px 22px 0; border-bottom: 1px solid var(--rule); }
+    .kpi + .kpi { padding-left: 20px; border-left: 1px solid var(--rule); }
+    .kpi-label { font-size: 11px; color: var(--ink-2); display: flex; gap: 10px; flex-wrap: wrap; }
+    .kpi-nums { display: flex; gap: clamp(18px, 3vw, 40px); margin-top: 14px; flex-wrap: wrap; }
+    .kpi-num { font-family: var(--grotesk); font-weight: 700; font-stretch: 80%; font-size: clamp(40px, 6vw, 76px); line-height: 0.9; font-variant-numeric: tabular-nums; }
+    .kpi-unit { display: block; margin-top: 8px; font-size: 11px; color: var(--ink-2); }
+
+    .chart-wrap { position: relative; margin-top: 18px; }
+    .chart { display: block; width: 100%; height: 220px; overflow: visible; }
+    .chart .grid { stroke: var(--rule); stroke-width: 1; }
+    .chart .base { stroke: var(--ink); stroke-width: 1; }
+    .chart .bar { fill: var(--ink); }
+    .chart .bar.is-today { fill: var(--mark); }
+    .chart .hit { fill: transparent; cursor: default; }
+    .chart .bar.is-hover { opacity: 0.72; }
+    .chart text { font-family: var(--mono); font-size: 10px; fill: var(--ink-2); letter-spacing: 0.04em; }
+    .tip { position: absolute; pointer-events: none; transform: translate(-50%, calc(-100% - 10px)); background: var(--ink); color: var(--paper); padding: 8px 10px; font-family: var(--mono); font-size: 11px; line-height: 1.5; white-space: nowrap; opacity: 0; transition: opacity .15s; }
+    .tip.is-on { opacity: 1; }
+    .chart-note { margin-top: 10px; font-size: 11px; color: var(--ink-2); display: flex; gap: 18px; flex-wrap: wrap; }
+    .swatch { display: inline-block; width: 8px; height: 8px; border-radius: 2px; background: var(--mark); margin-right: 6px; vertical-align: 0; }
+
+    .range { display: flex; gap: 0; margin-top: 18px; }
+    .range button { font: inherit; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; background: none; color: var(--ink); border: 1px solid var(--ink); padding: 8px 14px; cursor: pointer; }
+    .range button + button { border-left: 0; }
+    .range button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+    .range button:focus-visible { outline: 2px solid var(--mark); outline-offset: 2px; }
+
+    .lists { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 clamp(20px, 3vw, 44px); margin-top: 22px; }
+    .list-h { font-size: 11px; display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--ink); padding-bottom: 8px; }
+    .list-h .ja { margin: 0; font-size: 11px; }
+    .list table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .list th { text-align: right; font-weight: 400; color: var(--ink-2); font-size: 10px; padding: 8px 0 6px; }
+    .list th:first-child { text-align: left; }
+    .list td { padding: 10px 0; border-bottom: 1px solid var(--rule); vertical-align: top; font-variant-numeric: tabular-nums; }
+    .list th:not(:first-child), .list td:not(:first-child) { text-align: right; width: 6em; padding-left: 10px; }
+    .list td:first-child { overflow-wrap: anywhere; padding-right: 8px; }
+    .list .sub { display: block; color: var(--ink-2); font-family: var(--jp); font-size: 10px; margin-top: 2px; letter-spacing: 0; }
+    .list .empty td { color: var(--ink-2); }
+
+    .dash-foot { margin-top: clamp(56px, 7vw, 96px); padding-top: 12px; border-top: 1px solid var(--rule); font-size: 11px; color: var(--ink-2); line-height: 1.8; }
+    .dash-foot .ja { margin: 6px 0 0; font-size: 11px; }
+    .dash-state { margin-top: 28px; font-size: 12px; color: var(--ink-2); }
+    .dash-state .ja { margin: 4px 0 0; font-size: 11px; }
+
+    @media (max-width: 860px) {
+      .lists { grid-template-columns: 1fr; gap: 36px; }
+    }
+    @media (max-width: 640px) {
+      .kpis { grid-template-columns: 1fr; }
+      .kpi + .kpi { padding-left: 0; border-left: 0; }
+      .chart { height: 180px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="paper" aria-hidden="true"></div>
+
+  <header class="bar">
+    <a href="/" class="bar-mark">TWT</a>
+    <span class="bar-mid mono">SITE VISITS</span>
+    <a href="/" class="bar-link mono">← TIME WILL TELL</a>
+  </header>
+
+  <main class="dash">
+    <p class="dash-kicker mono"><span>DASH</span><span id="updated">JAPAN TIME</span></p>
+    <h1 class="dash-title">DASH</h1>
+    <p class="dash-lead">Who has come to utaki.me, and what they read.<span class="ja">utaki.me を訪れた人と、読まれたページ。</span></p>
+
+    <p class="dash-state mono" id="state" role="status" aria-live="polite">LOADING…<span class="ja">読み込み中</span></p>
+
+    <div id="content" hidden>
+      <section class="dash-sec" aria-labelledby="h-totals">
+        <h2 class="dash-h mono" id="h-totals"><span>VISITS</span><span class="ja">訪問</span></h2>
+        <div class="kpis mono" id="kpis"></div>
+      </section>
+
+      <section class="dash-sec" aria-labelledby="h-daily">
+        <h2 class="dash-h mono" id="h-daily"><span>PAGE VIEWS / LAST 30 DAYS</span><span class="ja">ページビュー　直近30日</span></h2>
+        <div class="chart-wrap">
+          <svg class="chart" id="chart" role="img" aria-labelledby="h-daily"></svg>
+          <div class="tip" id="tip" role="tooltip"></div>
+        </div>
+        <p class="chart-note mono"><span><i class="swatch" aria-hidden="true"></i>TODAY 今日</span><span id="peak"></span></p>
+      </section>
+
+      <section class="dash-sec" aria-labelledby="h-break">
+        <h2 class="dash-h mono" id="h-break"><span>WHAT, WHERE, FROM</span><span class="ja">閲覧ページ・国と地域・参照元</span></h2>
+        <div class="range" role="group" aria-label="Period">
+          <button type="button" data-range="today" aria-pressed="true">TODAY 今日</button>
+          <button type="button" data-range="last30" aria-pressed="false">30 DAYS 30日</button>
+        </div>
+        <div class="lists mono" id="lists"></div>
+      </section>
+    </div>
+
+    <footer class="dash-foot mono">
+      <p>Source: Vercel Web Analytics. Cookie-free; no personal data. Days are Japan time. Numbers refresh about every 10 minutes and are kept for 30 days.</p>
+      <p class="ja">出典：Vercel Web Analytics。Cookieを使わず、個人を特定する情報は含みません。日付は日本時間。数字は約10分ごとに更新され、30日分を保持します。</p>
+    </footer>
+  </main>
+
+  <script>
+  (() => {
+    const $ = (id) => document.getElementById(id);
+    const fmt = (n) => Number(n || 0).toLocaleString("en-US");
+    const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    let regionEn, regionJa;
+    try { regionEn = new Intl.DisplayNames(["en"], { type: "region" }); regionJa = new Intl.DisplayNames(["ja"], { type: "region" }); } catch (e) {}
+
+    const state = (en, ja) => { $("state").innerHTML = `${esc(en)}<span class="ja">${esc(ja)}</span>`; };
+
+    function kpis(t) {
+      const cell = (en, ja, v) => `<div class="kpi"><div class="kpi-label"><span>${en}</span><span>${ja}</span></div>
+        <div class="kpi-nums"><div><span class="kpi-num">${fmt(v.visitors)}</span><span class="kpi-unit">VISITORS 訪問者</span></div>
+        <div><span class="kpi-num">${fmt(v.pageviews)}</span><span class="kpi-unit">PAGE VIEWS ページビュー</span></div></div></div>`;
+      $("kpis").innerHTML = cell("TODAY", "今日", t.today) + cell("7 DAYS", "7日間", t.last7) + cell("30 DAYS", "30日間", t.last30);
+    }
+
+    function chart(daily, today) {
+      const svg = $("chart"), tip = $("tip");
+      const W = svg.clientWidth || 800, H = svg.clientHeight || 220;
+      const padL = 28, padB = 22, padT = 8, w = W - padL, h = H - padB - padT;
+      const max = Math.max(1, ...daily.map((d) => d.pageviews));
+      const step = Math.max(1, Math.ceil(max / 3));
+      const top = step * Math.ceil(max / step);
+      const slot = w / daily.length, bw = Math.max(2, slot - 2);
+      const y = (v) => padT + h - (v / top) * h;
+      let g = "", hits = "";
+      for (let v = 0; v <= top; v += step) {
+        g += `<line class="${v ? "grid" : "base"}" x1="${padL}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/>`;
+        g += `<text x="${padL - 6}" y="${y(v) + 3}" text-anchor="end">${v}</text>`;
+      }
+      daily.forEach((d, i) => {
+        const x = padL + i * slot + 1, bh = (d.pageviews / top) * h, r = Math.min(4, bw / 2, bh);
+        const yTop = padT + h - bh, cls = d.date === today ? "bar is-today" : "bar";
+        // Rounded data-end, flat on the baseline.
+        const path = bh <= 0 ? "" : `M${x},${padT + h}V${yTop + r}Q${x},${yTop} ${x + r},${yTop}H${x + bw - r}Q${x + bw},${yTop} ${x + bw},${yTop + r}V${padT + h}Z`;
+        g += `<path class="${cls}" data-i="${i}" d="${path}"/>`;
+        hits += `<rect class="hit" data-i="${i}" x="${padL + i * slot}" y="${padT}" width="${slot}" height="${h}"/>`;
+        if ((daily.length - 1 - i) % 7 === 0) { // weekly labels, counted back from today
+          g += `<text x="${x + bw / 2}" y="${H - 6}" text-anchor="middle">${d.date.slice(5).replace("-", "/")}</text>`;
+        }
+      });
+      svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+      svg.innerHTML = g + hits; // hover areas on top of the bars
+      svg.querySelectorAll(".hit").forEach((el) => {
+        const show = () => {
+          const d = daily[el.dataset.i];
+          tip.innerHTML = `${d.date.replace(/-/g, "/")}<br>${fmt(d.pageviews)} page views · ${fmt(d.visitors)} visitors`;
+          const box = el.getBBox();
+          const left = Math.min(Math.max(box.x + box.width / 2, 90), W - 90);
+          tip.style.left = `${left}px`;
+          tip.style.top = `${y(d.pageviews)}px`;
+          tip.classList.add("is-on");
+          svg.querySelector(`.bar[data-i="${el.dataset.i}"]`)?.classList.add("is-hover");
+        };
+        const hide = () => { tip.classList.remove("is-on"); svg.querySelector(`.bar[data-i="${el.dataset.i}"]`)?.classList.remove("is-hover"); };
+        el.addEventListener("mouseenter", show);
+        el.addEventListener("mouseleave", hide);
+        el.addEventListener("touchstart", show, { passive: true });
+      });
+      const best = daily.reduce((a, b) => (b.pageviews > a.pageviews ? b : a), daily[0]);
+      $("peak").textContent = best && best.pageviews ? `PEAK 最多  ${best.date.replace(/-/g, "/")} — ${fmt(best.pageviews)}` : "";
+    }
+
+    function lists(b) {
+      const page = (p) => (p === "/" ? "/ (TOP)" : p);
+      const country = (c) => {
+        if (!c) return { en: "Unknown", ja: "不明" };
+        return { en: (regionEn && regionEn.of(c)) || c, ja: (regionJa && regionJa.of(c)) || "" };
+      };
+      const table = (title, ja, rows, label) => {
+        const body = rows.length
+          ? rows.map((r) => { const l = label(r.name); return `<tr><td>${esc(l.en)}${l.ja ? `<span class="sub">${esc(l.ja)}</span>` : ""}</td><td>${fmt(r.pageviews)}</td><td>${fmt(r.visitors)}</td></tr>`; }).join("")
+          : `<tr class="empty"><td colspan="3">No visits yet<span class="sub">まだ記録がありません</span></td></tr>`;
+        return `<div class="list"><div class="list-h"><span>${title}</span><span class="ja">${ja}</span></div>
+          <table><thead><tr><th scope="col">&nbsp;</th><th scope="col">VIEWS</th><th scope="col">VISITORS</th></tr></thead><tbody>${body}</tbody></table></div>`;
+      };
+      $("lists").innerHTML =
+        table("PAGES", "閲覧ページ", b.pages, (n) => ({ en: page(n) })) +
+        table("COUNTRIES / REGIONS", "国・地域", b.countries, country) +
+        table("REFERRERS", "参照元", b.referrers, (n) => (n ? { en: n } : { en: "Direct / none", ja: "直接・不明" }));
+    }
+
+    let data = null, range = "today";
+    document.querySelectorAll(".range button").forEach((btn) => btn.addEventListener("click", () => {
+      range = btn.dataset.range;
+      document.querySelectorAll(".range button").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+      if (data) lists(data.breakdown[range]);
+    }));
+
+    fetch("/api/analytics", { headers: { Accept: "application/json" } })
+      .then((r) => r.json().then((j) => ({ ok: r.ok, j })))
+      .then(({ ok, j }) => {
+        if (!ok) {
+          if (j.code === "not_configured") return state("NOT CONNECTED YET.", "まだアクセス解析に接続されていません。");
+          return state("COULD NOT LOAD THE NUMBERS. PLEASE TRY AGAIN LATER.", "数字を読み込めませんでした。時間をおいて再度お試しください。");
+        }
+        data = j;
+        const t = new Date(j.generatedAt);
+        $("updated").textContent = `UPDATED ${t.toLocaleString("ja-JP", { timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" })} JST`;
+        $("state").hidden = true;
+        $("content").hidden = false;
+        kpis(j.totals);
+        chart(j.daily, j.today);
+        lists(j.breakdown[range]);
+        let rw;
+        addEventListener("resize", () => { clearTimeout(rw); rw = setTimeout(() => chart(j.daily, j.today), 150); });
+      })
+      .catch(() => state("COULD NOT LOAD THE NUMBERS. PLEASE TRY AGAIN LATER.", "数字を読み込めませんでした。時間をおいて再度お試しください。"));
+  })();
+  </script>
+</body>
+</html>
