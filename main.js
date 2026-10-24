@@ -231,3 +231,46 @@
     form.dataset.state = "";
   });
 })();
+
+// 02 THE PROBLEM: on desktop (mouse + wide screen) the reflective question rises in on hover,
+// no click needed. Touch / narrow screens keep the native <details> tap to open.
+(() => {
+  const list = document.querySelector(".feed-interactive");
+  if (!list) return;
+  const items = [...list.querySelectorAll(".feed-detail")];
+  const mq = matchMedia("(hover: hover) and (pointer: fine) and (min-width: 861px)");
+  let active = null;
+
+  // Open the new row before closing the old one, in one frame, so the row under the pointer stays put.
+  const activate = (d) => {
+    if (d === active) return;
+    if (d) d.classList.add("is-active");
+    if (active) active.classList.remove("is-active");
+    active = d;
+  };
+
+  const rowOf = (target) => target.closest && target.closest(".feed-detail");
+  const onOver = (e) => { const d = rowOf(e.target); if (d) activate(d); };
+  // Keep the row open on leave only while it holds keyboard focus (a mouse click's focus doesn't count).
+  const keyboardFocusInList = () => { const a = document.activeElement; return list.contains(a) && a.matches(":focus-visible"); };
+  const onLeave = () => { if (!keyboardFocusInList()) activate(null); };
+  const onFocusIn = (e) => { const d = rowOf(e.target); if (d) activate(d); };
+  const onFocusOut = (e) => { if (!list.contains(e.relatedTarget) && !list.matches(":hover")) activate(null); };
+  // In hover mode the question is shown by hover/focus, so a click must not collapse it.
+  const onClick = (e) => { if (e.target.closest("summary")) e.preventDefault(); };
+
+  const apply = () => {
+    const on = mq.matches;
+    list.classList.toggle("feed-hover", on);
+    activate(null);
+    items.forEach((d) => { d.open = on; });
+    const m = on ? "addEventListener" : "removeEventListener";
+    list[m]("mouseover", onOver);
+    list[m]("mouseleave", onLeave);
+    list[m]("focusin", onFocusIn);
+    list[m]("focusout", onFocusOut);
+    list[m]("click", onClick);
+  };
+  apply();
+  mq.addEventListener("change", apply);
+})();

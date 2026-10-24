@@ -827,9 +827,20 @@ main h2[id] { scroll-margin-top: 96px; }
 @media (hover:hover) and (pointer:fine) and (min-width:861px) {
   .feed-detail { display:grid; grid-template-columns:minmax(200px, 300px) minmax(0, 1fr); align-items:start; }
   .feed-detail summary { grid-column:1; }
-  .feed-question { grid-column:2; grid-row:1; padding:16px 20px 16px 0; }
-  .feed-detail:not([open]) .feed-question { display:block; opacity:0; transform:translateX(-12px); pointer-events:none; animation:none; transition:opacity .4s ease,transform .4s ease; }
-  .feed-detail:not([open]):hover .feed-question, .feed-detail:not([open]):focus-within .feed-question { opacity:1; transform:translateX(0); }
+  .feed-question { grid-column:2; grid-row:1; padding:15px 20px 15px 0; }
   .feed-detail .feed-indicator { opacity:0; }
 }
-@media (prefers-reduced-motion:reduce) { .feed-question, .feed-detail .feed-indicator { animation:none!important; transition:none!important; } }
+/* Desktop hover mode (class set by main.js): the question rises in on hover / keyboard focus. */
+.feed-hover .feed-detail summary { cursor:default; }
+.feed-hover .feed-label > span { transition:color .35s ease; }
+.feed-hover:hover .feed-detail:not(.is-active) .feed-label > span { color:var(--ink-2); }
+.feed-hover .feed-question {
+  display:grid; grid-template-rows:0fr; padding-bottom:0; opacity:0; transform:translateY(6px); animation:none;
+  transition:grid-template-rows .4s cubic-bezier(.2,.7,.2,1) .04s, padding-bottom .4s cubic-bezier(.2,.7,.2,1) .04s, opacity .2s ease, transform .2s ease;
+}
+.feed-hover .feed-question-inner { min-height:0; overflow:hidden; }
+.feed-hover .feed-detail.is-active .feed-question {
+  grid-template-rows:1fr; padding-bottom:22px; opacity:1; transform:none;
+  transition:grid-template-rows .4s cubic-bezier(.2,.7,.2,1), padding-bottom .4s cubic-bezier(.2,.7,.2,1), opacity .5s ease .1s, transform .6s cubic-bezier(.2,.7,.2,1) .1s;
+}
+@media (prefers-reduced-motion:reduce) { .feed-question, .feed-detail .feed-indicator, .feed-hover .feed-question, .feed-hover .feed-label > span { animation:none!important; transition:none!important; } }
