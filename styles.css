@@ -1029,3 +1029,51 @@ html:not(.js) .log-nav, html:not(.js) .log-edge, html:not(.js) .log-foot { displ
 @media (max-width: 560px) {
   .fp { left: 0; right: 0; bottom: 0; width: auto; padding: 24px var(--gutter) calc(16px + env(safe-area-inset-bottom)); border-width: 1.5px 0 0; box-shadow: 0 -8px 24px rgba(17, 17, 16, 0.08); }
 }
+
+/* Reflective questions: hover to reveal on desktop, tap to expand on touch. */
+.feed-interactive { max-width: 100%; }
+.feed-interactive li { display:block; padding:0; }
+.feed-detail { position:relative; }
+.feed-detail summary { display:flex; align-items:center; justify-content:space-between; gap:18px; cursor:pointer; list-style:none; padding:15px 0; }
+.feed-detail summary::-webkit-details-marker { display:none; }
+.feed-label { display:flex; flex-direction:column; gap:4px; }
+.feed-indicator { font-size:22px; font-weight:300; color:var(--ink-2); transition:transform .3s ease; }
+.feed-detail[open] .feed-indicator { transform:rotate(45deg); }
+.feed-question { max-width:690px; padding:0 30px 22px 0; animation:feed-appear .45s ease both; }
+.feed-question p { margin:0; font-family:var(--serif); font-size:clamp(17px,2vw,27px); line-height:1.35; }
+.feed-question p.ja { margin-top:10px; font-family:var(--jp); font-size:clamp(12px,1.1vw,16px); line-height:1.8; }
+@keyframes feed-appear { from { opacity:0; transform:translateX(-12px); } to { opacity:1; transform:translateX(0); } }
+@media (hover:hover) and (pointer:fine) and (min-width:861px) {
+  .feed-detail { display:grid; grid-template-columns:minmax(200px, 300px) minmax(0, 1fr); align-items:start; }
+  .feed-detail summary { grid-column:1; }
+  .feed-question { grid-column:2; grid-row:1; padding:15px 20px 15px 0; }
+  .feed-detail .feed-indicator { opacity:0; }
+}
+/* Question panel (classes set by main.js). The list never changes height: every question sits in one
+   fixed place and they crossfade. PC (.feed-side): list on the left, questions on the right, aligned to
+   the bottom of the list. Phone / narrow (.feed-below): questions in a reserved area under the list. */
+.feed-panel { position:relative; }
+.feed-panel .feed-detail { display:block; position:static; }
+.feed-panel .feed-detail summary { padding:15px 0; }
+.feed-panel .feed-detail[open] .feed-indicator { transform:none; }
+.feed-panel .feed-question {
+  position:absolute; bottom:0; max-width:690px; animation:none; pointer-events:none;
+}
+.feed-panel .feed-question p { opacity:0; filter:blur(2px); transition:opacity .5s ease, filter .5s ease; }
+.feed-panel .feed-detail.is-active .feed-question p { opacity:1; filter:blur(0); transition:opacity 1.2s cubic-bezier(.3,0,.2,1) .35s, filter 1.2s cubic-bezier(.3,0,.2,1) .35s; }
+.feed-panel .feed-detail.is-active .feed-question p.ja { transition-delay:.6s; }
+
+.feed-side { border-bottom:1px solid var(--rule); min-height:var(--panel-h, auto); }
+.feed-side li { width:clamp(200px, 30%, 300px); }
+.feed-side li:last-child { border-bottom:0; }
+.feed-side .feed-detail summary { cursor:default; }
+.feed-side .feed-indicator { display:none; }
+.feed-side .feed-question { left:calc(clamp(200px, 30%, 300px) + clamp(24px, 3vw, 48px)); right:0; padding:15px 20px 15px 0; }
+
+.feed-below { padding-bottom:var(--panel-h, 0px); }
+.feed-below .feed-question { left:0; right:0; padding:20px 0 6px; }
+.feed-below .feed-indicator { transition:opacity .4s ease; }
+.feed-below .feed-detail.is-active .feed-indicator { opacity:0; }
+.feed-below .feed-detail:not(.is-active) .feed-label > span { color:var(--ink-2); }
+.feed-below .feed-label > span { transition:color .5s ease; }
+@media (prefers-reduced-motion:reduce) { .feed-question, .feed-detail .feed-indicator, .feed-panel .feed-question p, .feed-below .feed-label > span { animation:none!important; transition:none!important; filter:none!important; } }

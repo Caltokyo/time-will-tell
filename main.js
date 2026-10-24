@@ -224,3 +224,55 @@
     form.dataset.state = "";
   });
 })();
+
+// 02 THE PROBLEM: one question shown at a time in a fixed place; the list never changes height.
+// PC (mouse + wide): hover a row to show its question on the right; leaving the list fades it out.
+// Phone / narrow: tap a row to switch; the question sits in a reserved area under the list.
+(() => {
+  const list = document.querySelector(".feed-interactive");
+  if (!list) return;
+  const items = [...list.querySelectorAll(".feed-detail")];
+  const qs = items.map((d) => d.querySelector(".feed-question"));
+  const side = matchMedia("(hover: hover) and (pointer: fine) and (min-width: 861px)");
+  let active = null;
+
+  const activate = (d) => {
+    if (d === active) return;
+    if (active) active.classList.remove("is-active");
+    if (d) d.classList.add("is-active");
+    active = d;
+  };
+
+  // Reserve room for the tallest question so switching never changes the height.
+  const layout = () => {
+    list.style.removeProperty("--panel-h");
+    const tallest = Math.max(...qs.map((q) => q.offsetHeight));
+    list.style.setProperty("--panel-h", `${tallest}px`);
+  };
+
+  const rowOf = (t) => t.closest && t.closest(".feed-detail");
+  const keyboardFocusInList = () => { const a = document.activeElement; return list.contains(a) && a.matches(":focus-visible"); };
+  list.addEventListener("mouseover", (e) => { if (side.matches) { const d = rowOf(e.target); if (d) activate(d); } });
+  list.addEventListener("mouseleave", () => { if (side.matches && !keyboardFocusInList()) activate(null); });
+  list.addEventListener("focusin", (e) => { const d = rowOf(e.target); if (d) activate(d); });
+  list.addEventListener("click", (e) => {
+    const s = e.target.closest("summary");
+    if (!s) return;
+    e.preventDefault(); // never collapse / expand the <details>; just switch
+    activate(rowOf(s));
+  });
+
+  const apply = () => {
+    const isSide = side.matches;
+    list.classList.add("feed-panel");
+    list.classList.toggle("feed-side", isSide);
+    list.classList.toggle("feed-below", !isSide);
+    items.forEach((d) => { d.open = true; });
+    layout();
+    activate(isSide ? null : items[0]);
+  };
+  apply();
+  side.addEventListener("change", apply);
+  addEventListener("resize", layout);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+})();
