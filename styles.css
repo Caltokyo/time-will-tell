@@ -830,19 +830,19 @@ main h2[id] { scroll-margin-top: 96px; }
   .feed-question { grid-column:2; grid-row:1; padding:15px 20px 15px 0; }
   .feed-detail .feed-indicator { opacity:0; }
 }
-/* Desktop hover mode (class set by main.js): the question quietly comes into focus on hover / keyboard focus.
-   No sliding: the row opens softly first, then the English and the Japanese settle in, one after the other. */
-.feed-hover .feed-detail summary { cursor:default; }
-.feed-hover .feed-question {
-  display:grid; grid-template-rows:0fr; padding-bottom:0; animation:none;
-  transition:grid-template-rows .7s cubic-bezier(.45,0,.2,1) .1s, padding-bottom .7s cubic-bezier(.45,0,.2,1) .1s;
+/* Desktop scroll mode (class set by main.js): rows keep their height; as the page scrolls down,
+   each row's question quietly comes into focus in the right-hand column, one after another. */
+.feed-scroll { position:relative; border-bottom:1px solid var(--rule); }
+.feed-scroll li { width:clamp(200px, 30%, 300px); }
+.feed-scroll li:last-child { border-bottom:0; }
+.feed-scroll .feed-detail { display:block; position:static; }
+.feed-scroll .feed-detail summary { cursor:default; }
+.feed-scroll .feed-indicator { display:none; }
+.feed-scroll .feed-question {
+  position:absolute; top:var(--q-top, 0px); left:calc(clamp(200px, 30%, 300px) + clamp(24px, 3vw, 48px)); right:0;
+  max-width:690px; padding:15px 20px 15px 0; animation:none; pointer-events:none;
 }
-.feed-hover .feed-question-inner { min-height:0; overflow:hidden; }
-.feed-hover .feed-question p { opacity:0; filter:blur(2px); transition:opacity .35s ease, filter .35s ease; }
-.feed-hover .feed-detail.is-active .feed-question {
-  grid-template-rows:1fr; padding-bottom:22px;
-  transition:grid-template-rows .8s cubic-bezier(.45,0,.2,1) .08s, padding-bottom .8s cubic-bezier(.45,0,.2,1) .08s;
-}
-.feed-hover .feed-detail.is-active .feed-question p { opacity:1; filter:blur(0); transition:opacity 1.2s cubic-bezier(.3,0,.2,1) .35s, filter 1.2s cubic-bezier(.3,0,.2,1) .35s; }
-.feed-hover .feed-detail.is-active .feed-question p.ja { transition-delay:.6s; }
-@media (prefers-reduced-motion:reduce) { .feed-question, .feed-detail .feed-indicator, .feed-hover .feed-question, .feed-hover .feed-question p { animation:none!important; transition:none!important; filter:none!important; } }
+.feed-scroll .feed-question p { opacity:0; filter:blur(2px); transition:opacity .5s ease, filter .5s ease; }
+.feed-scroll .feed-detail.is-active .feed-question p { opacity:1; filter:blur(0); transition:opacity 1.2s cubic-bezier(.3,0,.2,1) .35s, filter 1.2s cubic-bezier(.3,0,.2,1) .35s; }
+.feed-scroll .feed-detail.is-active .feed-question p.ja { transition-delay:.6s; }
+@media (prefers-reduced-motion:reduce) { .feed-question, .feed-detail .feed-indicator, .feed-scroll .feed-question p { animation:none!important; transition:none!important; filter:none!important; } }

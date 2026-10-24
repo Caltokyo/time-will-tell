@@ -232,45 +232,66 @@
   });
 })();
 
-// 02 THE PROBLEM: on desktop (mouse + wide screen) the reflective question rises in on hover,
-// no click needed. Touch / narrow screens keep the native <details> tap to open.
+// 02 THE PROBLEM: on desktop (mouse + wide screen) each reflective question appears on its own as the
+// page scrolls down, beside its row in the right-hand column; the rows never grow.
+// Touch / narrow screens keep the native <details> tap to open.
 (() => {
   const list = document.querySelector(".feed-interactive");
   if (!list) return;
   const items = [...list.querySelectorAll(".feed-detail")];
+  const rows = items.map((d) => d.closest("li"));
   const mq = matchMedia("(hover: hover) and (pointer: fine) and (min-width: 861px)");
-  let active = null;
+  let on = false, active = null, ticking = false;
 
-  // Open the new row before closing the old one, in one frame, so the row under the pointer stays put.
   const activate = (d) => {
     if (d === active) return;
-    if (d) d.classList.add("is-active");
     if (active) active.classList.remove("is-active");
+    if (d) d.classList.add("is-active");
     active = d;
   };
 
-  const rowOf = (target) => target.closest && target.closest(".feed-detail");
-  const onOver = (e) => { const d = rowOf(e.target); if (d) activate(d); };
-  // Keep the row open on leave only while it holds keyboard focus (a mouse click's focus doesn't count).
-  const keyboardFocusInList = () => { const a = document.activeElement; return list.contains(a) && a.matches(":focus-visible"); };
-  const onLeave = () => { if (!keyboardFocusInList()) activate(null); };
-  const onFocusIn = (e) => { const d = rowOf(e.target); if (d) activate(d); };
-  const onFocusOut = (e) => { if (!list.contains(e.relatedTarget) && !list.matches(":hover")) activate(null); };
-  // In hover mode the question is shown by hover/focus, so a click must not collapse it.
+  // Place each question beside its row, but never past the bottom of the list.
+  const layout = () => {
+    list.style.minHeight = "";
+    const qs = items.map((d) => d.querySelector(".feed-question"));
+    const tallest = Math.max(...qs.map((q) => q.offsetHeight));
+    if (tallest > list.clientHeight) list.style.minHeight = `${tallest}px`;
+    const h = list.clientHeight;
+    qs.forEach((q, i) => {
+      const top = Math.max(0, Math.min(rows[i].offsetTop, h - q.offsetHeight));
+      q.style.setProperty("--q-top", `${top}px`);
+    });
+  };
+
+  // Map the list's passage up the screen to the four rows: the first appears when the list's top
+  // reaches 80% of the viewport height; the last stays once the list's top is above 30%.
+  const update = () => {
+    ticking = false;
+    if (!on) return;
+    const vh = innerHeight;
+    const top = list.getBoundingClientRect().top;
+    const progress = (vh * 0.8 - top) / (vh * 0.5);
+    if (progress < 0) { activate(null); return; }
+    const i = Math.min(items.length - 1, Math.floor(progress * items.length));
+    activate(items[i]);
+  };
+  const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+  const onResize = () => { if (on) { layout(); onScroll(); } };
   const onClick = (e) => { if (e.target.closest("summary")) e.preventDefault(); };
 
   const apply = () => {
-    const on = mq.matches;
-    list.classList.toggle("feed-hover", on);
+    on = mq.matches;
+    list.classList.toggle("feed-scroll", on);
     activate(null);
     items.forEach((d) => { d.open = on; });
+    rows.forEach((li) => li && li.removeAttribute("style"));
+    if (on) { layout(); update(); } else { list.style.minHeight = ""; }
     const m = on ? "addEventListener" : "removeEventListener";
-    list[m]("mouseover", onOver);
-    list[m]("mouseleave", onLeave);
-    list[m]("focusin", onFocusIn);
-    list[m]("focusout", onFocusOut);
+    window[m]("scroll", onScroll, { passive: true });
+    window[m]("resize", onResize);
     list[m]("click", onClick);
   };
   apply();
   mq.addEventListener("change", apply);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(onResize);
 })();
