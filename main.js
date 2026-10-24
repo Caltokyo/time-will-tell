@@ -232,16 +232,16 @@
   });
 })();
 
-// 02 THE PROBLEM: on desktop (mouse + wide screen) each reflective question appears on its own as the
-// page scrolls down, beside its row in the right-hand column; the rows never grow.
-// Touch / narrow screens keep the native <details> tap to open.
+// 02 THE PROBLEM: one question shown at a time in a fixed place; the list never changes height.
+// PC (mouse + wide): hover a row to show its question on the right; leaving the list fades it out.
+// Phone / narrow: tap a row to switch; the question sits in a reserved area under the list.
 (() => {
   const list = document.querySelector(".feed-interactive");
   if (!list) return;
   const items = [...list.querySelectorAll(".feed-detail")];
-  const rows = items.map((d) => d.closest("li"));
-  const mq = matchMedia("(hover: hover) and (pointer: fine) and (min-width: 861px)");
-  let on = false, active = null, ticking = false;
+  const qs = items.map((d) => d.querySelector(".feed-question"));
+  const side = matchMedia("(hover: hover) and (pointer: fine) and (min-width: 861px)");
+  let active = null;
 
   const activate = (d) => {
     if (d === active) return;
@@ -250,48 +250,36 @@
     active = d;
   };
 
-  // Place each question beside its row, but never past the bottom of the list.
+  // Reserve room for the tallest question so switching never changes the height.
   const layout = () => {
-    list.style.minHeight = "";
-    const qs = items.map((d) => d.querySelector(".feed-question"));
+    list.style.removeProperty("--panel-h");
     const tallest = Math.max(...qs.map((q) => q.offsetHeight));
-    if (tallest > list.clientHeight) list.style.minHeight = `${tallest}px`;
-    const h = list.clientHeight;
-    qs.forEach((q, i) => {
-      const top = Math.max(0, Math.min(rows[i].offsetTop, h - q.offsetHeight));
-      q.style.setProperty("--q-top", `${top}px`);
-    });
+    list.style.setProperty("--panel-h", `${tallest}px`);
   };
 
-  // Map the list's passage up the screen to the four rows: the first appears when the list's top
-  // reaches 80% of the viewport height; the last stays once the list's top is above 30%.
-  const update = () => {
-    ticking = false;
-    if (!on) return;
-    const vh = innerHeight;
-    const top = list.getBoundingClientRect().top;
-    const progress = (vh * 0.8 - top) / (vh * 0.5);
-    if (progress < 0) { activate(null); return; }
-    const i = Math.min(items.length - 1, Math.floor(progress * items.length));
-    activate(items[i]);
-  };
-  const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
-  const onResize = () => { if (on) { layout(); onScroll(); } };
-  const onClick = (e) => { if (e.target.closest("summary")) e.preventDefault(); };
+  const rowOf = (t) => t.closest && t.closest(".feed-detail");
+  const keyboardFocusInList = () => { const a = document.activeElement; return list.contains(a) && a.matches(":focus-visible"); };
+  list.addEventListener("mouseover", (e) => { if (side.matches) { const d = rowOf(e.target); if (d) activate(d); } });
+  list.addEventListener("mouseleave", () => { if (side.matches && !keyboardFocusInList()) activate(null); });
+  list.addEventListener("focusin", (e) => { const d = rowOf(e.target); if (d) activate(d); });
+  list.addEventListener("click", (e) => {
+    const s = e.target.closest("summary");
+    if (!s) return;
+    e.preventDefault(); // never collapse / expand the <details>; just switch
+    activate(rowOf(s));
+  });
 
   const apply = () => {
-    on = mq.matches;
-    list.classList.toggle("feed-scroll", on);
-    activate(null);
-    items.forEach((d) => { d.open = on; });
-    rows.forEach((li) => li && li.removeAttribute("style"));
-    if (on) { layout(); update(); } else { list.style.minHeight = ""; }
-    const m = on ? "addEventListener" : "removeEventListener";
-    window[m]("scroll", onScroll, { passive: true });
-    window[m]("resize", onResize);
-    list[m]("click", onClick);
+    const isSide = side.matches;
+    list.classList.add("feed-panel");
+    list.classList.toggle("feed-side", isSide);
+    list.classList.toggle("feed-below", !isSide);
+    items.forEach((d) => { d.open = true; });
+    layout();
+    activate(isSide ? null : items[0]);
   };
   apply();
-  mq.addEventListener("change", apply);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(onResize);
+  side.addEventListener("change", apply);
+  addEventListener("resize", layout);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
 })();

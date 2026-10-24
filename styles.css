@@ -830,19 +830,31 @@ main h2[id] { scroll-margin-top: 96px; }
   .feed-question { grid-column:2; grid-row:1; padding:15px 20px 15px 0; }
   .feed-detail .feed-indicator { opacity:0; }
 }
-/* Desktop scroll mode (class set by main.js): rows keep their height; as the page scrolls down,
-   each row's question quietly comes into focus in the right-hand column, one after another. */
-.feed-scroll { position:relative; border-bottom:1px solid var(--rule); }
-.feed-scroll li { width:clamp(200px, 30%, 300px); }
-.feed-scroll li:last-child { border-bottom:0; }
-.feed-scroll .feed-detail { display:block; position:static; }
-.feed-scroll .feed-detail summary { cursor:default; }
-.feed-scroll .feed-indicator { display:none; }
-.feed-scroll .feed-question {
-  position:absolute; top:var(--q-top, 0px); left:calc(clamp(200px, 30%, 300px) + clamp(24px, 3vw, 48px)); right:0;
-  max-width:690px; padding:15px 20px 15px 0; animation:none; pointer-events:none;
+/* Question panel (classes set by main.js). The list never changes height: every question sits in one
+   fixed place and they crossfade. PC (.feed-side): list on the left, questions on the right, aligned to
+   the bottom of the list. Phone / narrow (.feed-below): questions in a reserved area under the list. */
+.feed-panel { position:relative; }
+.feed-panel .feed-detail { display:block; position:static; }
+.feed-panel .feed-detail summary { padding:15px 0; }
+.feed-panel .feed-detail[open] .feed-indicator { transform:none; }
+.feed-panel .feed-question {
+  position:absolute; bottom:0; max-width:690px; animation:none; pointer-events:none;
 }
-.feed-scroll .feed-question p { opacity:0; filter:blur(2px); transition:opacity .5s ease, filter .5s ease; }
-.feed-scroll .feed-detail.is-active .feed-question p { opacity:1; filter:blur(0); transition:opacity 1.2s cubic-bezier(.3,0,.2,1) .35s, filter 1.2s cubic-bezier(.3,0,.2,1) .35s; }
-.feed-scroll .feed-detail.is-active .feed-question p.ja { transition-delay:.6s; }
-@media (prefers-reduced-motion:reduce) { .feed-question, .feed-detail .feed-indicator, .feed-scroll .feed-question p { animation:none!important; transition:none!important; filter:none!important; } }
+.feed-panel .feed-question p { opacity:0; filter:blur(2px); transition:opacity .5s ease, filter .5s ease; }
+.feed-panel .feed-detail.is-active .feed-question p { opacity:1; filter:blur(0); transition:opacity 1.2s cubic-bezier(.3,0,.2,1) .35s, filter 1.2s cubic-bezier(.3,0,.2,1) .35s; }
+.feed-panel .feed-detail.is-active .feed-question p.ja { transition-delay:.6s; }
+
+.feed-side { border-bottom:1px solid var(--rule); min-height:var(--panel-h, auto); }
+.feed-side li { width:clamp(200px, 30%, 300px); }
+.feed-side li:last-child { border-bottom:0; }
+.feed-side .feed-detail summary { cursor:default; }
+.feed-side .feed-indicator { display:none; }
+.feed-side .feed-question { left:calc(clamp(200px, 30%, 300px) + clamp(24px, 3vw, 48px)); right:0; padding:15px 20px 15px 0; }
+
+.feed-below { padding-bottom:var(--panel-h, 0px); }
+.feed-below .feed-question { left:0; right:0; padding:20px 0 6px; }
+.feed-below .feed-indicator { transition:opacity .4s ease; }
+.feed-below .feed-detail.is-active .feed-indicator { opacity:0; }
+.feed-below .feed-detail:not(.is-active) .feed-label > span { color:var(--ink-2); }
+.feed-below .feed-label > span { transition:color .5s ease; }
+@media (prefers-reduced-motion:reduce) { .feed-question, .feed-detail .feed-indicator, .feed-panel .feed-question p, .feed-below .feed-label > span { animation:none!important; transition:none!important; filter:none!important; } }
