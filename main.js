@@ -226,8 +226,12 @@
 })();
 
 // 02 THE PROBLEM: one question shown at a time in a fixed place; the list never changes height.
-// PC (mouse + wide): hover a row to show its question on the right; leaving the list fades it out.
-// Phone / narrow: tap a row to switch; the question sits in a reserved area under the list.
+// The questions follow the scroll position: scrolling down shows Notifications → Messages → Calendars →
+// Algorithms, scrolling up goes back. Nothing is pinned and the section keeps its height — the index comes
+// from where the list sits in the viewport, so after Algorithms the page simply scrolls on.
+// The row on the left is highlighted with its question. A tap / click / keyboard focus still switches by hand
+// until the scroll moves into the next step.
+// PC (mouse + wide): list on the left, question on the right. Phone / narrow: question under the list.
 (() => {
   const list = document.querySelector(".feed-interactive");
   if (!list) return;
@@ -235,6 +239,7 @@
   const qs = items.map((d) => d.querySelector(".feed-question"));
   const side = matchMedia("(hover: hover) and (pointer: fine) and (min-width: 861px)");
   let active = null;
+  let scrollStep = -1;
 
   const activate = (d) => {
     if (d === active) return;
@@ -250,10 +255,29 @@
     list.style.setProperty("--panel-h", `${tallest}px`);
   };
 
+  // Step from the list's position: its top travels from 85% to 10% of the viewport height across the four
+  // questions (before: the first, after: the last).
+  const START = 0.85, END = 0.10;
+  const stepFromScroll = () => {
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    const top = list.getBoundingClientRect().top;
+    const p = (START * vh - top) / ((START - END) * vh);
+    return Math.max(0, Math.min(items.length - 1, Math.floor(p * items.length)));
+  };
+  const sync = () => {
+    const i = stepFromScroll();
+    if (i === scrollStep) return; // a manual choice stays until the scroll reaches another step
+    scrollStep = i;
+    activate(items[i]);
+  };
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { ticking = false; sync(); });
+  };
+
   const rowOf = (t) => t.closest && t.closest(".feed-detail");
-  const keyboardFocusInList = () => { const a = document.activeElement; return list.contains(a) && a.matches(":focus-visible"); };
-  list.addEventListener("mouseover", (e) => { if (side.matches) { const d = rowOf(e.target); if (d) activate(d); } });
-  list.addEventListener("mouseleave", () => { if (side.matches && !keyboardFocusInList()) activate(null); });
   list.addEventListener("focusin", (e) => { const d = rowOf(e.target); if (d) activate(d); });
   list.addEventListener("click", (e) => {
     const s = e.target.closest("summary");
@@ -269,10 +293,12 @@
     list.classList.toggle("feed-below", !isSide);
     items.forEach((d) => { d.open = true; });
     layout();
-    activate(isSide ? null : items[0]);
+    scrollStep = -1;
+    sync();
   };
   apply();
   side.addEventListener("change", apply);
-  addEventListener("resize", layout);
+  addEventListener("scroll", onScroll, { passive: true });
+  addEventListener("resize", () => { layout(); onScroll(); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
 })();
