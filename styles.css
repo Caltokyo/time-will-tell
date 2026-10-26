@@ -43,6 +43,9 @@ body {
 }
 
 a { color: inherit; text-decoration: none; }
+/* Reference link inside running text (e.g. Wikipedia): a hairline underline, no colour change. */
+a.ref-link { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; text-decoration-color: var(--rule); transition: text-decoration-color .3s ease; }
+a.ref-link:hover, a.ref-link:focus-visible { text-decoration-color: currentColor; }
 p, h1, h2, h3, ul, ol, figure { margin: 0; }
 ul, ol { padding: 0; list-style: none; }
 ::selection { background: var(--ink); color: var(--paper); }
