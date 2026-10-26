@@ -11,6 +11,7 @@
 //
 // `node scripts/build-instagram.js --check` writes nothing and fails if the page is stale.
 
+const { TAG } = require("./analytics-tag.js");
 const fs = require("fs");
 const path = require("path");
 
@@ -94,8 +95,7 @@ const html = `<!doctype html>
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="apple-mobile-web-app-title" content="UTAKI" />
   <meta name="application-name" content="UTAKI" />
-  <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
-  <script defer src="/_vercel/insights/script.js"></script>
+  ${TAG}
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />

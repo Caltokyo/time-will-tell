@@ -104,3 +104,11 @@ The page linked from the @twt_project profile. Each post opens the matching plac
 - Add a post: put its image in `assets/instagram/`, add an entry, run `npm run build:instagram`. The build fails if a target anchor or page does not exist. Use `"status": "review"` while the matching place is unclear.
 - LP anchors used: `#s02` THE PROBLEM, `#s03` THE PARADOX, `#s04` PLACE, `#s05` QUESTION, `#question-list`, `#question-remains`, `#follow` (LOG 05 END). Keep these ids stable.
 - No Instagram API is used.
+
+## Staff browsers are not counted (Web Analytics)
+
+- Every counted page loads Vercel Web Analytics through `scripts/analytics-tag.js`. The tag first checks this browser's staff mark (first-party cookie `twt_staff=1`, or localStorage `twt_staff`); for a staff browser `/_vercel/insights/script.js` is never requested, so nothing is sent. `/dash/` and `/staff/` carry no tag.
+- **Set up (once per browser):** sign in to 6000 KNOCKS in that browser → ダッシュボード → 「このブラウザをTWTスタッフに設定」. 6000 KNOCKS sends the browser to `/staff/#c=<code>` (a 5-minute code, issued only to a signed-in member); `api/staff.js` has 6000 KNOCKS confirm the code and sets the cookie (400 days).
+- **Undo:** open `https://utaki.me/staff/` in that browser → 「スタッフ設定を解除する」.
+- A visitor who is not staff sees only "This page is not available." at `/staff/`. Past analytics data is not changed.
+- Tests: `test/staff.test.js` (every page uses the tag; staff / non-staff behaviour; the API).

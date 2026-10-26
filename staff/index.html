@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TIME WILL TELL</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="theme-color" content="#f1eee6" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <!-- No Web Analytics tag here: this page is for staff browsers only and is never counted. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="preload" href="/assets/fonts/archivo-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .staff { padding: 112px var(--gutter) 80px; max-width: 760px; }
+    .staff-kicker { border-top: 1px solid var(--ink); padding-top: 12px; font-size: 11px; color: var(--ink-2); }
+    .staff-title { font-family: var(--grotesk); font-weight: 800; font-stretch: 75%; font-size: clamp(48px, 9vw, 112px); line-height: 0.88; margin: 24px 0 0; }
+    .staff-msg { margin: 22px 0 0; font-family: var(--serif); font-size: clamp(18px, 2vw, 24px); line-height: 1.35; }
+    .staff-msg .ja { display: block; margin-top: 8px; font-family: inherit; font-size: max(13px, calc(var(--ja) * 1.5em)); line-height: 1.7; }
+    .staff-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .staff-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 18px; border: 1px solid var(--ink); background: transparent; color: var(--ink); font: inherit; font-size: 12px; letter-spacing: 0.04em; cursor: pointer; text-decoration: none; }
+    .staff-btn:hover { background: var(--ink); color: var(--paper, #f1eee6); }
+    .staff-btn[disabled] { opacity: 0.4; cursor: wait; }
+    .staff-note { margin-top: 28px; font-size: 11px; line-height: 1.8; color: var(--ink-2); }
+    @media (max-width: 640px) { .staff-btn { flex: 1 1 100%; } }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="paper" aria-hidden="true"></div>
+
+  <header class="bar">
+    <a href="/" class="bar-mark">TWT</a>
+    <span class="bar-mid mono" id="bar-mid"></span>
+    <a href="/" class="bar-link mono">← TIME WILL TELL</a>
+  </header>
+
+  <main class="staff">
+    <!-- Shown to everyone who is not a staff browser: nothing to set here. -->
+    <section id="v-none">
+      <p class="staff-kicker mono">TIME WILL TELL</p>
+      <h1 class="staff-title">NOT AVAILABLE</h1>
+      <p class="staff-msg">This page is not available.</p>
+      <div class="staff-actions"><a class="staff-btn mono" href="/">TIME WILL TELL →</a></div>
+    </section>
+
+    <section id="v-busy" hidden>
+      <p class="staff-kicker mono">STAFF BROWSER</p>
+      <h1 class="staff-title">CHECKING…</h1>
+      <p class="staff-msg">Checking with 6000 KNOCKS.<span class="ja">6000 KNOCKSのログインを確認しています…</span></p>
+    </section>
+
+    <section id="v-staff" hidden>
+      <p class="staff-kicker mono">STAFF BROWSER</p>
+      <h1 class="staff-title">NOT COUNTED</h1>
+      <p class="staff-msg">Visits from this browser are not sent to Web Analytics.<span class="ja">このブラウザはスタッフとして設定されています。このブラウザでのサイト閲覧は解析（Vercel Web Analytics）に含まれません。</span></p>
+      <p class="staff-msg" id="m-done" hidden><span class="ja">設定しました。別の端末・別のブラウザは、そのブラウザで6000 KNOCKSにログインし、ダッシュボードの「このブラウザをTWTスタッフに設定」から個別に設定してください。</span></p>
+      <div class="staff-actions">
+        <a class="staff-btn mono" href="/">TIME WILL TELL →</a>
+        <a class="staff-btn mono" href="/dash/">DASH →</a>
+        <button type="button" class="staff-btn mono" id="b-clear">スタッフ設定を解除する</button>
+      </div>
+      <p class="staff-note">Saved in this browser only (cookie and site storage). Clearing site data also removes it.<br />この設定はこのブラウザだけに保存されます。サイトデータを消去した場合は、もう一度設定してください。</p>
+    </section>
+
+    <section id="v-cleared" hidden>
+      <p class="staff-kicker mono">STAFF BROWSER</p>
+      <h1 class="staff-title">COUNTED AGAIN</h1>
+      <p class="staff-msg">This browser is no longer marked as staff.<span class="ja">スタッフ設定を解除しました。このブラウザでの閲覧は、一般の訪問と同じく解析に含まれます。もう一度設定するには、6000 KNOCKSのダッシュボードから設定してください。</span></p>
+      <div class="staff-actions"><a class="staff-btn mono" href="/">TIME WILL TELL →</a></div>
+    </section>
+
+    <section id="v-error" hidden>
+      <p class="staff-kicker mono">STAFF BROWSER</p>
+      <h1 class="staff-title">NOT SET</h1>
+      <p class="staff-msg"><span class="ja" id="m-error"></span></p>
+      <div class="staff-actions"><a class="staff-btn mono" href="https://6000-knocks.vercel.app/">6000 KNOCKS →</a></div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var views = ["none", "busy", "staff", "cleared", "error"];
+      function show(v) {
+        views.forEach(function (x) { document.getElementById("v-" + x).hidden = x !== v; });
+        document.getElementById("bar-mid").textContent = v === "none" ? "" : "STAFF";
+      }
+      function isStaff() {
+        try { if (localStorage.getItem("twt_staff") === "1") return true; } catch (e) {}
+        return /(?:^|;\s*)twt_staff=1(?:;|$)/.test(document.cookie);
+      }
+      function mark(on) {
+        try { on ? localStorage.setItem("twt_staff", "1") : localStorage.removeItem("twt_staff"); } catch (e) {}
+      }
+      function post(body) {
+        return fetch("/api/staff", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), credentials: "same-origin" })
+          .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, body: j }; }); });
+      }
+      var ERR = {
+        invalid_code: "リンクの有効期限（5分）が切れたか、確認できませんでした。6000 KNOCKSにログインし、ダッシュボードの「このブラウザをTWTスタッフに設定」をもう一度押してください。",
+        verify_unavailable: "6000 KNOCKSに確認できませんでした。時間をおいて、もう一度お試しください。",
+      };
+
+      // A code from 6000 KNOCKS arrives in the fragment (never sent to a server); remove it from the address at once.
+      var m = location.hash.match(/[#&]c=([^&]+)/);
+      if (m) {
+        var code = decodeURIComponent(m[1]);
+        history.replaceState(null, "", location.pathname);
+        show("busy");
+        post({ action: "register", code: code }).then(function (r) {
+          if (r.ok && r.body.status === "staff") {
+            mark(true);
+            document.getElementById("m-done").hidden = false;
+            show("staff");
+          } else {
+            document.getElementById("m-error").textContent = ERR[r.body.code] || ERR.invalid_code;
+            show("error");
+          }
+        }, function () {
+          document.getElementById("m-error").textContent = ERR.verify_unavailable;
+          show("error");
+        });
+      } else {
+        show(isStaff() ? "staff" : "none");
+      }
+
+      document.getElementById("b-clear").addEventListener("click", function () {
+        var b = this;
+        b.disabled = true;
+        mark(false);
+        post({ action: "clear" }).then(function () {
+          // The cookie set by the server is removed by its answer; also drop a script-visible copy, if any.
+          document.cookie = "twt_staff=; Path=/; Max-Age=0; Secure; SameSite=Lax";
+          show("cleared");
+        }, function () {
+          document.cookie = "twt_staff=; Path=/; Max-Age=0; Secure; SameSite=Lax";
+          show(isStaff() ? "staff" : "cleared");
+          b.disabled = false;
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
