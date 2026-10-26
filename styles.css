@@ -1033,7 +1033,7 @@ html:not(.js) .log-nav, html:not(.js) .log-edge, html:not(.js) .log-foot { displ
   .fp { left: 0; right: 0; bottom: 0; width: auto; padding: 24px var(--gutter) calc(16px + env(safe-area-inset-bottom)); border-width: 1.5px 0 0; box-shadow: 0 -8px 24px rgba(17, 17, 16, 0.08); }
 }
 
-/* Reflective questions: hover to reveal on desktop, tap to expand on touch. */
+/* Reflective questions: follow the scroll (main.js); a tap / click also switches. */
 .feed-interactive { max-width: 100%; }
 .feed-interactive li { display:block; padding:0; }
 .feed-detail { position:relative; }
@@ -1062,9 +1062,13 @@ html:not(.js) .log-nav, html:not(.js) .log-edge, html:not(.js) .log-foot { displ
 .feed-panel .feed-question {
   position:absolute; bottom:0; max-width:690px; animation:none; pointer-events:none;
 }
-.feed-panel .feed-question p { opacity:0; filter:blur(2px); transition:opacity .5s ease, filter .5s ease; }
-.feed-panel .feed-detail.is-active .feed-question p { opacity:1; filter:blur(0); transition:opacity 1.2s cubic-bezier(.3,0,.2,1) .35s, filter 1.2s cubic-bezier(.3,0,.2,1) .35s; }
-.feed-panel .feed-detail.is-active .feed-question p.ja { transition-delay:.6s; }
+/* Quiet fade: the outgoing question fades out while the next one fades in, in the same place. */
+.feed-panel .feed-question p { opacity:0; transition:opacity .45s ease; }
+.feed-panel .feed-detail.is-active .feed-question p { opacity:1; transition:opacity .9s cubic-bezier(.3,0,.2,1) .15s; }
+.feed-panel .feed-detail.is-active .feed-question p.ja { transition-delay:.3s; }
+/* The row of the shown question stays dark; the others recede (colour only — no layout change). */
+.feed-panel .feed-label > span { transition:color .5s ease; }
+.feed-panel .feed-detail:not(.is-active) .feed-label > span { color:var(--ink-2); }
 
 .feed-side { border-bottom:1px solid var(--rule); min-height:var(--panel-h, auto); }
 .feed-side li { width:clamp(200px, 30%, 300px); }
@@ -1077,6 +1081,4 @@ html:not(.js) .log-nav, html:not(.js) .log-edge, html:not(.js) .log-foot { displ
 .feed-below .feed-question { left:0; right:0; padding:20px 0 6px; }
 .feed-below .feed-indicator { transition:opacity .4s ease; }
 .feed-below .feed-detail.is-active .feed-indicator { opacity:0; }
-.feed-below .feed-detail:not(.is-active) .feed-label > span { color:var(--ink-2); }
-.feed-below .feed-label > span { transition:color .5s ease; }
-@media (prefers-reduced-motion:reduce) { .feed-question, .feed-detail .feed-indicator, .feed-panel .feed-question p, .feed-below .feed-label > span { animation:none!important; transition:none!important; filter:none!important; } }
+@media (prefers-reduced-motion:reduce) { .feed-question, .feed-detail .feed-indicator, .feed-panel .feed-question p, .feed-panel .feed-label > span { animation:none!important; transition:none!important; filter:none!important; } }
