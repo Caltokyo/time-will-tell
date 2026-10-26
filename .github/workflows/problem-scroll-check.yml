@@ -11,4 +11,4 @@ jobs:
       - run: |
           (python3 -m http.server 8137 >/dev/null 2>&1 &)
           cd test/browser && echo '{"type":"module"}' > package.json && npm install --no-audit --no-fund playwright@1.56.0 >/dev/null 2>&1 && npx playwright install --with-deps webkit chromium >/dev/null 2>&1
-          node problem-scroll.mjs > out.txt 2>&1; rc=$?; cat out.txt; while read -r l; do echo "::notice::$l"; done < out.txt; exit $rc
+          BASE=https://utaki.me/ node problem-scroll.mjs > out.txt 2>&1; rc=$?; cat out.txt; while read -r l; do echo "::notice::$l"; done < out.txt; exit $rc

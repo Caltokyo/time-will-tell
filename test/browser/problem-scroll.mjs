@@ -1,12 +1,12 @@
 import { webkit, chromium, devices } from "playwright";
-const base = "http://localhost:8137/"; let fail = 0;
+const base = process.env.BASE || "http://localhost:8137/"; let fail = 0;
 for (const [eng, bt] of [["webkit", webkit], ["chromium", chromium]]) {
   const b = await bt.launch();
   for (const [name, opts] of [["pc", { viewport: { width: 1440, height: 900 } }], ["iphone", { ...devices["iPhone 13"] }]]) {
     if (eng === "chromium" && name === "iphone") continue;
     const ctx = await b.newContext(opts); const p = await ctx.newPage(); const errs = [];
     p.on("pageerror", (e) => { if (!/\bL\b/.test(e.message)) errs.push(e.message); });
-    await p.goto(base, { waitUntil: "load" }); await p.waitForTimeout(800);
+    await p.goto(base, { waitUntil: "load" }); if (!(await p.evaluate(() => fetch("/main.js", { cache: "no-store" }).then((r) => r.text()).then((t) => t.includes("questions follow the scroll position"))))) { errs.push("production main.js is not the new version"); } await p.waitForTimeout(800);
     const st = () => p.evaluate(() => { const l = document.querySelector(".feed-interactive"); const it = [...l.querySelectorAll(".feed-detail")];
       return { a: it.findIndex((d) => d.classList.contains("is-active")), h: Math.round(l.getBoundingClientRect().height), sec: Math.round(l.closest("section").getBoundingClientRect().height) }; });
     await p.evaluate(() => { document.documentElement.style.scrollBehavior = "auto"; const l = document.querySelector(".feed-interactive"); scrollTo(0, l.getBoundingClientRect().top + scrollY - innerHeight * 0.95); });
